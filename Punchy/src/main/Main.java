@@ -16,7 +16,7 @@ public class Main {
 		Project p = new Project();
 		Employee e = new Employee("100000002");
 		
-		TimeRegistration tr = new TimeRegistration("123", LocalDate.now(), LocalDateTime.now(), null, 8, "Development", "Test Description", false, e, p);
+		TimeRegistration tr = new TimeRegistration("123", LocalDate.now(), LocalDateTime.now(), null, 8, "Development", "Test Description", false, p, e);
 		
 		TimeRegistrationDB trdb = new TimeRegistrationDB();
 		

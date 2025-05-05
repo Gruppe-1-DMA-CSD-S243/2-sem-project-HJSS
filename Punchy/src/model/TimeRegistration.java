@@ -13,8 +13,8 @@ public class TimeRegistration {
 	private String description;
 	private boolean isValidated;
 	
-	private Employee employee;
 	private Project project;
+	private Employee employee;
 	
 	public TimeRegistration(String timeRegistrationNumber, LocalDate date, String registrationType) {
 		this.timeRegistrationNumber = timeRegistrationNumber;
@@ -26,7 +26,7 @@ public class TimeRegistration {
 	//Constructor til buildObject
 	public TimeRegistration(String timeRegistrationNumber, LocalDate date, LocalDateTime startTime,
 			LocalDateTime endTime, double hours, String registrationType, String description, boolean isValidated, 
-			Employee employee, Project project) {
+			Project project, Employee employee) {
 		super();
 		this.timeRegistrationNumber = timeRegistrationNumber;
 		this.date = date;
@@ -36,8 +36,8 @@ public class TimeRegistration {
 		this.registrationType = registrationType;
 		this.description = description;
 		this.isValidated = isValidated;
-		this.employee = employee;
 		this.project = project;
+		this.employee = employee;
 	}
 
 

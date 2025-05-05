@@ -136,7 +136,7 @@ public class TimeRegistrationDB implements TimeRegistrationDBIF {
 				
 				
 				currentTimeRegistration = new TimeRegistration(timeRegistrationNumber, date, startTime, endTime, 
-						hours, registrationType, description, isValidated, employee, project);
+						hours, registrationType, description, isValidated, project, employee);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
