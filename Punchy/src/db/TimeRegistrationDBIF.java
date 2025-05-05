@@ -1,5 +1,8 @@
 package db;
 
+import model.Employee;
+import model.TimeRegistration;
+
 public interface TimeRegistrationDBIF {
 	public boolean insertTimeRegistration(TimeRegistration timeRegistration);
 	public TimeRegistration findActiveTimeRegistration(Employee employee);

@@ -1,5 +1,9 @@
 package controller;
 
+import model.Employee;
+import model.Project;
+import model.TimeRegistration;
+
 public interface TimeRegistrationControllerIF {
 	public TimeRegistration makeNewTimeRegsistration();
 	public Employee findEmployee(String employeeNumber);

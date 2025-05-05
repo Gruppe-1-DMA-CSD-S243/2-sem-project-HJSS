@@ -1,5 +1,10 @@
 package controller;
 
+import db.TimeRegistrationDBIF;
+import model.Employee;
+import model.Project;
+import model.TimeRegistration;
+
 public class TimeRegistrationController implements TimeRegistrationControllerIF {
 	private TimeRegistration currentTimeRegistration;
 	private ProjectControllerIF projectController;
@@ -18,8 +23,7 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 
 	@Override
 	public Employee findEmployee(String employeeNumber) {
-		// TODO Auto-generated method stub
-		return null;
+		employeeController.findEmployee(employeeNumber);
 	}
 
 	@Override
@@ -30,8 +34,7 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 
 	@Override
 	public Project findProject(String projectNumber, String employeeNumber) {
-		// TODO Auto-generated method stub
-		return null;
+		projectController.findProject(projectNumber, employeeNumber);
 	}
 
 	@Override

@@ -13,6 +13,9 @@ public class TimeRegistration {
 	private String description;
 	private boolean isValidated;
 	
+	private Employee employee;
+	private Project project;
+	
 	public TimeRegistration(String timeRegistrationNumber, LocalDate date, String registrationType) {
 		this.timeRegistrationNumber = timeRegistrationNumber;
 		this.date = date;
@@ -22,7 +25,8 @@ public class TimeRegistration {
 	
 	//Constructor til buildObject
 	public TimeRegistration(String timeRegistrationNumber, LocalDate date, LocalDateTime startTime,
-			LocalDateTime endTime, double hours, String registrationType, String description, boolean isValidated) {
+			LocalDateTime endTime, double hours, String registrationType, String description, boolean isValidated, 
+			Employee employee, Project project) {
 		super();
 		this.timeRegistrationNumber = timeRegistrationNumber;
 		this.date = date;
@@ -32,6 +36,8 @@ public class TimeRegistration {
 		this.registrationType = registrationType;
 		this.description = description;
 		this.isValidated = isValidated;
+		this.employee = employee;
+		this.project = project;
 	}
 
 
@@ -82,6 +88,25 @@ public class TimeRegistration {
 
 	public String getRegistrationType() {
 		return registrationType;
+	}
+
+
+	public Employee getEmployee() {
+		return employee;
+	}
+
+
+	public Project getProject() {
+		return project;
+	}
+
+
+	@Override
+	public String toString() {
+		return "TimeRegistration [timeRegistrationNumber=" + timeRegistrationNumber + ", date=" + date + ", startTime="
+				+ startTime + ", endTime=" + endTime + ", hours=" + hours + ", registrationType=" + registrationType
+				+ ", description=" + description + ", isValidated=" + isValidated + ", employee=" + employee
+				+ ", project=" + project + "]";
 	}
 	
 	
