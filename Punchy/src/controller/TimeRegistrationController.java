@@ -24,11 +24,13 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 		employeeController = new EmployeeController();
 		timeRegistrationDB = new TimeRegistrationDB();
 		
+		//Temp:
 		currentFoundEmployee = employeeController.findEmployee("100000002");
 	}
 
 	@Override
 	public TimeRegistration makeNewTimeRegsistration() {
+		//Værdier er hardcoded!!!
 		currentTimeRegistration = new TimeRegistration("12345", LocalDate.now(), "TidsRegistrering");
 		
 		return currentTimeRegistration;
