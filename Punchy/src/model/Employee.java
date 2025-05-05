@@ -2,17 +2,6 @@ package model;
 
 public class Employee {
 	private String employeeNumber;
-<<<<<<< HEAD
-	
-	public Employee(String employeeNumber) {
-		this.employeeNumber = employeeNumber;
-	}
-
-	public String getEmployeeNumber() {
-		// TODO Auto-generated method stub
-		return this.employeeNumber;
-	}
-=======
 	private String phoneNumber;
 	private String firstName;
 	private String lastName;
@@ -83,8 +72,5 @@ public class Employee {
 	public boolean isAdministrator() {
 		return isAdministrator;
 	}
-	
-	
->>>>>>> Employee-Jonas
 
 }
