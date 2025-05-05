@@ -16,7 +16,7 @@ public class ProjectController implements ProjectControllerIF {
 	
 	@Override
 	public Project findProject(String projectNumber, String employeeNumber) {
-		return projectDB.findProjectPS(projectNumber, employeeNumber);
+		return projectDB.findProject(projectNumber, employeeNumber); 
 	}
 
 }

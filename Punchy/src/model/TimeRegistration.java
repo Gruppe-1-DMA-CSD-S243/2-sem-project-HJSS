@@ -20,6 +20,7 @@ public class TimeRegistration {
 		this.timeRegistrationNumber = timeRegistrationNumber;
 		this.date = date;
 		this.registrationType = registrationType;
+		this.isValidated = false;
 	}
 	
 	
@@ -90,14 +91,20 @@ public class TimeRegistration {
 		return registrationType;
 	}
 
-
 	public Employee getEmployee() {
 		return employee;
 	}
-
+	
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
+	}
 
 	public Project getProject() {
 		return project;
+	}
+	
+	public void setProject(Project project) {
+		this.project = project;
 	}
 
 

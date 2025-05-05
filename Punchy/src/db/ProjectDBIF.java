@@ -6,6 +6,6 @@ import model.Project;
 
 public interface ProjectDBIF {
 
-	public Project findProject(String projectNumber, String employeeNumber) throws SQLException;
+	public Project findProject(String projectNumber, String employeeNumber);
 
 }

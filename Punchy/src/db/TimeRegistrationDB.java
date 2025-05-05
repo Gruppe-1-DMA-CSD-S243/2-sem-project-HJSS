@@ -15,12 +15,17 @@ import model.TimeRegistration;
 public class TimeRegistrationDB implements TimeRegistrationDBIF {
 	private static final String INSERT_TIME_REGISTRATION_QUERY = "INSERT INTO TimeRegistration (time_registration_number, time_registration_date, "
 			+ "start_time, end_time, hours, registration_type, description, is_validated, time_sheet_id, project_id, employee_id)"
-			+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+			+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, "
+			+ "(SELECT project_id FROM Project WHERE project_number = ?), "
+			+ "(SELECT employee_id FROM Employee WHERE employee_number = ?));";
 	private static final String FIND_ACTIVE_TIME_REGISTRATION_QUERY = "SELECT * FROM TimeRegistration JOIN Employee ON TimeRegistration.employee_id = Employee.employee_id "
+			+ "JOIN Project ON TimeRegistration.project_id = Project.project_id "
 			+ "WHERE employee_number = ? AND end_time IS null;";
 	private static final String UPDATE_TIME_REGISTRATION_QUERY = "UPDATE TimeRegistration SET time_registration_date = ?,"
-			+ "start_time = ?, end_time = ?, hours = ?, registration_type = ?, description = ?, is_validated = ?, time_sheet_id = ?, project_id = ?,"
-			+ "employee_id = ? WHERE time_registration_number = ?;";
+			+ "start_time = ?, end_time = ?, hours = ?, registration_type = ?, description = ?, is_validated = ?, time_sheet_id = ?, "
+			+ "project_id = (SELECT project_id FROM Project WHERE project_number = ?),"
+			+ "employee_id = (SELECT employee_id FROM Employee WHERE employee_number = ?)"
+			+ " WHERE time_registration_number = ?;";
 	private PreparedStatement insertTimeRegistrationPS;
 	private PreparedStatement findActiveTimeRegistrationPS;
 	private PreparedStatement updateTimeRegistrationPS;
@@ -57,8 +62,8 @@ public class TimeRegistrationDB implements TimeRegistrationDBIF {
 			
 			//Set TimeSheetID, ProjectID, EmployeeID for TimeRegistration
 			insertTimeRegistrationPS.setInt(9, 2); //TimeSheetID
-			insertTimeRegistrationPS.setInt(10, 2); //ProjectID
-			insertTimeRegistrationPS.setInt(11, 2); //EmployeeID
+			insertTimeRegistrationPS.setString(10, timeRegistration.getProject().getProjectNumber()); //ProjectID
+			insertTimeRegistrationPS.setString(11, timeRegistration.getEmployee().getEmployeeNumber()); //EmployeeID
 			
 			insertTimeRegistrationPS.executeUpdate();
 			success = true;
@@ -96,8 +101,8 @@ public class TimeRegistrationDB implements TimeRegistrationDBIF {
 			
 			//Her sættes time_sheet_id. Vi kan ikke hente det endnu, så de sættes bare til 2.
 			updateTimeRegistrationPS.setInt(8, 2); //TimeSheetID
-			updateTimeRegistrationPS.setInt(9, 2); //ProjectID
-			updateTimeRegistrationPS.setInt(10, 2); //EmployeeID
+			updateTimeRegistrationPS.setString(9, timeRegistration.getProject().getProjectNumber()); //ProjectID
+			updateTimeRegistrationPS.setString(10, timeRegistration.getEmployee().getEmployeeNumber()); //EmployeeID
 			
 			//WHERE time_registration_number = ?
 			updateTimeRegistrationPS.setString(11, timeRegistration.getTimeRegistrationNumber());
@@ -114,11 +119,12 @@ public class TimeRegistrationDB implements TimeRegistrationDBIF {
 	
 	private TimeRegistration buildObject(ResultSet resultSet) {
 		TimeRegistration currentTimeRegistration = null;
-		Employee employee = null;
-		Project project = null;
 		
 		// TODO:
 		// Employee skal findes og bygges! Men hvordan?
+		
+		ProjectDBIF pdb = new ProjectDB();
+		EmployeeDBIF edb = new EmployeeDB();
 		
 		try {
 			if (resultSet.next()) {
@@ -134,6 +140,15 @@ public class TimeRegistrationDB implements TimeRegistrationDBIF {
 				String description = resultSet.getString("description");
 				boolean isValidated = resultSet.getBoolean("is_validated");
 				
+				Project project = null;
+				if (pdb.findProject(resultSet.getString("project_number"), resultSet.getString("employee_number")) != null) {
+					project = pdb.findProject(resultSet.getString("project_number"), resultSet.getString("employee_number"));
+				}
+				
+				Employee employee = null;
+				if (edb.findEmployee(resultSet.getString("employee_number")) != null) {
+					employee = edb.findEmployee(resultSet.getString("employee_number"));
+				}
 				
 				currentTimeRegistration = new TimeRegistration(timeRegistrationNumber, date, startTime, endTime, 
 						hours, registrationType, description, isValidated, project, employee);

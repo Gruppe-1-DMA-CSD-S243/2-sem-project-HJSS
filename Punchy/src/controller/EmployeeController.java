@@ -13,7 +13,6 @@ public class EmployeeController implements EmployeeControllerIF {
 
 	@Override
 	public Employee findEmployee(String employeeNumber) {
-		// TODO Auto-generated method stub
 		return employeeDB.findEmployee(employeeNumber);
 	}
 

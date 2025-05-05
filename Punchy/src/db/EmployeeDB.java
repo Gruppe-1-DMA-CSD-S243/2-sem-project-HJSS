@@ -9,11 +9,9 @@ import java.sql.Statement;
 import model.Employee;
 
 public class EmployeeDB implements EmployeeDBIF {
-	private static final String FIND_EMPLOYEE_QUERY = 
-			"SELECT * "
-			+ "FROM Employee employee"
-			+ "JOIN JobTitle ON employee.job_title_id = job_title_id"
-			+ "WHERE employee_number = ?";
+	private static final String FIND_EMPLOYEE_QUERY = "SELECT * FROM Employee "
+			+ "JOIN JobTitle ON Employee.job_title_id = JobTitle.job_title_id "
+			+ "WHERE employee_number = ?;";
 	private PreparedStatement findEmployeePS;
 	
 	public EmployeeDB() {
@@ -21,7 +19,6 @@ public class EmployeeDB implements EmployeeDBIF {
 	}
 	
 	private void init() {
-		// TODO Auto-generated method stub
 		Connection con = DBConnection.getInstance().getDBcon();
 		try {
 			findEmployeePS = con.prepareStatement(FIND_EMPLOYEE_QUERY);
@@ -32,7 +29,6 @@ public class EmployeeDB implements EmployeeDBIF {
 
 	@Override
 	public Employee findEmployee(String employeeNumber) {
-		// TODO Auto-generated method stub
 		Employee currentEmployee = null;
 		try {
 			findEmployeePS.setString(1, employeeNumber);
@@ -46,30 +42,30 @@ public class EmployeeDB implements EmployeeDBIF {
 		return currentEmployee;
 	}
 	
-	private Employee buildObject(ResultSet resultSet) throws SQLException{
+	private Employee buildObject(ResultSet resultSet) {
 		Employee currentEmployee = null;
 		
 		try {
-			String employeeNumber = resultSet.getString("employee_number");
-			String phoneNumber = resultSet.getString("phone_number");
-			String firstName = resultSet.getString("first_name");
-			String lastName = resultSet.getString("last_name");
-			String address = resultSet.getString("address");
-			String zipCode = resultSet.getString("zip_code");
-			String email = resultSet.getString("email");
-			String jobTitle = resultSet.getString("job_title");
-			String username = resultSet.getString("username");
-			String password = resultSet.getString("password");
-			boolean isAdministrator = resultSet.getBoolean("is_administrator");
-			
-			currentEmployee = new Employee(employeeNumber, phoneNumber, firstName, lastName, address, zipCode, email, jobTitle, username, password, isAdministrator);
-			
+			if (resultSet.next()) {
+				String employeeNumber = resultSet.getString("employee_number");
+				String phoneNumber = resultSet.getString("phone_number");
+				String firstName = resultSet.getString("first_name");
+				String lastName = resultSet.getString("last_name");
+				String address = resultSet.getString("address");
+				String zipCode = resultSet.getString("zip_code");
+				String email = resultSet.getString("email");
+				String jobTitle = resultSet.getString("job_title");
+				String username = resultSet.getString("user_name");
+				String password = resultSet.getString("password");
+				boolean isAdministrator = resultSet.getBoolean("is_administrator");
+				
+				currentEmployee = new Employee(employeeNumber, phoneNumber, firstName, lastName, address, zipCode, email, jobTitle, username, password, isAdministrator);
+			}
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
 		
 		return currentEmployee;
-		
 	}
 
 }
