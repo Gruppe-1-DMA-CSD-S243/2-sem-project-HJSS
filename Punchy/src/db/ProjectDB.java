@@ -44,13 +44,16 @@ public class ProjectDB implements ProjectDBIF {
 	
 	public Project buildObject(ResultSet resultSet) throws SQLException {
 		Project currentProject = null;
-		
-		String projectNumber = resultSet.getString("project_number");
-		String projectName = resultSet.getString("project_name");
-		int timeBudget = resultSet.getInt("time_budget");
-		String description = resultSet.getString("description");
-		
-		currentProject = new Project(projectNumber, projectName, timeBudget, description);
+		try {
+			String projectNumber = resultSet.getString("project_number");
+			String projectName = resultSet.getString("project_name");
+			int timeBudget = resultSet.getInt("time_budget");
+			String description = resultSet.getString("description");
+			
+			currentProject = new Project(projectNumber, projectName, timeBudget, description);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		return currentProject;
 	}
