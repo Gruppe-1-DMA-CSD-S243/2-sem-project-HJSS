@@ -1,9 +1,11 @@
 package db;
 
+import java.sql.SQLException;
+
 import model.Project;
 
 public interface ProjectDBIF {
 
-	public Project findProjectPS(String projectNumber, String employeeNumber);
+	public Project findProject(String projectNumber, String employeeNumber) throws SQLException;
 
 }
