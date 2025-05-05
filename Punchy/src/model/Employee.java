@@ -6,13 +6,14 @@ public class Employee {
 	private String firstName;
 	private String lastName;
 	private String address;
+	private String zipCode;
 	private String email;
 	private String jobTitle;
 	private String userName;
 	private String password;
 	private boolean isAdministrator;
 	
-	public Employee(String employeeNumber, String phoneNumber, String firstName, String lastName, String address,
+	public Employee(String employeeNumber, String phoneNumber, String firstName, String lastName, String address, String zipCode,
 			String email, String jobTitle, String userName, String password, boolean isAdministrator) {
 		
 		this.employeeNumber = employeeNumber;
@@ -20,6 +21,7 @@ public class Employee {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.address = address;
+		this.zipCode = zipCode;
 		this.email = email;
 		this.jobTitle = jobTitle;
 		this.userName = userName;
@@ -45,6 +47,10 @@ public class Employee {
 
 	public String getAddress() {
 		return address;
+	}
+	
+	public String getZipCode() {
+		return zipCode;
 	}
 
 	public String getEmail() {
