@@ -11,8 +11,8 @@ public class TimeRegistration {
 	private double hours;
 	private String registrationType;
 	private String description;
-	private boolean isValidated;
 	
+	private TimeSheet timeSheet;
 	private Project project;
 	private Employee employee;
 	
@@ -20,14 +20,13 @@ public class TimeRegistration {
 		this.timeRegistrationNumber = timeRegistrationNumber;
 		this.date = date;
 		this.registrationType = registrationType;
-		this.isValidated = false;
 	}
 	
 	
 	//Constructor til buildObject
 	public TimeRegistration(String timeRegistrationNumber, LocalDate date, LocalDateTime startTime,
-			LocalDateTime endTime, double hours, String registrationType, String description, boolean isValidated, 
-			Project project, Employee employee) {
+			LocalDateTime endTime, double hours, String registrationType, String description, 
+			TimeSheet timeSheet, Project project, Employee employee) {
 		super();
 		this.timeRegistrationNumber = timeRegistrationNumber;
 		this.date = date;
@@ -36,7 +35,7 @@ public class TimeRegistration {
 		this.hours = hours;
 		this.registrationType = registrationType;
 		this.description = description;
-		this.isValidated = isValidated;
+		this.timeSheet = timeSheet;
 		this.project = project;
 		this.employee = employee;
 	}
@@ -67,14 +66,6 @@ public class TimeRegistration {
 		this.description = description;
 	}
 
-	public boolean isValidated() {
-		return isValidated;
-	}
-
-	public void setValidated(boolean isValidated) {
-		this.isValidated = isValidated;
-	}
-
 	public String getTimeRegistrationNumber() {
 		return timeRegistrationNumber;
 	}
@@ -90,6 +81,16 @@ public class TimeRegistration {
 	public String getRegistrationType() {
 		return registrationType;
 	}
+
+	public TimeSheet getTimeSheet() {
+		return timeSheet;
+	}
+
+
+	public void setTimeSheet(TimeSheet timeSheet) {
+		this.timeSheet = timeSheet;
+	}
+
 
 	public Employee getEmployee() {
 		return employee;
@@ -112,7 +113,7 @@ public class TimeRegistration {
 	public String toString() {
 		return "TimeRegistration [timeRegistrationNumber=" + timeRegistrationNumber + ", date=" + date + ", startTime="
 				+ startTime + ", endTime=" + endTime + ", hours=" + hours + ", registrationType=" + registrationType
-				+ ", description=" + description + ", isValidated=" + isValidated + ", employee=" + employee
+				+ ", description=" + description + ", employee=" + employee
 				+ ", project=" + project + "]";
 	}
 	

@@ -2,12 +2,14 @@ package controller;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import db.TimeRegistrationDB;
 import db.TimeRegistrationDBIF;
 import model.Employee;
 import model.Project;
 import model.TimeRegistration;
+import model.TimeSheet;
 
 public class TimeRegistrationController implements TimeRegistrationControllerIF {
 	private TimeRegistration currentTimeRegistration;
@@ -15,11 +17,13 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 	private Employee currentFoundEmployee;
 	private Project currentFoundProject;
 	
+	private TimeSheetControllerIF timeSheetController;
 	private ProjectControllerIF projectController;
 	private EmployeeControllerIF employeeController;
 	private TimeRegistrationDBIF timeRegistrationDB;
 	
 	public TimeRegistrationController() {
+		timeSheetController = new TimeSheetController();
 		projectController = new ProjectController();
 		employeeController = new EmployeeController();
 		timeRegistrationDB = new TimeRegistrationDB();
@@ -31,7 +35,9 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 	@Override
 	public TimeRegistration makeNewTimeRegsistration() {
 		//Værdier er hardcoded!!!
-		currentTimeRegistration = new TimeRegistration("7", LocalDate.now(), "TidsRegistrering");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalDate date = LocalDate.parse("2024-05-13", formatter);
+		currentTimeRegistration = new TimeRegistration("999", date, "TidsRegistrering");
 		
 		return currentTimeRegistration;
 	}
@@ -62,6 +68,9 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 	public void clockIn() {
 		if (timeRegistrationDB.findActiveTimeRegistration(currentFoundEmployee) == null) {
 			currentTimeRegistration.setStartTime(LocalDateTime.now());
+			
+			TimeSheet timeSheet = timeSheetController.findTimeSheetByEmployeeAndDate(currentTimeRegistration.getEmployee(), currentTimeRegistration.getDate());
+			currentTimeRegistration.setTimeSheet(timeSheet);
 			
 			timeRegistrationDB.insertTimeRegistration(currentTimeRegistration);
 		}

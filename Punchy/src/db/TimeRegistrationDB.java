@@ -11,18 +11,21 @@ import java.time.LocalDateTime;
 import model.Employee;
 import model.Project;
 import model.TimeRegistration;
+import model.TimeSheet;
 
 public class TimeRegistrationDB implements TimeRegistrationDBIF {
 	private static final String INSERT_TIME_REGISTRATION_QUERY = "INSERT INTO TimeRegistration (time_registration_number, time_registration_date, "
-			+ "start_time, end_time, hours, registration_type, description, is_validated, time_sheet_id, project_id, employee_id)"
-			+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, "
+			+ "start_time, end_time, hours, registration_type, description, time_sheet_id, project_id, employee_id)"
+			+ " VALUES (?, ?, ?, ?, ?, ?, ?, "
+			+ "(SELECT time_sheet_id FROM TimeSheet WHERE time_sheet_number = ?), "
 			+ "(SELECT project_id FROM Project WHERE project_number = ?), "
 			+ "(SELECT employee_id FROM Employee WHERE employee_number = ?));";
 	private static final String FIND_ACTIVE_TIME_REGISTRATION_QUERY = "SELECT * FROM TimeRegistration JOIN Employee ON TimeRegistration.employee_id = Employee.employee_id "
 			+ "JOIN Project ON TimeRegistration.project_id = Project.project_id "
 			+ "WHERE employee_number = ? AND end_time IS null;";
 	private static final String UPDATE_TIME_REGISTRATION_QUERY = "UPDATE TimeRegistration SET time_registration_date = ?,"
-			+ "start_time = ?, end_time = ?, hours = ?, registration_type = ?, description = ?, is_validated = ?, time_sheet_id = ?, "
+			+ "start_time = ?, end_time = ?, hours = ?, registration_type = ?, description = ?, "
+			+ "time_sheet_id = (SELECT time_sheet_id FROM TimeSheet WHERE time_sheet_number = ?), "
 			+ "project_id = (SELECT project_id FROM Project WHERE project_number = ?),"
 			+ "employee_id = (SELECT employee_id FROM Employee WHERE employee_number = ?)"
 			+ " WHERE time_registration_number = ?;";
@@ -58,12 +61,11 @@ public class TimeRegistrationDB implements TimeRegistrationDBIF {
 			insertTimeRegistrationPS.setDouble(5, timeRegistration.getHours());
 			insertTimeRegistrationPS.setString(6, timeRegistration.getRegistrationType());
 			insertTimeRegistrationPS.setString(7, timeRegistration.getDescription());
-			insertTimeRegistrationPS.setBoolean(8, timeRegistration.isValidated());
 			
 			//Set TimeSheetID, ProjectID, EmployeeID for TimeRegistration
-			insertTimeRegistrationPS.setInt(9, 2); //TimeSheetID
-			insertTimeRegistrationPS.setString(10, timeRegistration.getProject().getProjectNumber()); //ProjectID
-			insertTimeRegistrationPS.setString(11, timeRegistration.getEmployee().getEmployeeNumber()); //EmployeeID
+			insertTimeRegistrationPS.setString(8, timeRegistration.getTimeSheet().getTimeSheetNumber()); //TimeSheetID
+			insertTimeRegistrationPS.setString(9, timeRegistration.getProject().getProjectNumber()); //ProjectID
+			insertTimeRegistrationPS.setString(10, timeRegistration.getEmployee().getEmployeeNumber()); //EmployeeID
 			
 			insertTimeRegistrationPS.executeUpdate();
 			success = true;
@@ -97,15 +99,14 @@ public class TimeRegistrationDB implements TimeRegistrationDBIF {
 			updateTimeRegistrationPS.setDouble(4, timeRegistration.getHours());
 			updateTimeRegistrationPS.setString(5, timeRegistration.getRegistrationType());
 			updateTimeRegistrationPS.setString(6, timeRegistration.getDescription());
-			updateTimeRegistrationPS.setBoolean(7, timeRegistration.isValidated());
 			
 			//Her sættes time_sheet_id. Vi kan ikke hente det endnu, så de sættes bare til 2.
-			updateTimeRegistrationPS.setInt(8, 2); //TimeSheetID
-			updateTimeRegistrationPS.setString(9, timeRegistration.getProject().getProjectNumber()); //ProjectID
-			updateTimeRegistrationPS.setString(10, timeRegistration.getEmployee().getEmployeeNumber()); //EmployeeID
+			updateTimeRegistrationPS.setString(7, timeRegistration.getTimeSheet().getTimeSheetNumber()); //TimeSheetID
+			updateTimeRegistrationPS.setString(8, timeRegistration.getProject().getProjectNumber()); //ProjectID
+			updateTimeRegistrationPS.setString(9, timeRegistration.getEmployee().getEmployeeNumber()); //EmployeeID
 			
 			//WHERE time_registration_number = ?
-			updateTimeRegistrationPS.setString(11, timeRegistration.getTimeRegistrationNumber());
+			updateTimeRegistrationPS.setString(10, timeRegistration.getTimeRegistrationNumber());
 			
 			updateTimeRegistrationPS.executeUpdate();
 			
@@ -123,6 +124,7 @@ public class TimeRegistrationDB implements TimeRegistrationDBIF {
 		// TODO:
 		// Employee skal findes og bygges! Men hvordan?
 		
+		TimeSheetDBIF tsdb = new TimeSheetDB();
 		ProjectDBIF pdb = new ProjectDB();
 		EmployeeDBIF edb = new EmployeeDB();
 		
@@ -138,7 +140,6 @@ public class TimeRegistrationDB implements TimeRegistrationDBIF {
 				double hours = resultSet.getDouble("hours");
 				String registrationType = resultSet.getString("registration_type");
 				String description = resultSet.getString("description");
-				boolean isValidated = resultSet.getBoolean("is_validated");
 				
 				Project project = null;
 				if (pdb.findProject(resultSet.getString("project_number"), resultSet.getString("employee_number")) != null) {
@@ -150,8 +151,13 @@ public class TimeRegistrationDB implements TimeRegistrationDBIF {
 					employee = edb.findEmployee(resultSet.getString("employee_number"));
 				}
 				
+				TimeSheet timeSheet = null;
+				if (tsdb.findTimeSheetByEmployeeAndDate(employee, date) != null) {
+					timeSheet = tsdb.findTimeSheetByEmployeeAndDate(employee, date);
+				}
+				
 				currentTimeRegistration = new TimeRegistration(timeRegistrationNumber, date, startTime, endTime, 
-						hours, registrationType, description, isValidated, project, employee);
+						hours, registrationType, description, timeSheet, project, employee);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
