@@ -27,7 +27,7 @@ class TimeRegistrationControllerTest {
 	}
 
 	@Test
-	void registerTime() {
+	void test() {
 		// Arrange
 		
 		// Act
