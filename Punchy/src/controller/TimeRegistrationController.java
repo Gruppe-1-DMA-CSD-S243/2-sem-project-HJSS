@@ -31,7 +31,7 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 	@Override
 	public TimeRegistration makeNewTimeRegsistration() {
 		//Værdier er hardcoded!!!
-		currentTimeRegistration = new TimeRegistration("12345", LocalDate.now(), "TidsRegistrering");
+		currentTimeRegistration = new TimeRegistration("7", LocalDate.now(), "TidsRegistrering");
 		
 		return currentTimeRegistration;
 	}
@@ -58,9 +58,14 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 
 	@Override
 	public void clockIn() {
-		currentTimeRegistration.setStartTime(LocalDateTime.now());
-		
-		timeRegistrationDB.insertTimeRegistration(currentTimeRegistration);
+		if (timeRegistrationDB.findActiveTimeRegistration(currentFoundEmployee) == null) {
+			currentTimeRegistration.setStartTime(LocalDateTime.now());
+			
+			timeRegistrationDB.insertTimeRegistration(currentTimeRegistration);
+		}
+		else {
+			System.out.println("Another TimeRegistration is already active for this employee!");
+		}
 	}
 
 	@Override
