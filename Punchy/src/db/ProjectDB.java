@@ -46,7 +46,7 @@ public class ProjectDB implements ProjectDBIF {
 		return currentProject;
 	}
 	
-	public Project buildObject(ResultSet resultSet) {
+	private Project buildObject(ResultSet resultSet) {
 		Project currentProject = null;
 		try {
 			if (resultSet.next()) {

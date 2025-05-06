@@ -38,7 +38,8 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 
 	@Override
 	public Employee findEmployee(String employeeNumber) {
-		return employeeController.findEmployee(employeeNumber);
+		currentFoundEmployee = employeeController.findEmployee(employeeNumber);
+		return currentFoundEmployee;
 	}
 
 	@Override
@@ -48,7 +49,8 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 
 	@Override
 	public Project findProject(String projectNumber, String employeeNumber) {
-		return projectController.findProject(projectNumber, employeeNumber);
+		currentFoundProject = projectController.findProject(projectNumber, employeeNumber);
+		return currentFoundProject;
 	}
 
 	@Override
@@ -64,7 +66,7 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 			timeRegistrationDB.insertTimeRegistration(currentTimeRegistration);
 		}
 		else {
-			System.out.println("Another TimeRegistration is already active for this employee!");
+			System.out.println("A TimeRegistration is already active for this employee!");
 		}
 	}
 
