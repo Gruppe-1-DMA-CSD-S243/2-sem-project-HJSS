@@ -105,7 +105,6 @@ public class TimeRegistrationDB implements TimeRegistrationDBIF {
 			updateTimeRegistrationPS.setString(5, timeRegistration.getRegistrationType());
 			updateTimeRegistrationPS.setString(6, timeRegistration.getDescription());
 			
-			//Her sættes time_sheet_id. Vi kan ikke hente det endnu, så de sættes bare til 2.
 			updateTimeRegistrationPS.setString(7, timeRegistration.getTimeSheet().getTimeSheetNumber()); //TimeSheetID
 			updateTimeRegistrationPS.setString(8, timeRegistration.getProject().getProjectNumber()); //ProjectID
 			updateTimeRegistrationPS.setString(9, timeRegistration.getEmployee().getEmployeeNumber()); //EmployeeID
