@@ -3,6 +3,7 @@ package db;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 
 public class DBConnection {   
@@ -104,6 +105,44 @@ public class DBConnection {
     		isOpen = false;
     	}
     	return isOpen;
+    }
+    
+    public void startTransaction() {
+    	try {
+    		con.setAutoCommit(false);
+    	} catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+    }
+    
+    public void commitTransaction() {
+    	try {
+    		try {
+    			con.commit();
+    		} catch (SQLException e) {
+    			e.printStackTrace();
+    		} finally {
+    			con.setAutoCommit(true);
+    		}
+    	} catch (SQLException e) {
+    		//TODO: Fix det her!
+    		System.out.println("Print DataAccessException");
+    	}
+    }
+    
+    public void rollbackTransaction() {
+    	try {
+    		try {
+    			con.rollback();
+    		} catch (SQLException e) {
+    			e.printStackTrace();
+    		} finally {
+    			con.setAutoCommit(true);
+    		}
+    	} catch (SQLException e) {
+    		//TODO: Fix det her!
+    		System.out.println("Print DataAccessException");
+    	}
     }
 
 }//end DbConnection

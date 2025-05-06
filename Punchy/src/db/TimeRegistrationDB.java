@@ -52,6 +52,7 @@ public class TimeRegistrationDB implements TimeRegistrationDBIF {
 	public boolean insertTimeRegistration(TimeRegistration timeRegistration) {
 		boolean success = false;
 		try {
+			DBConnection.getInstance().startTransaction();
 			insertTimeRegistrationPS.setString(1, timeRegistration.getTimeRegistrationNumber());
 			insertTimeRegistrationPS.setDate(2, Date.valueOf(timeRegistration.getDate()));
 			insertTimeRegistrationPS.setObject(3, timeRegistration.getStartTime());
@@ -68,9 +69,12 @@ public class TimeRegistrationDB implements TimeRegistrationDBIF {
 			insertTimeRegistrationPS.setString(10, timeRegistration.getEmployee().getEmployeeNumber()); //EmployeeID
 			
 			insertTimeRegistrationPS.executeUpdate();
+			
+			DBConnection.getInstance().commitTransaction();
 			success = true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			DBConnection.getInstance().rollbackTransaction();
 		}
 		return success;
 	}
@@ -93,6 +97,7 @@ public class TimeRegistrationDB implements TimeRegistrationDBIF {
 	public boolean updateTimeRegistration(TimeRegistration timeRegistration) {
 		boolean success = false;
 		try {
+			DBConnection.getInstance().startTransaction();
 			updateTimeRegistrationPS.setDate(1, Date.valueOf(timeRegistration.getDate()));
 			updateTimeRegistrationPS.setObject(2, timeRegistration.getStartTime());
 			updateTimeRegistrationPS.setObject(3, timeRegistration.getEndTime());
@@ -110,9 +115,12 @@ public class TimeRegistrationDB implements TimeRegistrationDBIF {
 			
 			updateTimeRegistrationPS.executeUpdate();
 			
+			DBConnection.getInstance().commitTransaction();
+			
 			success = true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			DBConnection.getInstance().rollbackTransaction();
 		}
 		
 		return success;

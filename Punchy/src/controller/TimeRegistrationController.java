@@ -37,7 +37,7 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 		//Værdier er hardcoded!!!
 //		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 //		LocalDate date = LocalDate.parse("2024-05-13", formatter);
-//		currentTimeRegistration = new TimeRegistration("999", date, "TidsRegistrering");
+//		currentTimeRegistration = new TimeRegistration("111", date, "TidsRegistrering");
 		
 		currentTimeRegistration = new TimeRegistration("999", LocalDate.now(), "Tidsregistrering");
 		
