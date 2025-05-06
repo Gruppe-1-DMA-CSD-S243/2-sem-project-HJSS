@@ -26,26 +26,28 @@ public class Main {
 		
 		TimeRegistrationController trc = new TimeRegistrationController();
 		
-		trc.makeNewTimeRegsistration();
-		
-		Employee foundEmployee = trc.findEmployee("23456");
-		System.out.println(foundEmployee.getFirstName() + ", " + foundEmployee.getEmployeeNumber());
-		
-		TimeRegistrationDBIF trdb = new TimeRegistrationDB();
-		
-		trc.assignEmployeeToTimeRegistration(foundEmployee);
-		
-		Project foundProject = trc.findProject("6000", foundEmployee.getEmployeeNumber());
-		
-		trc.assignProjectToTimeRegistration(foundProject);
-		
-		trc.clockIn();
-		
-//		trc.clockOut();
+//		trc.makeNewTimeRegsistration();
 //		
-//		trc.setDescription("yo yo yo");
+//		Employee foundEmployee = trc.findEmployee("23456");
+//		System.out.println(foundEmployee.getFirstName() + ", " + foundEmployee.getEmployeeNumber());
 //		
-//		trc.submitRegistration(trc.getCurrentTimeRegistration());
+//		TimeRegistrationDBIF trdb = new TimeRegistrationDB();
+//		
+//		trc.assignEmployeeToTimeRegistration(foundEmployee);
+//		
+//		Project foundProject = trc.findProject("6000", foundEmployee.getEmployeeNumber());
+//		
+//		trc.assignProjectToTimeRegistration(foundProject);
+//		
+//		trc.clockIn();
+		
+		trc.findEmployee("23456");
+		
+		trc.clockOut();
+		
+		trc.setDescription("yo yo yo");
+		
+		trc.submitRegistration(trc.getCurrentTimeRegistration());
 		
 		
 		
