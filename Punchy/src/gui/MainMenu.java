@@ -105,11 +105,11 @@ public class MainMenu extends JFrame {
 		westPanel.setLayout(gbl_westPanel);
 		
 		btnLogin = new JButton("Login");
-		btnLogin.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				loginToTimeRegistration();
-			}
-		});
+//		btnLogin.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				loginToTimeRegistration();
+//			}
+//		});
 		GridBagConstraints gbc_btnLogin = new GridBagConstraints();
 		gbc_btnLogin.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnLogin.insets = new Insets(0, 0, 5, 0);
