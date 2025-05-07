@@ -28,6 +28,11 @@ public class Employee {
 		this.password = password;
 		this.isAdministrator = isAdministrator;
 	}
+	
+	// test af dummy constructor
+	public Employee(String employeeNumber) {
+		this.employeeNumber = employeeNumber;
+	}
 
 	public String getEmployeeNumber() {
 		return employeeNumber;

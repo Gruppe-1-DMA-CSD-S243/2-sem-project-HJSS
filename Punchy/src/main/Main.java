@@ -71,6 +71,10 @@ public class Main {
         projects.add(p1);
         projects.add(p2);
         projects.add(p3);
+        
+        Employee e1 = new Employee("1234");
+        List<Employee> employees = new ArrayList<>();
+        employees.add(e1);
 
         MainMenu frame = new MainMenu();
         frame.showProjects(projects);

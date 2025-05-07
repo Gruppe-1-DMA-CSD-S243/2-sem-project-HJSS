@@ -23,6 +23,8 @@ import javax.swing.JSplitPane;
 import javax.swing.border.MatteBorder;
 
 import model.Project;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class TimeRegistrationView extends JDialog {
 
@@ -294,12 +296,21 @@ public class TimeRegistrationView extends JDialog {
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
+				cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						cancelTimeRegistrationView();
+					}
+				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
 		}
 	}
 	
+	private void cancelTimeRegistrationView() {
+		hideFrame();
+	}
+
 	private void hideFrame() {
 		this.setVisible(false);
 		this.dispose();

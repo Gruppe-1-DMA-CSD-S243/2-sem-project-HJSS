@@ -6,8 +6,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import controller.TimeRegistrationController;
 import model.Employee;
 import model.Project;
+import model.TimeRegistration;
 
 import java.awt.GridBagLayout;
 import java.awt.BorderLayout;
@@ -24,14 +26,18 @@ import javax.swing.JTextField;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class MainMenu extends JFrame {
+	
+	private TimeRegistrationController timeRegistrationController;
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JLabel lblNorth;
 	private JButton btnLogin;
-	private JTextField textField;
+	private JTextField tfEmployeeNumber;
 	private JButton btnAbsence;
 	private JButton btnDriving;
 	private JButton btnReceipt;
@@ -43,6 +49,7 @@ public class MainMenu extends JFrame {
 	private JPanel westPanel;
 	private JPanel southPanel;
 	private JPanel northPanel;
+	private JLabel lblEast2;
 	
 
 	/**
@@ -67,6 +74,7 @@ public class MainMenu extends JFrame {
 	 */
 	public MainMenu() {
 		initGUI();
+		timeRegistrationController = new TimeRegistrationController();
 	}
 	private void initGUI() {
 		setTitle("ECONTA CONCULTING GROUP - PUNCHY");
@@ -97,7 +105,11 @@ public class MainMenu extends JFrame {
 		westPanel.setLayout(gbl_westPanel);
 		
 		btnLogin = new JButton("Login");
-		btnLogin.setEnabled(false);
+		btnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				loginToTimeRegistration();
+			}
+		});
 		GridBagConstraints gbc_btnLogin = new GridBagConstraints();
 		gbc_btnLogin.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnLogin.insets = new Insets(0, 0, 5, 0);
@@ -106,15 +118,14 @@ public class MainMenu extends JFrame {
 		gbc_btnLogin.gridy = 0;
 		westPanel.add(btnLogin, gbc_btnLogin);
 		
-		textField = new JTextField();
-		textField.setEditable(false);
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.insets = new Insets(0, 0, 5, 0);
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 0;
-		gbc_textField.gridy = 1;
-		westPanel.add(textField, gbc_textField);
-		textField.setColumns(10);
+		tfEmployeeNumber = new JTextField();
+		GridBagConstraints gbc_tfEmployeeNumber = new GridBagConstraints();
+		gbc_tfEmployeeNumber.insets = new Insets(0, 0, 5, 0);
+		gbc_tfEmployeeNumber.fill = GridBagConstraints.HORIZONTAL;
+		gbc_tfEmployeeNumber.gridx = 0;
+		gbc_tfEmployeeNumber.gridy = 1;
+		westPanel.add(tfEmployeeNumber, gbc_tfEmployeeNumber);
+		tfEmployeeNumber.setColumns(10);
 		
 		btnAbsence = new JButton("Registrer fravær");
 		btnAbsence.setEnabled(false);
@@ -156,12 +167,12 @@ public class MainMenu extends JFrame {
 		contentPane.add(eastPanel, BorderLayout.EAST);
 		GridBagLayout gbl_eastPanel = new GridBagLayout();
 		gbl_eastPanel.columnWidths = new int[]{70, 0};
-		gbl_eastPanel.rowHeights = new int[]{14, 0, 0};
+		gbl_eastPanel.rowHeights = new int[]{14, 0, 0, 0};
 		gbl_eastPanel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_eastPanel.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_eastPanel.rowWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
 		eastPanel.setLayout(gbl_eastPanel);
 		
-		JLabel lblEast = new JLabel("Dine Projekter");
+		JLabel lblEast = new JLabel("Vælg projekt du");
 		GridBagConstraints gbc_lblEast = new GridBagConstraints();
 		gbc_lblEast.insets = new Insets(0, 0, 5, 0);
 		gbc_lblEast.anchor = GridBagConstraints.NORTHWEST;
@@ -169,11 +180,18 @@ public class MainMenu extends JFrame {
 		gbc_lblEast.gridy = 0;
 		eastPanel.add(lblEast, gbc_lblEast);
 		
+		lblEast2 = new JLabel("ønsker at tidsregistrere:");
+		GridBagConstraints gbc_lblEast2 = new GridBagConstraints();
+		gbc_lblEast2.insets = new Insets(0, 0, 5, 0);
+		gbc_lblEast2.gridx = 0;
+		gbc_lblEast2.gridy = 1;
+		eastPanel.add(lblEast2, gbc_lblEast2);
+		
 		listProjects = new JList<>();
 		GridBagConstraints gbc_list = new GridBagConstraints();
 		gbc_list.fill = GridBagConstraints.BOTH;
 		gbc_list.gridx = 0;
-		gbc_list.gridy = 1;
+		gbc_list.gridy = 2;
 		eastPanel.add(listProjects, gbc_list);
 		
 		listProjects.setCellRenderer(new ProjectListCellRenderer());
@@ -202,6 +220,29 @@ public class MainMenu extends JFrame {
 		centerPanel.add(table);
 	}
 	
+	private void loginToTimeRegistration() {
+		String employeeNumber = tfEmployeeNumber.getText();
+		
+		try {
+			getTimeRegistrationController().makeNewTimeRegistration();
+			Employee currentEmployee = getTimeRegistrationController().findEmployee(employeeNumber);
+			if (currentEmployee == null) {
+			    System.out.println("No employee found with number: " + employeeNumber);
+			    return;
+			}
+			getTimeRegistrationController().assignEmployeeToTimeRegistration(currentEmployee);
+			if (getTimeRegistrationController() == null) {
+			    System.out.println("TimeRegistrationController is not initialized.");
+			    return;
+			}
+
+			
+			System.out.println(currentEmployee);
+		} catch(Exception e) {
+			System.out.println("Fejl");
+		}
+	}
+
 	public void showProjects(List<Project> projects) {
         DefaultListModel<Project> model = new DefaultListModel<>();
         for (Project project : projects) {
@@ -209,6 +250,10 @@ public class MainMenu extends JFrame {
         }
         listProjects.setModel(model);
     }
+	
+	public TimeRegistrationController getTimeRegistrationController() {
+		return this.timeRegistrationController;
+	}
 
 
 }

@@ -5,7 +5,7 @@ import model.Project;
 import model.TimeRegistration;
 
 public interface TimeRegistrationControllerIF {
-	public TimeRegistration makeNewTimeRegsistration();
+	public TimeRegistration makeNewTimeRegistration();
 	public Employee findEmployee(String employeeNumber);
 	public void assignEmployeeToTimeRegistration(Employee employee);
 	public Project findProject(String projectNumber, String employeeNumber);

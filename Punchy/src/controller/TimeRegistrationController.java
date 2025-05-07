@@ -29,7 +29,7 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 	}
 
 	@Override
-	public TimeRegistration makeNewTimeRegsistration() {
+	public TimeRegistration makeNewTimeRegistration() {
 		//Værdier er hardcoded!!!
 		currentTimeRegistration = new TimeRegistration("7", LocalDate.now(), "TidsRegistrering");
 		
