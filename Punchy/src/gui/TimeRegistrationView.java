@@ -20,6 +20,8 @@ import java.awt.Dimension;
 import javax.swing.JSplitPane;
 import javax.swing.border.MatteBorder;
 
+import model.Project;
+
 public class TimeRegistrationView extends JDialog {
 
 	private static final long serialVersionUID = 1L;
@@ -50,6 +52,15 @@ public class TimeRegistrationView extends JDialog {
 		}
 	}
 
+	public TimeRegistrationView(Project project) {
+	    this();
+	    // Example: set project name in the north panel
+	    JLabel lblProjectName = new JLabel(project.getProjectName());
+	    northPanel.removeAll();
+	    northPanel.add(lblProjectName);
+	}
+
+	
 	/**
 	 * Create the dialog.
 	 */

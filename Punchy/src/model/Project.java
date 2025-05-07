@@ -15,6 +15,11 @@ public class Project {
 		this.description = description;
 		
 	}
+	
+	//Constructor til tests
+    public Project(String projectName) {
+        this.projectName = projectName;
+    }
 
 	public String getDescription() {
 		return description;

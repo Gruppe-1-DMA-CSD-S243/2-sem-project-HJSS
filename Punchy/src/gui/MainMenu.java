@@ -25,7 +25,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-public class GuiJFrame extends JFrame {
+public class MainMenu extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -52,7 +52,7 @@ public class GuiJFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					GuiJFrame frame = new GuiJFrame();
+					MainMenu frame = new MainMenu();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -65,7 +65,7 @@ public class GuiJFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public GuiJFrame() {
+	public MainMenu() {
 		initGUI();
 	}
 	private void initGUI() {
@@ -176,6 +176,22 @@ public class GuiJFrame extends JFrame {
 		gbc_list.gridy = 1;
 		eastPanel.add(listProjects, gbc_list);
 		
+		listProjects.setCellRenderer(new ProjectListCellRenderer());
+
+		
+		listProjects.addListSelectionListener(e -> {
+		    if (!e.getValueIsAdjusting()) {
+		        Project selectedProject = listProjects.getSelectedValue();
+		        if (selectedProject != null) {
+		            TimeRegistrationView registrationView = new TimeRegistrationView(selectedProject);
+		            // Optionally, pass the selectedProject to TimeRegistrationView if needed
+		            registrationView.setModal(true);  // Makes the dialog block until dismissed
+		            registrationView.setVisible(true);
+		        }
+		    }
+		});
+
+		
 		centerPanel = new JPanel();
 		contentPane.add(centerPanel, BorderLayout.CENTER);
 		
@@ -186,7 +202,13 @@ public class GuiJFrame extends JFrame {
 		centerPanel.add(table);
 	}
 	
-	
+	public void showProjects(List<Project> projects) {
+        DefaultListModel<Project> model = new DefaultListModel<>();
+        for (Project project : projects) {
+            model.addElement(project); // assuming Project has getProjectName()
+        }
+        listProjects.setModel(model);
+    }
 
 
 }

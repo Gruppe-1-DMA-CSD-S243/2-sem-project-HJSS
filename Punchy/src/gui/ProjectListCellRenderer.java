@@ -8,7 +8,7 @@ import javax.swing.JList;
 
 import model.Project;
 
-public class TimeSheetListCellRenderer extends DefaultListCellRenderer {
+public class ProjectListCellRenderer extends DefaultListCellRenderer {
 	private static final long serialVersionUID = 1L;
 	private DefaultListCellRenderer dlcr = new DefaultListCellRenderer();
 	
@@ -16,7 +16,7 @@ public class TimeSheetListCellRenderer extends DefaultListCellRenderer {
 		Project currentProject = (Project) value;
 		String representation = "";
 		if(currentProject != null) {
-			representation = String.format(currentProject.getName());
+			representation = String.format(currentProject.getProjectName());
 		}
 		JLabel renderer = (JLabel) dlcr.getListCellRendererComponent(list, representation, index, isSelected, cellHasFocus);
 		return renderer;
