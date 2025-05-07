@@ -220,28 +220,29 @@ public class MainMenu extends JFrame {
 		centerPanel.add(table);
 	}
 	
-	private void loginToTimeRegistration() {
-		String employeeNumber = tfEmployeeNumber.getText();
-		
-		try {
-			getTimeRegistrationController().makeNewTimeRegistration();
-			Employee currentEmployee = getTimeRegistrationController().findEmployee(employeeNumber);
-			if (currentEmployee == null) {
-			    System.out.println("No employee found with number: " + employeeNumber);
-			    return;
-			}
-			getTimeRegistrationController().assignEmployeeToTimeRegistration(currentEmployee);
-			if (getTimeRegistrationController() == null) {
-			    System.out.println("TimeRegistrationController is not initialized.");
-			    return;
-			}
-
-			
-			System.out.println(currentEmployee);
-		} catch(Exception e) {
-			System.out.println("Fejl");
-		}
-	}
+//	Metode der ikke virker til at logge en medarbejder ind
+//	private void loginToTimeRegistration() {
+//		String employeeNumber = tfEmployeeNumber.getText();
+//		
+//		try {
+//			getTimeRegistrationController().makeNewTimeRegistration();
+//			Employee currentEmployee = getTimeRegistrationController().findEmployee(employeeNumber);
+//			if (currentEmployee == null) {
+//			    System.out.println("No employee found with number: " + employeeNumber);
+//			    return;
+//			}
+//			getTimeRegistrationController().assignEmployeeToTimeRegistration(currentEmployee);
+//			if (getTimeRegistrationController() == null) {
+//			    System.out.println("TimeRegistrationController is not initialized.");
+//			    return;
+//			}
+//
+//			
+//			System.out.println(currentEmployee);
+//		} catch(Exception e) {
+//			System.out.println("Fejl");
+//		}
+//	}
 
 	public void showProjects(List<Project> projects) {
         DefaultListModel<Project> model = new DefaultListModel<>();
