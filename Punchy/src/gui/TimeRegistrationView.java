@@ -12,6 +12,8 @@ import javax.swing.JTextField;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.GridLayout;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
@@ -142,6 +144,23 @@ public class TimeRegistrationView extends JDialog {
 					gbc_tfAutomaticDescription.gridy = 3;
 					centerWestPanel.add(tfAutomaticDescription, gbc_tfAutomaticDescription);
 					tfAutomaticDescription.setColumns(15);
+					
+					// Add FocusListener to clear text on focus
+					tfAutomaticDescription.addFocusListener(new FocusAdapter() {
+					    @Override
+					    public void focusGained(FocusEvent e) {
+					        if (tfAutomaticDescription.getText().equals("Indtast Beskrivelse")) {
+					            tfAutomaticDescription.setText("");
+					        }
+					    }
+
+					    @Override
+					    public void focusLost(FocusEvent e) {
+					        if (tfAutomaticDescription.getText().isEmpty()) {
+					            tfAutomaticDescription.setText("Indtast Beskrivelse");
+					        }
+					    }
+					});
 				}
 				{
 					JButton btnStartEndRegistration = new JButton("Stempel Ind");
@@ -149,7 +168,7 @@ public class TimeRegistrationView extends JDialog {
 					gbc_btnStartEndRegistration.gridx = 0;
 					gbc_btnStartEndRegistration.gridy = 5;
 					centerWestPanel.add(btnStartEndRegistration, gbc_btnStartEndRegistration);
-					btnStartEndRegistration.setPreferredSize(new Dimension(100, 50));
+					btnStartEndRegistration.setPreferredSize(new Dimension(160, 25));
 				}
 			}
 			{
@@ -181,6 +200,23 @@ public class TimeRegistrationView extends JDialog {
 					gbc_tfManualStartTime.gridy = 1;
 					centerEastPanel.add(tfManualStartTime, gbc_tfManualStartTime);
 					tfManualStartTime.setColumns(15);
+					
+					// Add FocusListener to clear text on focus
+					tfManualStartTime.addFocusListener(new FocusAdapter() {
+					    @Override
+					    public void focusGained(FocusEvent e) {
+					        if (tfManualStartTime.getText().equals("Indtast Starttid")) {
+					            tfManualStartTime.setText("");
+					        }
+					    }
+
+					    @Override
+					    public void focusLost(FocusEvent e) {
+					        if (tfManualStartTime.getText().isEmpty()) {
+					            tfManualStartTime.setText("Indtast Starttid");
+					        }
+					    }
+					});
 				}
 				{
 					tfManualEndTime = new JTextField();
@@ -191,6 +227,23 @@ public class TimeRegistrationView extends JDialog {
 					gbc_tfManualEndTime.gridy = 2;
 					centerEastPanel.add(tfManualEndTime, gbc_tfManualEndTime);
 					tfManualEndTime.setColumns(15);
+					
+					// Add FocusListener to clear text on focus
+					tfManualEndTime.addFocusListener(new FocusAdapter() {
+					    @Override
+					    public void focusGained(FocusEvent e) {
+					        if (tfManualEndTime.getText().equals("Indtast Sluttid")) {
+					            tfManualEndTime.setText("");
+					        }
+					    }
+
+					    @Override
+					    public void focusLost(FocusEvent e) {
+					        if (tfManualEndTime.getText().isEmpty()) {
+					            tfManualEndTime.setText("Indtast Sluttid");
+					        }
+					    }
+					});
 				}
 				{
 					tfManualDescription = new JTextField();
@@ -201,6 +254,23 @@ public class TimeRegistrationView extends JDialog {
 					gbc_tfManualDescription.gridy = 3;
 					centerEastPanel.add(tfManualDescription, gbc_tfManualDescription);
 					tfManualDescription.setColumns(15);
+					
+					// Add FocusListener to clear text on focus
+					tfManualDescription.addFocusListener(new FocusAdapter() {
+					    @Override
+					    public void focusGained(FocusEvent e) {
+					        if (tfManualDescription.getText().equals("Indtast Beskrivelse")) {
+					            tfManualDescription.setText("");
+					        }
+					    }
+
+					    @Override
+					    public void focusLost(FocusEvent e) {
+					        if (tfManualDescription.getText().isEmpty()) {
+					            tfManualDescription.setText("Indtast Beskrivelse");
+					        }
+					    }
+					});
 				}
 				{
 					JButton btnSubmitRegistration = new JButton("Indberet Tidsregistrering");
@@ -208,6 +278,7 @@ public class TimeRegistrationView extends JDialog {
 					gbc_btnSubmitRegistration.gridx = 0;
 					gbc_btnSubmitRegistration.gridy = 5;
 					centerEastPanel.add(btnSubmitRegistration, gbc_btnSubmitRegistration);
+					btnSubmitRegistration.setPreferredSize(new Dimension(160, 25));
 				}
 			}
 		}
@@ -228,5 +299,12 @@ public class TimeRegistrationView extends JDialog {
 			}
 		}
 	}
+	
+	private void hideFrame() {
+		this.setVisible(false);
+		this.dispose();
+	}
+	
+	
 
 }
