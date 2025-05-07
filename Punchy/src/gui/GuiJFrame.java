@@ -17,6 +17,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JTextField;
@@ -37,6 +38,11 @@ public class GuiJFrame extends JFrame {
 	private JButton btnReport;
 	private JTable table;
 	private JList<Project> listProjects;
+	private JPanel centerPanel;
+	private JPanel eastPanel;
+	private JPanel westPanel;
+	private JPanel southPanel;
+	private JPanel northPanel;
 	
 
 	/**
@@ -53,6 +59,7 @@ public class GuiJFrame extends JFrame {
 				}
 			}
 		});
+		
 	}
 
 	/**
@@ -71,16 +78,16 @@ public class GuiJFrame extends JFrame {
 				setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
-		JPanel northPanel = new JPanel();
+		northPanel = new JPanel();
 		contentPane.add(northPanel, BorderLayout.NORTH);
 		
 		lblNorth = new JLabel("Velkommen Til Hovedmenuen");
 		northPanel.add(lblNorth);
 		
-		JPanel southPanel = new JPanel();
+		southPanel = new JPanel();
 		contentPane.add(southPanel, BorderLayout.SOUTH);
 		
-		JPanel westPanel = new JPanel();
+		westPanel = new JPanel();
 		contentPane.add(westPanel, BorderLayout.WEST);
 		GridBagLayout gbl_westPanel = new GridBagLayout();
 		gbl_westPanel.columnWidths = new int[]{89, 0};
@@ -90,6 +97,7 @@ public class GuiJFrame extends JFrame {
 		westPanel.setLayout(gbl_westPanel);
 		
 		btnLogin = new JButton("Login");
+		btnLogin.setEnabled(false);
 		GridBagConstraints gbc_btnLogin = new GridBagConstraints();
 		gbc_btnLogin.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnLogin.insets = new Insets(0, 0, 5, 0);
@@ -109,6 +117,7 @@ public class GuiJFrame extends JFrame {
 		textField.setColumns(10);
 		
 		btnAbsence = new JButton("Registrer fravær");
+		btnAbsence.setEnabled(false);
 		GridBagConstraints gbc_btnAbsence = new GridBagConstraints();
 		gbc_btnAbsence.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnAbsence.insets = new Insets(0, 0, 5, 0);
@@ -117,6 +126,7 @@ public class GuiJFrame extends JFrame {
 		westPanel.add(btnAbsence, gbc_btnAbsence);
 		
 		btnDriving = new JButton("Registrer kørsel");
+		btnDriving.setEnabled(false);
 		GridBagConstraints gbc_btnDriving = new GridBagConstraints();
 		gbc_btnDriving.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnDriving.insets = new Insets(0, 0, 5, 0);
@@ -125,6 +135,7 @@ public class GuiJFrame extends JFrame {
 		westPanel.add(btnDriving, gbc_btnDriving);
 		
 		btnReceipt = new JButton("Registrer kvittering");
+		btnReceipt.setEnabled(false);
 		GridBagConstraints gbc_btnReceipt = new GridBagConstraints();
 		gbc_btnReceipt.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnReceipt.insets = new Insets(0, 0, 5, 0);
@@ -133,6 +144,7 @@ public class GuiJFrame extends JFrame {
 		westPanel.add(btnReceipt, gbc_btnReceipt);
 		
 		btnReport = new JButton("Indberet registrering");
+		btnReport.setEnabled(false);
 		GridBagConstraints gbc_btnReport = new GridBagConstraints();
 		gbc_btnReport.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnReport.insets = new Insets(0, 0, 5, 0);
@@ -140,7 +152,7 @@ public class GuiJFrame extends JFrame {
 		gbc_btnReport.gridy = 5;
 		westPanel.add(btnReport, gbc_btnReport);
 		
-		JPanel eastPanel = new JPanel();
+		eastPanel = new JPanel();
 		contentPane.add(eastPanel, BorderLayout.EAST);
 		GridBagLayout gbl_eastPanel = new GridBagLayout();
 		gbl_eastPanel.columnWidths = new int[]{70, 0};
@@ -164,7 +176,7 @@ public class GuiJFrame extends JFrame {
 		gbc_list.gridy = 1;
 		eastPanel.add(listProjects, gbc_list);
 		
-		JPanel centerPanel = new JPanel();
+		centerPanel = new JPanel();
 		contentPane.add(centerPanel, BorderLayout.CENTER);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -174,13 +186,7 @@ public class GuiJFrame extends JFrame {
 		centerPanel.add(table);
 	}
 	
-	private void showProjects(List<Project> projects) {
-	    DefaultListModel<Project> model = new DefaultListModel<>();
-	    for (Project project : projects) {
-	        model.addElement(project.getName()); // assuming Project has getProjectName()
-	    }
-	    listProjects.setModel(model);
-	}
+	
 
 
 }
