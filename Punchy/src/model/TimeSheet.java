@@ -2,6 +2,7 @@ package model;
 
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -14,7 +15,7 @@ public class TimeSheet {
 	private boolean isApproved;
 	
 	private Employee employee;
-	private List<TimeRegistration> timeRegistrations;
+	private List<TimeRegistration> timeRegistrations = new ArrayList<>();
 	
 	public TimeSheet(String timeSheetNumber, String weekNumber, LocalDate startDateWeek, 
 			LocalDate endDateWeek, boolean isSubmitted, boolean isApproved, Employee employee) {

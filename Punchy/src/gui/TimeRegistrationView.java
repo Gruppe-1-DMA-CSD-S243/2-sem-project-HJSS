@@ -116,12 +116,7 @@ public class TimeRegistrationView extends JFrame {
 	}
 	private void initGUI() {
 		setTitle("Ny tidsregistrering");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int screenWidth = screenSize.width;
-		int screenHeight = screenSize.height;
-		setBounds(screenWidth / 4, screenHeight / 4, screenWidth / 2, screenHeight / 2);
-		//setBounds(100, 100, 450, 300);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		

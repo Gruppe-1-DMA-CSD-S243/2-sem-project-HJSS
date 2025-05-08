@@ -13,26 +13,35 @@ import model.TimeRegistration;
 public class TimeSheetTableCellRenderer implements TableCellRenderer {
 	
 	private static final TableCellRenderer RENDERER = new DefaultTableCellRenderer();
-	private List<TimeRegistration> registrations;
-	private static final int[] columnNumbers = {
-			0, 1, 2, 3, 4, 5, 6, 7, 8
-	};
 	
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 			int row, int column) {
 		
+		if (value instanceof TimeRegistration) {
+			
+			if (((TimeRegistration) value).getStartTime().getHour() == row) {
+				value = ((TimeRegistration) value).getProject().getProjectName();
+			}
+			else if (((TimeRegistration) value).getStartTime().getHour() == row - 1) {
+				value = ((TimeRegistration) value).getDescription();
+			}
+			else {
+				value = "";
+			}
+		}
+		
 		Component c = RENDERER.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 		
 		if (column > 0) {
-			int dayOfWeek = columnNumbers[column];
-			for (TimeRegistration registration : registrations) {
-				if (registration.getDate().getDayOfWeek().getValue() == dayOfWeek && 
-						row >= registration.getStartTime().getHour() && 
-						row < registration.getEndTime().getHour()) {
-					c.setBackground(Color.GREEN);
-				}
+			Object result = table.getModel().getValueAt(row, column);
+			Color color = null;
+			
+			if (result instanceof TimeRegistration) {
+				color = Color.green;
 			}
+			
+			c.setBackground(color);
 		}
 		
 		return c;

@@ -40,7 +40,12 @@ public class TimeRegistration {
 		this.employee = employee;
 	}
 
-
+	//Temp constructor!!!
+	public TimeRegistration(LocalDate date, LocalDateTime startTime, LocalDateTime endTime) {
+		this.date = date;
+		this.startTime = startTime;
+		this.endTime = endTime;
+	}
 
 	public LocalDateTime getStartTime() {
 		return startTime;
