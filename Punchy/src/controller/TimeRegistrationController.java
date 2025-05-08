@@ -33,7 +33,7 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 	}
 
 	@Override
-	public TimeRegistration makeNewTimeRegsistration() {
+	public TimeRegistration makeNewTimeRegistration() {
 		//Værdier er hardcoded!!!
 //		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 //		LocalDate date = LocalDate.parse("2024-05-13", formatter);
