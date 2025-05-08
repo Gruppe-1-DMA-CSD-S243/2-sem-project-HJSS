@@ -10,6 +10,10 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import javax.swing.UIManager;
+
+import com.formdev.flatlaf.FlatLightLaf;
+
 import controller.TimeRegistrationController;
 import controller.*;
 import db.EmployeeDB;
@@ -17,6 +21,8 @@ import db.ProjectDB;
 import db.TimeRegistrationDB;
 import db.TimeRegistrationDBIF;
 import gui.MainMenu;
+import gui.TimeRegistrationView;
+import gui.TimeRegistrationViewDialogue;
 import db.*;
 import model.Employee;
 import model.Project;
@@ -27,7 +33,13 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-//		TimeRegistrationController trc = new TimeRegistrationController();
+		try {
+		    UIManager.setLookAndFeel( new FlatLightLaf() );
+		} catch( Exception ex ) {
+		    System.err.println( "Failed to initialize LaF" );
+		}
+		
+		TimeRegistrationController trc = new TimeRegistrationController();
 //		
 //		trc.makeNewTimeRegsistration();
 //		
@@ -72,13 +84,23 @@ public class Main {
         projects.add(p2);
         projects.add(p3);
         
+        projects = trc.findProjectsByEmployee(edb.findEmployee("23456"));
+        
+        System.out.println(projects.toString());
+        
         Employee e1 = new Employee("1234");
         List<Employee> employees = new ArrayList<>();
         employees.add(e1);
-
-        MainMenu frame = new MainMenu();
-        frame.showProjects(projects);
-        frame.setVisible(true);
+        
+        System.out.print(edb.findEmployee("12345").toString());
+        
+//        MainMenu frame = new MainMenu();
+//        frame.setVisible(true);
+//        frame.showProjects(projects);
+        
+        TimeRegistrationView trView = new TimeRegistrationView(edb.findEmployee("12345"));
+        trView.setVisible(true);
+        //trView.displayProjects(projects);
 		
 	}
 

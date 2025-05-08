@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.List;
+
 import model.Employee;
 import model.Project;
 import model.TimeRegistration;
@@ -14,4 +16,6 @@ public interface TimeRegistrationControllerIF {
 	public void clockOut();
 	public void setDescription(String description);
 	public boolean submitRegistration(TimeRegistration newTimeRegistration);
+	
+	public List<Project> findProjectsByEmployee(Employee employee);
 }

@@ -2,6 +2,7 @@ package controller;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import db.TimeRegistrationDB;
 import db.TimeRegistrationDBIF;
@@ -12,9 +13,6 @@ import model.TimeRegistration;
 public class TimeRegistrationController implements TimeRegistrationControllerIF {
 	private TimeRegistration currentTimeRegistration;
 	
-	private Employee currentFoundEmployee;
-	private Project currentFoundProject;
-	
 	private ProjectControllerIF projectController;
 	private EmployeeControllerIF employeeController;
 	private TimeRegistrationDBIF timeRegistrationDB;
@@ -24,22 +22,21 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 		employeeController = new EmployeeController();
 		timeRegistrationDB = new TimeRegistrationDB();
 		
-		//Temp:
-		currentFoundEmployee = employeeController.findEmployee("100000002");
 	}
 
 	@Override
 	public TimeRegistration makeNewTimeRegistration() {
 		//Værdier er hardcoded!!!
-		currentTimeRegistration = new TimeRegistration("7", LocalDate.now(), "TidsRegistrering");
+		int randomNumber = (int)(Math.random() * 1001);
+		String registrationNumber = "" + randomNumber;
+		currentTimeRegistration = new TimeRegistration(registrationNumber, LocalDate.now(), "TidsRegistrering");
 		
 		return currentTimeRegistration;
 	}
 
 	@Override
 	public Employee findEmployee(String employeeNumber) {
-		currentFoundEmployee = employeeController.findEmployee(employeeNumber);
-		return currentFoundEmployee;
+		return employeeController.findEmployee(employeeNumber);
 	}
 
 	@Override
@@ -49,8 +46,7 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 
 	@Override
 	public Project findProject(String projectNumber, String employeeNumber) {
-		currentFoundProject = projectController.findProject(projectNumber, employeeNumber);
-		return currentFoundProject;
+		return projectController.findProject(projectNumber, employeeNumber);
 	}
 
 	@Override
@@ -60,7 +56,7 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 
 	@Override
 	public void clockIn() {
-		if (timeRegistrationDB.findActiveTimeRegistration(currentFoundEmployee) == null) {
+		if (timeRegistrationDB.findActiveTimeRegistration(currentTimeRegistration.getEmployee()) == null) {
 			currentTimeRegistration.setStartTime(LocalDateTime.now());
 			
 			timeRegistrationDB.insertTimeRegistration(currentTimeRegistration);
@@ -72,7 +68,7 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 
 	@Override
 	public void clockOut() {
-		currentTimeRegistration = timeRegistrationDB.findActiveTimeRegistration(currentFoundEmployee);
+		currentTimeRegistration = timeRegistrationDB.findActiveTimeRegistration(currentTimeRegistration.getEmployee());
 		
 		currentTimeRegistration.setEndTime(LocalDateTime.now());
 	}
@@ -85,6 +81,11 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 	@Override
 	public boolean submitRegistration(TimeRegistration newTimeRegistration) {
 		return timeRegistrationDB.updateTimeRegistration(newTimeRegistration);
+	}
+	
+	@Override 
+	public List<Project> findProjectsByEmployee(Employee employee) {
+		return projectController.findProjectsByEmployee(employee);
 	}
 
 	public TimeRegistration getCurrentTimeRegistration() {

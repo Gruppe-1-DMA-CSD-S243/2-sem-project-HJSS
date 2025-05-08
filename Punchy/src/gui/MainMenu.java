@@ -36,8 +36,6 @@ public class MainMenu extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JLabel lblNorth;
-	private JButton btnLogin;
-	private JTextField tfEmployeeNumber;
 	private JButton btnAbsence;
 	private JButton btnDriving;
 	private JButton btnReceipt;
@@ -77,7 +75,7 @@ public class MainMenu extends JFrame {
 		timeRegistrationController = new TimeRegistrationController();
 	}
 	private void initGUI() {
-		setTitle("ECONTA CONCULTING GROUP - PUNCHY");
+		setTitle("ECONTA CONSULTING GROUP - PUNCHY");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -103,29 +101,6 @@ public class MainMenu extends JFrame {
 		gbl_westPanel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gbl_westPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		westPanel.setLayout(gbl_westPanel);
-		
-		btnLogin = new JButton("Login");
-//		btnLogin.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				loginToTimeRegistration();
-//			}
-//		});
-		GridBagConstraints gbc_btnLogin = new GridBagConstraints();
-		gbc_btnLogin.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnLogin.insets = new Insets(0, 0, 5, 0);
-		gbc_btnLogin.anchor = GridBagConstraints.NORTH;
-		gbc_btnLogin.gridx = 0;
-		gbc_btnLogin.gridy = 0;
-		westPanel.add(btnLogin, gbc_btnLogin);
-		
-		tfEmployeeNumber = new JTextField();
-		GridBagConstraints gbc_tfEmployeeNumber = new GridBagConstraints();
-		gbc_tfEmployeeNumber.insets = new Insets(0, 0, 5, 0);
-		gbc_tfEmployeeNumber.fill = GridBagConstraints.HORIZONTAL;
-		gbc_tfEmployeeNumber.gridx = 0;
-		gbc_tfEmployeeNumber.gridy = 1;
-		westPanel.add(tfEmployeeNumber, gbc_tfEmployeeNumber);
-		tfEmployeeNumber.setColumns(10);
 		
 		btnAbsence = new JButton("Registrer fravær");
 		btnAbsence.setEnabled(false);
@@ -201,7 +176,7 @@ public class MainMenu extends JFrame {
 		    if (!e.getValueIsAdjusting()) {
 		        Project selectedProject = listProjects.getSelectedValue();
 		        if (selectedProject != null) {
-		            TimeRegistrationView registrationView = new TimeRegistrationView(selectedProject);
+		            TimeRegistrationViewDialogue registrationView = new TimeRegistrationViewDialogue(null);
 		            // Optionally, pass the selectedProject to TimeRegistrationView if needed
 		            registrationView.setModal(true);  // Makes the dialog block until dismissed
 		            registrationView.setVisible(true);
@@ -247,7 +222,7 @@ public class MainMenu extends JFrame {
 	public void showProjects(List<Project> projects) {
         DefaultListModel<Project> model = new DefaultListModel<>();
         for (Project project : projects) {
-            model.addElement(project); // assuming Project has getProjectName()
+            model.addElement(project); 
         }
         listProjects.setModel(model);
     }
