@@ -7,4 +7,5 @@ import model.TimeSheet;
 
 public interface TimeSheetDBIF {
 	public TimeSheet findTimeSheetByEmployeeAndDate(Employee employee, LocalDate date);
+	public boolean insertTimeSheet(TimeSheet timeSheet);
 }

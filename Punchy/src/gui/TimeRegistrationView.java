@@ -101,8 +101,14 @@ public class TimeRegistrationView extends JFrame {
 		initGUI();
 		
 		timeRegistrationController = new TimeRegistrationController();
-		timeRegistrationController.makeNewTimeRegistration();
-		timeRegistrationController.assignEmployeeToTimeRegistration(employee);
+		if (timeRegistrationController.getTimeRegistrationDB().findActiveTimeRegistration(employee) != null) {
+			timeRegistrationController.setCurrentTimeRegistration(timeRegistrationController.findActiveTimeRegistration(employee));
+			setAssignedProjectText(timeRegistrationController.getCurrentTimeRegistration().getProject());
+		}
+		else {
+			timeRegistrationController.makeNewTimeRegistration();
+			timeRegistrationController.assignEmployeeToTimeRegistration(employee);
+		}
 		displayProjects(timeRegistrationController.findProjectsByEmployee(employee));
 		setDateText(timeRegistrationController.getCurrentTimeRegistration().getDate());
 		setStartTimeText(timeRegistrationController.getCurrentTimeRegistration().getStartTime());
@@ -195,6 +201,11 @@ public class TimeRegistrationView extends JFrame {
 		gbc_btnAddDescription.insets = new Insets(0, 0, 0, 5);
 		gbc_btnAddDescription.gridx = 0;
 		gbc_btnAddDescription.gridy = 3;
+		btnAddDescription.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				addDescriptionToTimeRegistration();
+			}
+		});
 		centerWestPanel.add(btnAddDescription, gbc_btnAddDescription);
 		
 		GridBagConstraints gbc_lblDescriptionError = new GridBagConstraints();
@@ -313,6 +324,11 @@ public class TimeRegistrationView extends JFrame {
 		flowLayout.setAlignment(FlowLayout.RIGHT);
 		
 		contentPane.add(buttonPanel, BorderLayout.SOUTH);
+		btnSubmit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				submitTimeRegistration();
+			}
+		});
 		
 		buttonPanel.add(btnSubmit);
 		btnCancel.addActionListener(new ActionListener() {
@@ -340,6 +356,16 @@ public class TimeRegistrationView extends JFrame {
 		}
 		else {
 			lblProjectError.setText("Du skal vælge et projekt at tilføje");
+		}
+	}
+	
+	private void addDescriptionToTimeRegistration() {
+		timeRegistrationController.setDescription(txtDescription.getText());
+	}
+	
+	private void setAssignedProjectText(Project project) {
+		if (project != null) {
+			txtAssignedProject.setText(project.getProjectName());
 		}
 	}
 	
@@ -379,18 +405,20 @@ public class TimeRegistrationView extends JFrame {
 	}
 	
 	private void clockOut() {
-		if (timeRegistrationController.getCurrentTimeRegistration().getStartTime() == null) {
-			lblClockOutError.setText("Du skal først stemple ind");
-		}
-		else if (timeRegistrationController.getCurrentTimeRegistration().getEndTime() != null) {
-			lblClockOutError.setText("Du er allerede stemplet ud");
-		}
-		else if (timeRegistrationController.getCurrentTimeRegistration().getStartTime() != null && 
-				timeRegistrationController.getCurrentTimeRegistration().getEndTime() == null) {
+		//TODO: DEN HER METODE ER LORT!!!!
+		if (timeRegistrationController.getCurrentTimeRegistration().getStartTime() != null && 
+			timeRegistrationController.getCurrentTimeRegistration().getEndTime() == null) {
 			timeRegistrationController.clockOut();
 			setEndTimeText(timeRegistrationController.getCurrentTimeRegistration().getEndTime());
 			lblClockOutError.setText("");
 		}
+		else {
+			lblClockOutError.setText("Du skal først stemple ind");
+		}
+	}
+	
+	private void submitTimeRegistration() {
+		timeRegistrationController.submitRegistration(timeRegistrationController.getCurrentTimeRegistration());
 	}
 	
 	private void cancelTimeRegistrationView() {

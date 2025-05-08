@@ -35,7 +35,7 @@ public class Main {
 		    System.err.println( "Failed to initialize LaF" );
 		}
 		
-//		TimeRegistrationController trc = new TimeRegistrationController();
+		//TimeRegistrationController trc = new TimeRegistrationController();
 		
 //		trc.makeNewTimeRegsistration();
 //		
@@ -66,7 +66,7 @@ public class Main {
 		
 		
 		EmployeeDBIF edb = new EmployeeDB();
-//		TimeSheetDBIF tsdb = new TimeSheetDB();
+		TimeSheetDBIF tsdb = new TimeSheetDB();
 //		
 //		Employee employee = edb.findEmployee("12345");
 //		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -76,9 +76,15 @@ public class Main {
 //		
 //		System.out.println(ts.toString());
 		
+		//TimeSheet ts = tsdb.findTimeSheetByEmployeeAndDate(edb.findEmployee("12345"), );
+		
+		int week = Calendar.getInstance().get(Calendar.WEEK_OF_YEAR);
+		System.out.println("" + week);
 		
 		TimeRegistrationView frame = new TimeRegistrationView(edb.findEmployee("12345"));
 		frame.setVisible(true);
+		
+		
 		
 	}
 

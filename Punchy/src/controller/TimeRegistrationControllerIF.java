@@ -1,10 +1,12 @@
 package controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import model.Employee;
 import model.Project;
 import model.TimeRegistration;
+import model.TimeSheet;
 
 public interface TimeRegistrationControllerIF {
 	public TimeRegistration makeNewTimeRegistration();
@@ -18,4 +20,6 @@ public interface TimeRegistrationControllerIF {
 	public boolean submitRegistration(TimeRegistration newTimeRegistration);
 	
 	public List<Project> findProjectsByEmployee(Employee employee);
+	public TimeSheet findTimeSheetByEmployeeAndDate(Employee employee, LocalDate date);
+	public TimeRegistration findActiveTimeRegistration(Employee employee);
 }
