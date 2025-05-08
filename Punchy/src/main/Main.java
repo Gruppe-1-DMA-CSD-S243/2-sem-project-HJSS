@@ -8,6 +8,10 @@ import java.time.temporal.WeekFields;
 import java.util.Calendar;
 import java.util.Locale;
 
+import javax.swing.UIManager;
+
+import com.formdev.flatlaf.FlatLightLaf;
+
 import controller.TimeRegistrationController;
 import controller.*;
 import db.EmployeeDB;
@@ -24,6 +28,12 @@ import model.TimeSheet;
 public class Main {
 
 	public static void main(String[] args) {
+		
+		try {
+		    UIManager.setLookAndFeel( new FlatLightLaf() );
+		} catch( Exception ex ) {
+		    System.err.println( "Failed to initialize LaF" );
+		}
 		
 //		TimeRegistrationController trc = new TimeRegistrationController();
 		
