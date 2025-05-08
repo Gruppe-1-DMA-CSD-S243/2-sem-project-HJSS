@@ -12,10 +12,12 @@ import model.Employee;
 import model.Project;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.util.List;
 
 import javax.swing.JList;
@@ -40,7 +42,6 @@ public class TimeRegistrationView extends JFrame {
 	private final JPanel contentPanel = new JPanel();
 	private final JPanel northPanel = new JPanel();
 	private final JPanel centerPanel = new JPanel();
-	private final JPanel centerNorthPanel = new JPanel();
 	private final JPanel centerWestPanel = new JPanel();
 	private final JPanel centerEastPanel = new JPanel();
 	private final JPanel buttonPanel = new JPanel();
@@ -114,8 +115,13 @@ public class TimeRegistrationView extends JFrame {
 		setStartTimeText(timeRegistrationController.getCurrentTimeRegistration().getStartTime());
 	}
 	private void initGUI() {
+		setTitle("Ny tidsregistrering");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int screenWidth = screenSize.width;
+		int screenHeight = screenSize.height;
+		setBounds(screenWidth / 4, screenHeight / 4, screenWidth / 2, screenHeight / 2);
+		//setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
@@ -132,8 +138,7 @@ public class TimeRegistrationView extends JFrame {
 		contentPanel.add(centerPanel, BorderLayout.CENTER);
 		centerPanel.setLayout(new BorderLayout(0, 0));
 		
-		centerPanel.add(centerNorthPanel, BorderLayout.NORTH);
-		
+		centerWestPanel.setSize(new Dimension(this.getWidth() / 4, 0));
 		centerPanel.add(centerWestPanel, BorderLayout.WEST);
 		GridBagLayout gbl_centerWestPanel = new GridBagLayout();
 		gbl_centerWestPanel.columnWidths = new int[]{0, 0, 0};
@@ -213,6 +218,7 @@ public class TimeRegistrationView extends JFrame {
 		gbc_lblDescriptionError.gridy = 3;
 		centerWestPanel.add(lblDescriptionError, gbc_lblDescriptionError);
 		
+		centerEastPanel.setPreferredSize(new Dimension(this.getWidth() / 4, 0));
 		centerPanel.add(centerEastPanel, BorderLayout.EAST);
 		GridBagLayout gbl_centerEastPanel = new GridBagLayout();
 		gbl_centerEastPanel.columnWidths = new int[]{0, 0};
@@ -231,14 +237,17 @@ public class TimeRegistrationView extends JFrame {
 		gbc_listProjects.fill = GridBagConstraints.BOTH;
 		gbc_listProjects.gridx = 0;
 		gbc_listProjects.gridy = 1;
+		listProjects.setBorder(new EmptyBorder(0, 0, 10, 0));
 		listProjects.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		centerEastPanel.add(listProjects, gbc_listProjects);
 		
 		listProjects.setCellRenderer(new ProjectListCellRenderer());
+		centerCenterPanel.setBorder(new EmptyBorder(0, 0, 0, 10));
 		
+		centerCenterPanel.setPreferredSize(new Dimension(this.getWidth() / 2, 0));
 		centerPanel.add(centerCenterPanel, BorderLayout.CENTER);
 		GridBagLayout gbl_centerCenterPanel = new GridBagLayout();
-		gbl_centerCenterPanel.columnWidths = new int[]{0, 0, 0};
+		gbl_centerCenterPanel.columnWidths = new int[]{0, 17, 0};
 		gbl_centerCenterPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
 		gbl_centerCenterPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		gbl_centerCenterPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
@@ -351,7 +360,7 @@ public class TimeRegistrationView extends JFrame {
 	private void addSelectedProjectToTimeRegistration() {
 		if (selectedProject != null) {
 			timeRegistrationController.assignProjectToTimeRegistration(selectedProject);
-			txtAssignedProject.setText(timeRegistrationController.getCurrentTimeRegistration().getProject().getProjectName());
+			setAssignedProjectText(timeRegistrationController.getCurrentTimeRegistration().getProject());
 			lblProjectError.setText("");
 		}
 		else {
@@ -366,6 +375,7 @@ public class TimeRegistrationView extends JFrame {
 	private void setAssignedProjectText(Project project) {
 		if (project != null) {
 			txtAssignedProject.setText(project.getProjectName());
+			btnAddSelectedProject.setText("Skift projekt");
 		}
 	}
 	
@@ -405,7 +415,6 @@ public class TimeRegistrationView extends JFrame {
 	}
 	
 	private void clockOut() {
-		//TODO: DEN HER METODE ER LORT!!!!
 		if (timeRegistrationController.getCurrentTimeRegistration().getStartTime() != null && 
 			timeRegistrationController.getCurrentTimeRegistration().getEndTime() == null) {
 			timeRegistrationController.clockOut();

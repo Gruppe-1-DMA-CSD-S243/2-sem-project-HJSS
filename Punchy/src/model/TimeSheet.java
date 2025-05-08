@@ -2,6 +2,7 @@ package model;
 
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
+import java.util.List;
 import java.util.Locale;
 
 public class TimeSheet {
@@ -13,6 +14,7 @@ public class TimeSheet {
 	private boolean isApproved;
 	
 	private Employee employee;
+	private List<TimeRegistration> timeRegistrations;
 	
 	public TimeSheet(String timeSheetNumber, String weekNumber, LocalDate startDateWeek, 
 			LocalDate endDateWeek, boolean isSubmitted, boolean isApproved, Employee employee) {
@@ -75,6 +77,10 @@ public class TimeSheet {
 	
 	public Employee getEmployee() {
 		return employee;
+	}
+	
+	public List<TimeRegistration> getTimeRegistrations() {
+		return timeRegistrations;
 	}
 
 	@Override

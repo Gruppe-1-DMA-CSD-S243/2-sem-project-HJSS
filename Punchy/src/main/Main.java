@@ -1,5 +1,7 @@
 package main;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -18,6 +20,7 @@ import db.EmployeeDB;
 import db.ProjectDB;
 import db.TimeRegistrationDB;
 import db.TimeRegistrationDBIF;
+import gui.MainMenu;
 import gui.TimeRegistrationView;
 import db.*;
 import model.Employee;
@@ -81,8 +84,11 @@ public class Main {
 		int week = Calendar.getInstance().get(Calendar.WEEK_OF_YEAR);
 		System.out.println("" + week);
 		
-		TimeRegistrationView frame = new TimeRegistrationView(edb.findEmployee("12345"));
-		frame.setVisible(true);
+		MainMenu menu = new MainMenu(edb.findEmployee("12345"));
+		menu.setVisible(true);
+		
+//		TimeRegistrationView frame = new TimeRegistrationView(edb.findEmployee("12345"));
+//		frame.setVisible(true);
 		
 		
 		
