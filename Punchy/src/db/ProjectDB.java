@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import model.Employee;
@@ -16,6 +17,12 @@ public class ProjectDB implements ProjectDBIF {
 			+ "WHERE project_number = ? AND employee_number = ?;";
 	private PreparedStatement findProjectPS;
 	
+	private static final String FIND_PROJECTS_BY_EMPLOYEE_QUERY = "SELECT * FROM Project "
+			+ "JOIN WorksOn ON Project.project_id = WorksOn.project_id "
+			+ "JOIN Employee ON WorksOn.employee_id = Employee.employee_id "
+			+ "WHERE employee_number = ?;";
+	private PreparedStatement findProjectsByEmployeePS;
+	
 	public ProjectDB() {
 		init();
 	}
@@ -25,7 +32,7 @@ public class ProjectDB implements ProjectDBIF {
 		
 		try {
 			findProjectPS = con.prepareStatement(FIND_PROJECT_QUERY);
-			
+			findProjectsByEmployeePS = con.prepareStatement(FIND_PROJECTS_BY_EMPLOYEE_QUERY);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -50,7 +57,18 @@ public class ProjectDB implements ProjectDBIF {
 	
 	@Override
 	public List<Project> findProjectsByEmployee(Employee employee) {
-		return null;
+		List<Project> foundProjects = new ArrayList<>();
+		try {
+			findProjectsByEmployeePS.setString(1, employee.getEmployeeNumber());
+			
+			ResultSet resultSet = findProjectsByEmployeePS.executeQuery();
+			
+			foundProjects = buildObjects(resultSet);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return foundProjects;
 	}
 	
 	private Project buildObject(ResultSet resultSet) {
@@ -72,7 +90,17 @@ public class ProjectDB implements ProjectDBIF {
 	}
 	
 	private List<Project> buildObjects(ResultSet resultSet) {
-		return null;
+		List<Project> projects = new ArrayList<>();
+		try {
+			while (resultSet.next()) {
+				Project currentProject = buildObject(resultSet);
+				projects.add(currentProject);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return projects;
 	}
 
 	

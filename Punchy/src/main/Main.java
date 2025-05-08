@@ -14,6 +14,7 @@ import db.EmployeeDB;
 import db.ProjectDB;
 import db.TimeRegistrationDB;
 import db.TimeRegistrationDBIF;
+import gui.TimeRegistrationView;
 import db.*;
 import model.Employee;
 import model.Project;
@@ -24,7 +25,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		TimeRegistrationController trc = new TimeRegistrationController();
+//		TimeRegistrationController trc = new TimeRegistrationController();
 		
 //		trc.makeNewTimeRegsistration();
 //		
@@ -41,20 +42,20 @@ public class Main {
 //		
 //		trc.clockIn();
 		
-		trc.findEmployee("23456");
-		
-		trc.clockOut();
-		
-		trc.setDescription("yo yo yo");
-		
-		trc.submitRegistration(trc.getCurrentTimeRegistration());
-		
-		
-		
+//		trc.findEmployee("23456");
+//		
+//		trc.clockOut();
+//		
+//		trc.setDescription("yo yo yo");
+//		
+//		trc.submitRegistration(trc.getCurrentTimeRegistration());
+//		
 		
 		
 		
-//		EmployeeDBIF edb = new EmployeeDB();
+		
+		
+		EmployeeDBIF edb = new EmployeeDB();
 //		TimeSheetDBIF tsdb = new TimeSheetDB();
 //		
 //		Employee employee = edb.findEmployee("12345");
@@ -64,6 +65,10 @@ public class Main {
 //		TimeSheet ts = tsdb.findTimeSheetByEmployeeAndDate(employee, date);
 //		
 //		System.out.println(ts.toString());
+		
+		
+		TimeRegistrationView frame = new TimeRegistrationView(edb.findEmployee("12345"));
+		frame.setVisible(true);
 		
 	}
 
