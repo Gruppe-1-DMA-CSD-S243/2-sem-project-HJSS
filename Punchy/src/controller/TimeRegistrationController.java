@@ -3,6 +3,7 @@ package controller;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import db.TimeRegistrationDB;
 import db.TimeRegistrationDBIF;
@@ -60,6 +61,11 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 		currentFoundProject = projectController.findProject(projectNumber, employeeNumber);
 		return currentFoundProject;
 	}
+	
+	@Override
+	public List<Project> findProjectsByEmployee(Employee employee) {
+		return projectController.findProjectsByEmployee(employee);
+	}
 
 	@Override
 	public void assignProjectToTimeRegistration(Project foundProject) {
@@ -113,6 +119,8 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 	public TimeRegistrationDBIF getTimeRegistrationDB() {
 		return timeRegistrationDB;
 	}
+
+	
 	
 	
 }

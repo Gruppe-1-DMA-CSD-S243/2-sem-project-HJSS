@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
+import model.Employee;
 import model.Project;
 
 public class ProjectDB implements ProjectDBIF {
@@ -46,6 +48,11 @@ public class ProjectDB implements ProjectDBIF {
 		return currentProject;
 	}
 	
+	@Override
+	public List<Project> findProjectsByEmployee(Employee employee) {
+		return null;
+	}
+	
 	private Project buildObject(ResultSet resultSet) {
 		Project currentProject = null;
 		try {
@@ -62,6 +69,10 @@ public class ProjectDB implements ProjectDBIF {
 		}
 		
 		return currentProject;
+	}
+	
+	private List<Project> buildObjects(ResultSet resultSet) {
+		return null;
 	}
 
 	
