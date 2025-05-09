@@ -411,6 +411,7 @@ public class TimeRegistrationView extends JFrame {
 	}
 	
 	private void clockOut() {
+		// FLYT CLOCKOUT LOGIK FRA GUI TIL VALIDATE KLASSE
 		if (timeRegistrationController.getCurrentTimeRegistration().getStartTime() != null && 
 			timeRegistrationController.getCurrentTimeRegistration().getEndTime() == null) {
 			timeRegistrationController.clockOut();

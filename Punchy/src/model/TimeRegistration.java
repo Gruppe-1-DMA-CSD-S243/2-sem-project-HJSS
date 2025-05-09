@@ -13,6 +13,7 @@ public class TimeRegistration {
 	private String registrationType;
 	private String description;
 	
+	//TimeSheet variable skal fjernes, og skal kun gøre brug af timesheet der holder collection af registrations
 	private TimeSheet timeSheet;
 	private Project project;
 	private Employee employee;
