@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import model.Employee;
 import model.Project;
@@ -33,6 +35,13 @@ public class TimeRegistrationDB implements TimeRegistrationDBIF {
 	private PreparedStatement findActiveTimeRegistrationPS;
 	private PreparedStatement updateTimeRegistrationPS;
 	
+	private static final String FIND_TIME_REGISTRATIONS_BY_TIME_SHEET_NUMBER_QUERY = "SELECT * FROM TimeRegistration "
+			+ "JOIN TimeSheet ON TimeRegistration.time_sheet_id = TimeSheet.time_sheet_id "
+			+ "JOIN Employee ON TimeRegistration.employee_id = Employee.employee_id "
+			+ "JOIN Project ON TimeRegistration.project_id = Project.project_id "
+			+ "WHERE time_sheet_number = ?;";
+	private PreparedStatement findTimeRegistrationsByTimeSheetNumberPS;
+	
 	public TimeRegistrationDB() {
 		init();
 	}
@@ -43,6 +52,7 @@ public class TimeRegistrationDB implements TimeRegistrationDBIF {
 			insertTimeRegistrationPS = con.prepareStatement(INSERT_TIME_REGISTRATION_QUERY);
 			findActiveTimeRegistrationPS = con.prepareStatement(FIND_ACTIVE_TIME_REGISTRATION_QUERY);
 			updateTimeRegistrationPS = con.prepareStatement(UPDATE_TIME_REGISTRATION_QUERY);
+			findTimeRegistrationsByTimeSheetNumberPS = con.prepareStatement(FIND_TIME_REGISTRATIONS_BY_TIME_SHEET_NUMBER_QUERY);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -86,7 +96,7 @@ public class TimeRegistrationDB implements TimeRegistrationDBIF {
 			findActiveTimeRegistrationPS.setString(1, employee.getEmployeeNumber());
 			ResultSet resultSet = findActiveTimeRegistrationPS.executeQuery();
 			
-			currentTimeRegistration = buildObject(resultSet);
+			currentTimeRegistration = buildObject(resultSet, true);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -125,7 +135,23 @@ public class TimeRegistrationDB implements TimeRegistrationDBIF {
 		return success;
 	}
 	
-	private TimeRegistration buildObject(ResultSet resultSet) {
+	@Override
+	public List<TimeRegistration> findTimeRegistrationsByTimeSheetNumber(String timeSheetNumber) {
+		List<TimeRegistration> timeRegistrations = new ArrayList<>();
+		try {
+			findTimeRegistrationsByTimeSheetNumberPS.setString(1, timeSheetNumber);
+			
+			ResultSet resultSet = findTimeRegistrationsByTimeSheetNumberPS.executeQuery();
+			
+			timeRegistrations = buildObjects(resultSet, false);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return timeRegistrations;
+	}
+	
+	private TimeRegistration buildObject(ResultSet resultSet, boolean fullAssociation) {
 		TimeRegistration currentTimeRegistration = null;
 		
 		// TODO:
@@ -136,41 +162,58 @@ public class TimeRegistrationDB implements TimeRegistrationDBIF {
 		EmployeeDBIF edb = new EmployeeDB();
 		
 		try {
-			if (resultSet.next()) {
-				String timeRegistrationNumber = "" + resultSet.getString("time_registration_number");
-				LocalDate date = resultSet.getDate("time_registration_date").toLocalDate();
-				LocalDateTime startTime = resultSet.getTimestamp("start_time").toLocalDateTime();
-				LocalDateTime endTime = null;
-				if (resultSet.getTimestamp("end_time") != null) {
-					endTime = resultSet.getTimestamp("end_time").toLocalDateTime();
-				}
-				double hours = resultSet.getDouble("hours");
-				String registrationType = resultSet.getString("registration_type");
-				String description = resultSet.getString("description");
-				
-				Project project = null;
-				if (pdb.findProject(resultSet.getString("project_number"), resultSet.getString("employee_number")) != null) {
-					project = pdb.findProject(resultSet.getString("project_number"), resultSet.getString("employee_number"));
-				}
-				
-				Employee employee = null;
-				if (edb.findEmployee(resultSet.getString("employee_number")) != null) {
-					employee = edb.findEmployee(resultSet.getString("employee_number"));
-				}
-				
-				TimeSheet timeSheet = null;
+			if (resultSet.isBeforeFirst()) {
+				resultSet.next();
+			}
+			String timeRegistrationNumber = "" + resultSet.getString("time_registration_number");
+			LocalDate date = resultSet.getDate("time_registration_date").toLocalDate();
+			LocalDateTime startTime = resultSet.getTimestamp("start_time").toLocalDateTime();
+			LocalDateTime endTime = null;
+			if (resultSet.getTimestamp("end_time") != null) {
+				endTime = resultSet.getTimestamp("end_time").toLocalDateTime();
+			}
+			double hours = resultSet.getDouble("hours");
+			String registrationType = resultSet.getString("registration_type");
+			String description = resultSet.getString("description");
+			
+			Project project = null;
+			if (pdb.findProject(resultSet.getString("project_number"), resultSet.getString("employee_number")) != null) {
+				project = pdb.findProject(resultSet.getString("project_number"), resultSet.getString("employee_number"));
+			}
+			
+			Employee employee = null;
+			if (edb.findEmployee(resultSet.getString("employee_number")) != null) {
+				employee = edb.findEmployee(resultSet.getString("employee_number"));
+			}
+			
+			TimeSheet timeSheet = null;
+			if (fullAssociation) {
 				if (tsdb.findTimeSheetByEmployeeAndDate(employee, date) != null) {
 					timeSheet = tsdb.findTimeSheetByEmployeeAndDate(employee, date);
 				}
-				
-				currentTimeRegistration = new TimeRegistration(timeRegistrationNumber, date, startTime, endTime, 
-						hours, registrationType, description, timeSheet, project, employee);
 			}
+			
+			currentTimeRegistration = new TimeRegistration(timeRegistrationNumber, date, startTime, endTime, 
+					hours, registrationType, description, timeSheet, project, employee);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
 		return currentTimeRegistration;
+	}
+	
+	private List<TimeRegistration> buildObjects(ResultSet resultSet, boolean fullAssociation) {
+		List<TimeRegistration> timeRegistrations = new ArrayList<>();
+		try {
+			while (resultSet.next()) {
+				TimeRegistration currentRegistration = buildObject(resultSet, fullAssociation);
+				timeRegistrations.add(currentRegistration);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return timeRegistrations;
 	}
 	
 }

@@ -15,10 +15,11 @@ public class TimeSheet {
 	private boolean isApproved;
 	
 	private Employee employee;
-	private List<TimeRegistration> timeRegistrations = new ArrayList<>();
+	private List<TimeRegistration> timeRegistrations;
 	
 	public TimeSheet(String timeSheetNumber, String weekNumber, LocalDate startDateWeek, 
-			LocalDate endDateWeek, boolean isSubmitted, boolean isApproved, Employee employee) {
+			LocalDate endDateWeek, boolean isSubmitted, boolean isApproved, Employee employee, 
+			List<TimeRegistration> timeRegistrations) {
 		this.timeSheetNumber = timeSheetNumber;
 		this.weekNumber = weekNumber;
 		this.startDateWeek = startDateWeek;
@@ -27,6 +28,7 @@ public class TimeSheet {
 		this.isApproved = isApproved;
 		
 		this.employee = employee;
+		this.timeRegistrations = timeRegistrations;
 	}
 	
 	public TimeSheet(String timeSheetNumber, Employee employee, LocalDate date) {

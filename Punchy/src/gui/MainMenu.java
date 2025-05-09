@@ -75,31 +75,7 @@ public class MainMenu extends JFrame {
 		timeRegistrationController = new TimeRegistrationController();
 		//TODO: Slet det her!
 		TimeSheet ts = timeRegistrationController.findTimeSheetByEmployeeAndDate(employee, LocalDate.now());
-		LocalDate today = LocalDate.now();
-		TimeRegistration reg1 = new TimeRegistration(
-	            today,
-	            today.atTime(8, 0),
-	            today.atTime(10, 0)
-	        );
-
-	        TimeRegistration reg2 = new TimeRegistration(
-	            today,
-	            today.atTime(11, 0),
-	            today.atTime(13, 0)
-	        );
-
-	        TimeRegistration reg3 = new TimeRegistration(
-	            today,
-	            today.atTime(14, 0),
-	            today.atTime(17, 0)
-	        );
-	        
-	        ts.getTimeRegistrations().add(reg1);
-	        ts.getTimeRegistrations().add(reg2);
-	        ts.getTimeRegistrations().add(reg3);
-	        
-	        displayTimeSheet(ts);
-		
+		displayTimeSheet(ts);
 	}
 	private void initGUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -161,8 +137,8 @@ public class MainMenu extends JFrame {
 		tblTimeSheet.setCellSelectionEnabled(true);
 		tblTimeSheet.setIntercellSpacing(new Dimension(5, 0));
 		//TODO: fix cellRenderer
-//		TimeSheetTableCellRenderer cellRenderer = new TimeSheetTableCellRenderer();
-//		tblTimeSheet.setDefaultRenderer(Object.class, cellRenderer);
+		TimeSheetTableCellRenderer cellRenderer = new TimeSheetTableCellRenderer();
+		tblTimeSheet.setDefaultRenderer(Object.class, cellRenderer);
 		
 		scrollPane.setViewportView(tblTimeSheet);
 		centerWestPanel.setBorder(new EmptyBorder(0, 0, 0, 5));
