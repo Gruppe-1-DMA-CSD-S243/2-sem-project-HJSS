@@ -1,5 +1,7 @@
 package main;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -8,12 +10,18 @@ import java.time.temporal.WeekFields;
 import java.util.Calendar;
 import java.util.Locale;
 
+import javax.swing.UIManager;
+
+import com.formdev.flatlaf.FlatLightLaf;
+
 import controller.TimeRegistrationController;
 import controller.*;
 import db.EmployeeDB;
 import db.ProjectDB;
 import db.TimeRegistrationDB;
 import db.TimeRegistrationDBIF;
+import gui.MainMenu;
+import gui.TimeRegistrationView;
 import db.*;
 import model.Employee;
 import model.Project;
@@ -24,7 +32,13 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		TimeRegistrationController trc = new TimeRegistrationController();
+		try {
+		    UIManager.setLookAndFeel( new FlatLightLaf() );
+		} catch( Exception ex ) {
+		    System.err.println( "Failed to initialize LaF" );
+		}
+		
+		//TimeRegistrationController trc = new TimeRegistrationController();
 		
 //		trc.makeNewTimeRegsistration();
 //		
@@ -41,21 +55,21 @@ public class Main {
 //		
 //		trc.clockIn();
 		
-		trc.findEmployee("23456");
-		
-		trc.clockOut();
-		
-		trc.setDescription("yo yo yo");
-		
-		trc.submitRegistration(trc.getCurrentTimeRegistration());
-		
-		
-		
+//		trc.findEmployee("23456");
+//		
+//		trc.clockOut();
+//		
+//		trc.setDescription("yo yo yo");
+//		
+//		trc.submitRegistration(trc.getCurrentTimeRegistration());
+//		
 		
 		
 		
-//		EmployeeDBIF edb = new EmployeeDB();
-//		TimeSheetDBIF tsdb = new TimeSheetDB();
+		
+		
+		EmployeeDBIF edb = new EmployeeDB();
+		TimeSheetDBIF tsdb = new TimeSheetDB();
 //		
 //		Employee employee = edb.findEmployee("12345");
 //		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -64,6 +78,19 @@ public class Main {
 //		TimeSheet ts = tsdb.findTimeSheetByEmployeeAndDate(employee, date);
 //		
 //		System.out.println(ts.toString());
+		
+		//TimeSheet ts = tsdb.findTimeSheetByEmployeeAndDate(edb.findEmployee("12345"), );
+		
+		int week = Calendar.getInstance().get(Calendar.WEEK_OF_YEAR);
+		System.out.println("" + week);
+		
+		MainMenu menu = new MainMenu(edb.findEmployee("12345"));
+		menu.setVisible(true);
+		
+//		TimeRegistrationView frame = new TimeRegistrationView(edb.findEmployee("12345"));
+//		frame.setVisible(true);
+		
+		
 		
 	}
 

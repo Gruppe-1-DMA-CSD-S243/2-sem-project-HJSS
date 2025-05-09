@@ -2,7 +2,7 @@ package controller;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import db.TimeRegistrationDB;
 import db.TimeRegistrationDBIF;
@@ -13,9 +13,6 @@ import model.TimeSheet;
 
 public class TimeRegistrationController implements TimeRegistrationControllerIF {
 	private TimeRegistration currentTimeRegistration;
-	
-	private Employee currentFoundEmployee;
-	private Project currentFoundProject;
 	
 	private TimeSheetControllerIF timeSheetController;
 	private ProjectControllerIF projectController;
@@ -28,26 +25,21 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 		employeeController = new EmployeeController();
 		timeRegistrationDB = new TimeRegistrationDB();
 		
-		//Temp:
-		currentFoundEmployee = employeeController.findEmployee("100000002");
 	}
 
 	@Override
-	public TimeRegistration makeNewTimeRegsistration() {
+	public TimeRegistration makeNewTimeRegistration() {
 		//Værdier er hardcoded!!!
-//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//		LocalDate date = LocalDate.parse("2024-05-13", formatter);
-//		currentTimeRegistration = new TimeRegistration("111", date, "TidsRegistrering");
-		
-		currentTimeRegistration = new TimeRegistration("999", LocalDate.now(), "Tidsregistrering");
+		int randomNumber = (int)(Math.random() * 1001);
+		String registrationNumber = "" + randomNumber;
+		currentTimeRegistration = new TimeRegistration(registrationNumber, LocalDate.now(), "TidsRegistrering");
 		
 		return currentTimeRegistration;
 	}
 
 	@Override
 	public Employee findEmployee(String employeeNumber) {
-		currentFoundEmployee = employeeController.findEmployee(employeeNumber);
-		return currentFoundEmployee;
+		return employeeController.findEmployee(employeeNumber);
 	}
 
 	@Override
@@ -57,22 +49,26 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 
 	@Override
 	public Project findProject(String projectNumber, String employeeNumber) {
-		currentFoundProject = projectController.findProject(projectNumber, employeeNumber);
-		return currentFoundProject;
+		return projectController.findProject(projectNumber, employeeNumber);
 	}
 
 	@Override
 	public void assignProjectToTimeRegistration(Project foundProject) {
 		currentTimeRegistration.setProject(foundProject);
 	}
+	
+	@Override
+	public TimeSheet findTimeSheetByEmployeeAndDate(Employee employee, LocalDate date) {
+		return timeSheetController.findTimeSheetByEmployeeAndDate(employee, date);
+	}
 
 	@Override
 	public void clockIn() {
-		if (timeRegistrationDB.findActiveTimeRegistration(currentFoundEmployee) == null) {
+		if (timeRegistrationDB.findActiveTimeRegistration(currentTimeRegistration.getEmployee()) == null) {
 			currentTimeRegistration.setStartTime(LocalDateTime.now());
 			
-			TimeSheet timeSheet = timeSheetController.findTimeSheetByEmployeeAndDate(currentTimeRegistration.getEmployee(), currentTimeRegistration.getDate());
-			currentTimeRegistration.setTimeSheet(timeSheet);
+			TimeSheet foundTimeSheet = timeSheetController.findTimeSheetByEmployeeAndDate(currentTimeRegistration.getEmployee(), currentTimeRegistration.getDate());
+			currentTimeRegistration.setTimeSheet(foundTimeSheet);
 			
 			timeRegistrationDB.insertTimeRegistration(currentTimeRegistration);
 		}
@@ -83,7 +79,7 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 
 	@Override
 	public void clockOut() {
-		currentTimeRegistration = timeRegistrationDB.findActiveTimeRegistration(currentFoundEmployee);
+		currentTimeRegistration = timeRegistrationDB.findActiveTimeRegistration(currentTimeRegistration.getEmployee());
 		
 		currentTimeRegistration.setEndTime(LocalDateTime.now());
 	}
@@ -97,9 +93,23 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 	public boolean submitRegistration(TimeRegistration newTimeRegistration) {
 		return timeRegistrationDB.updateTimeRegistration(newTimeRegistration);
 	}
+	
+	@Override 
+	public List<Project> findProjectsByEmployee(Employee employee) {
+		return projectController.findProjectsByEmployee(employee);
+	}
+	
+	@Override
+	public TimeRegistration findActiveTimeRegistration(Employee employee) {
+		return timeRegistrationDB.findActiveTimeRegistration(employee);
+	}
 
 	public TimeRegistration getCurrentTimeRegistration() {
 		return currentTimeRegistration;
+	}
+	
+	public void setCurrentTimeRegistration(TimeRegistration timeRegistration) {
+		currentTimeRegistration = timeRegistration;
 	}
 
 	public ProjectControllerIF getProjectController() {

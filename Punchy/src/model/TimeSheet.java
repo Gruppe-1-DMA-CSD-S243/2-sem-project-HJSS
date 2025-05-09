@@ -1,6 +1,10 @@
 package model;
 
 import java.time.LocalDate;
+import java.time.temporal.WeekFields;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class TimeSheet {
 	private String timeSheetNumber;
@@ -11,6 +15,7 @@ public class TimeSheet {
 	private boolean isApproved;
 	
 	private Employee employee;
+	private List<TimeRegistration> timeRegistrations = new ArrayList<>();
 	
 	public TimeSheet(String timeSheetNumber, String weekNumber, LocalDate startDateWeek, 
 			LocalDate endDateWeek, boolean isSubmitted, boolean isApproved, Employee employee) {
@@ -21,6 +26,21 @@ public class TimeSheet {
 		this.isSubmitted = isSubmitted;
 		this.isApproved = isApproved;
 		
+		this.employee = employee;
+	}
+	
+	public TimeSheet(String timeSheetNumber, Employee employee, LocalDate date) {
+		this.timeSheetNumber = timeSheetNumber;
+		
+		Locale locale = new Locale("da", "DK");
+		int weekNumber = date.get(WeekFields.of(locale).weekBasedYear());
+		int year = date.getYear();
+		WeekFields weekFields = WeekFields.of(locale);
+		
+		this.startDateWeek = LocalDate.ofYearDay(year, 1).with(weekFields.weekOfYear(), weekNumber).with(weekFields.dayOfWeek(), 1);
+		this.endDateWeek = LocalDate.ofYearDay(year, 1).with(weekFields.weekOfYear(), weekNumber).with(weekFields.dayOfWeek(), 7);
+		this.isSubmitted = false;
+		this.isApproved = false;
 		this.employee = employee;
 	}
 
@@ -54,6 +74,14 @@ public class TimeSheet {
 
 	public LocalDate getEndDateWeek() {
 		return endDateWeek;
+	}
+	
+	public Employee getEmployee() {
+		return employee;
+	}
+	
+	public List<TimeRegistration> getTimeRegistrations() {
+		return timeRegistrations;
 	}
 
 	@Override
