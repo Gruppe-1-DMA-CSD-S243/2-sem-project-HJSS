@@ -67,6 +67,7 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 		if (timeRegistrationDB.findActiveTimeRegistration(currentTimeRegistration.getEmployee()) == null) {
 			currentTimeRegistration.setStartTime(LocalDateTime.now());
 			
+			//Valider tid siden sidste registrering
 			TimeSheet foundTimeSheet = timeSheetController.findTimeSheetByEmployeeAndDate(currentTimeRegistration.getEmployee(), currentTimeRegistration.getDate());
 			currentTimeRegistration.setTimeSheet(foundTimeSheet);
 			
@@ -79,6 +80,7 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 
 	@Override
 	public void clockOut() {
+		//Hvis startTime = null, returner exception fra ValidateTimeRegistration
 		currentTimeRegistration = timeRegistrationDB.findActiveTimeRegistration(currentTimeRegistration.getEmployee());
 		
 		currentTimeRegistration.setEndTime(LocalDateTime.now());

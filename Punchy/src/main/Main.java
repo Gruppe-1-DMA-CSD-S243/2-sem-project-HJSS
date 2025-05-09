@@ -1,32 +1,16 @@
 package main;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoField;
-import java.time.temporal.WeekFields;
 import java.util.Calendar;
-import java.util.Locale;
 
 import javax.swing.UIManager;
 
 import com.formdev.flatlaf.FlatLightLaf;
 
-import controller.TimeRegistrationController;
-import controller.*;
 import db.EmployeeDB;
-import db.ProjectDB;
-import db.TimeRegistrationDB;
-import db.TimeRegistrationDBIF;
+import db.EmployeeDBIF;
+import db.TimeSheetDB;
+import db.TimeSheetDBIF;
 import gui.MainMenu;
-import gui.TimeRegistrationView;
-import db.*;
-import model.Employee;
-import model.Project;
-import model.TimeRegistration;
-import model.TimeSheet;
 
 public class Main {
 

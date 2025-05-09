@@ -34,7 +34,7 @@ class TimeRegistrationTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-		timeRegistration = new TimeRegistration(null, null, null);
+		timeRegistration = new TimeRegistration(null, null, "");
 		
 	}
 
