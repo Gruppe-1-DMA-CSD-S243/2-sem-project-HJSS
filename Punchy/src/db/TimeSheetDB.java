@@ -8,10 +8,13 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoField;
 import java.time.temporal.WeekFields;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 import model.Employee;
+import model.TimeRegistration;
 import model.TimeSheet;
 
 public class TimeSheetDB implements TimeSheetDBIF {
@@ -120,7 +123,8 @@ public class TimeSheetDB implements TimeSheetDBIF {
 		// TODO:
 		// Employee skal findes og bygges! Men hvordan?
 		
-		EmployeeDBIF edb = new EmployeeDB();
+		EmployeeDBIF employeeDB = new EmployeeDB();
+		TimeRegistrationDBIF timeRegistrationDB = new TimeRegistrationDB();
 		
 		try {
 			if (resultSet.next()) {
@@ -132,12 +136,14 @@ public class TimeSheetDB implements TimeSheetDBIF {
 				boolean isApproved = resultSet.getBoolean("is_approved");
 				
 				Employee employee = null;
-				if (edb.findEmployee(resultSet.getString("employee_number")) != null) {
-					employee = edb.findEmployee(resultSet.getString("employee_number"));
+				if (employeeDB.findEmployee(resultSet.getString("employee_number")) != null) {
+					employee = employeeDB.findEmployee(resultSet.getString("employee_number"));
 				}
 				
+				List<TimeRegistration> timeRegistrations = timeRegistrationDB.findTimeRegistrationsByTimeSheetNumber(timeSheetNumber);
+				
 				currentTimeSheet = new TimeSheet(timeSheetNumber, weekNumber, startDateWeek, 
-						endDateWeek, isSubmitted, isApproved, employee);
+						endDateWeek, isSubmitted, isApproved, employee, timeRegistrations);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
