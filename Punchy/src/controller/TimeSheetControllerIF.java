@@ -6,5 +6,5 @@ import model.Employee;
 import model.TimeSheet;
 
 public interface TimeSheetControllerIF {
-	public TimeSheet findTimeSheetByEmployeeAndDate(Employee employee, LocalDate date);
+	public TimeSheet findTimeSheetByEmployeeAndDate(Employee employee, LocalDate date, boolean fullAssociation);
 }
