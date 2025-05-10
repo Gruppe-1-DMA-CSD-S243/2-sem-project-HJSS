@@ -96,7 +96,7 @@ public class TimeRegistrationDB implements TimeRegistrationDBIF {
 			findActiveTimeRegistrationPS.setString(1, employee.getEmployeeNumber());
 			ResultSet resultSet = findActiveTimeRegistrationPS.executeQuery();
 			
-			currentTimeRegistration = buildObject(resultSet, true);
+			currentTimeRegistration = buildObject(resultSet, false);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -188,8 +188,8 @@ public class TimeRegistrationDB implements TimeRegistrationDBIF {
 			
 			TimeSheet timeSheet = null;
 			if (fullAssociation) {
-				if (tsdb.findTimeSheetByEmployeeAndDate(employee, date) != null) {
-					timeSheet = tsdb.findTimeSheetByEmployeeAndDate(employee, date);
+				if (tsdb.findTimeSheetByEmployeeAndDate(employee, date, false) != null) {
+					timeSheet = tsdb.findTimeSheetByEmployeeAndDate(employee, date, false);
 				}
 			}
 			

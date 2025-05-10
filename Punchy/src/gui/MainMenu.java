@@ -16,6 +16,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import controller.TimeRegistrationController;
+import controller.TimeSheetController;
 import model.Employee;
 import model.TimeRegistration;
 import model.TimeSheet;
@@ -30,7 +31,7 @@ import java.awt.event.ActionEvent;
 public class MainMenu extends JFrame {
 	
 	private Employee currentlySignedInEmployee;
-	private TimeRegistrationController timeRegistrationController;
+	private TimeSheetController timeSheetController;
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -72,9 +73,9 @@ public class MainMenu extends JFrame {
 		currentlySignedInEmployee = employee;
 		initGUI();
 		
-		timeRegistrationController = new TimeRegistrationController();
+		timeSheetController = new TimeSheetController();
 		//TODO: Slet det her!
-		TimeSheet ts = timeRegistrationController.findTimeSheetByEmployeeAndDate(employee, LocalDate.now());
+		TimeSheet ts = timeSheetController.findTimeSheetByEmployeeAndDate(employee, LocalDate.now(), true);
 		displayTimeSheet(ts);
 	}
 	private void initGUI() {

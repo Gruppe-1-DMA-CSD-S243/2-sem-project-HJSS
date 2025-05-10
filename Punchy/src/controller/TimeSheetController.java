@@ -15,8 +15,8 @@ public class TimeSheetController implements TimeSheetControllerIF {
 	}
 	
 	@Override
-	public TimeSheet findTimeSheetByEmployeeAndDate(Employee employee, LocalDate date) {
-		return timeSheetDB.findTimeSheetByEmployeeAndDate(employee, date);
+	public TimeSheet findTimeSheetByEmployeeAndDate(Employee employee, LocalDate date, boolean fullAssociation) {
+		return timeSheetDB.findTimeSheetByEmployeeAndDate(employee, date, fullAssociation);
 	}
 
 }

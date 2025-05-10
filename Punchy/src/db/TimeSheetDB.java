@@ -52,7 +52,7 @@ public class TimeSheetDB implements TimeSheetDBIF {
 	}
 	
 	@Override
-	public TimeSheet findTimeSheetByEmployeeAndDate(Employee employee, LocalDate date) {
+	public TimeSheet findTimeSheetByEmployeeAndDate(Employee employee, LocalDate date, boolean fullAssociation) {
 		TimeSheet currentTimeSheet = null;
 		try {
 			findTimeSheetByEmployeeAndDatePS.setString(1, employee.getEmployeeNumber());
@@ -65,7 +65,7 @@ public class TimeSheetDB implements TimeSheetDBIF {
 			
 			ResultSet resultSet = findTimeSheetByEmployeeAndDatePS.executeQuery();
 			
-			currentTimeSheet = buildObject(resultSet);
+			currentTimeSheet = buildObject(resultSet, fullAssociation);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -76,7 +76,7 @@ public class TimeSheetDB implements TimeSheetDBIF {
 			String timeSheetNumber = "" + randomNumber;
 			
 			insertTimeSheet(new TimeSheet(timeSheetNumber, employee, date));
-			currentTimeSheet = findTimeSheetByEmployeeAndDate(employee, date);
+			currentTimeSheet = findTimeSheetByEmployeeAndDate(employee, date, fullAssociation);
 		}
 		
 		return currentTimeSheet;
@@ -117,7 +117,7 @@ public class TimeSheetDB implements TimeSheetDBIF {
 		return success;
 	}
 	
-	private TimeSheet buildObject(ResultSet resultSet) {
+	private TimeSheet buildObject(ResultSet resultSet, boolean fullAssociation) {
 		TimeSheet currentTimeSheet = null;
 		
 		// TODO:

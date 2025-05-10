@@ -36,6 +36,9 @@ public class TimeSheetTableModel extends AbstractTableModel {
 		for (TimeRegistration registration : registrations) {
 			int dayOfWeek = registration.getDate().getDayOfWeek().getValue();
 			int startHour = registration.getStartTime().getHour();
+			if (registration.getEndTime() == null) {
+				continue;
+			}
 			int endHour = registration.getEndTime().getHour();
 			
 			// i < endHour eller i <= endHour ???

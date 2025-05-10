@@ -6,6 +6,6 @@ import model.Employee;
 import model.TimeSheet;
 
 public interface TimeSheetDBIF {
-	public TimeSheet findTimeSheetByEmployeeAndDate(Employee employee, LocalDate date);
+	public TimeSheet findTimeSheetByEmployeeAndDate(Employee employee, LocalDate date, boolean fullAssociation);
 	public boolean insertTimeSheet(TimeSheet timeSheet);
 }
