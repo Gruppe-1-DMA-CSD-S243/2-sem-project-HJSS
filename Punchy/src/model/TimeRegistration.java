@@ -48,6 +48,10 @@ public class TimeRegistration {
 		this.startTime = startTime;
 		this.endTime = endTime;
 	}
+	
+	public TimeRegistration(String timeRegistrationNumber) {
+		this.timeRegistrationNumber = timeRegistrationNumber;
+	}
 
 	public LocalDateTime getStartTime() {
 		return startTime;

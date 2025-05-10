@@ -15,7 +15,7 @@ public interface TimeRegistrationControllerIF {
 	public Project findProject(String projectNumber, String employeeNumber);
 	public void assignProjectToTimeRegistration(Project foundProject);
 	public void clockIn();
-	public void clockOut();
+	public void clockOut() throws IllegalTimeRegistrationException;
 	public void setDescription(String description);
 	public boolean submitRegistration(TimeRegistration newTimeRegistration);
 	

@@ -10,6 +10,7 @@ import model.Employee;
 import model.Project;
 import model.TimeRegistration;
 import model.TimeSheet;
+import utility.ValidateTimeRegistration;
 
 public class TimeRegistrationController implements TimeRegistrationControllerIF {
 	private TimeRegistration currentTimeRegistration;
@@ -78,7 +79,9 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 	}
 
 	@Override
-	public void clockOut() {
+	public void clockOut() throws IllegalTimeRegistrationException{		
+		ValidateTimeRegistration.validateClockOut(currentTimeRegistration);
+		
 		currentTimeRegistration = timeRegistrationDB.findActiveTimeRegistration(currentTimeRegistration.getEmployee());
 		
 		currentTimeRegistration.setEndTime(LocalDateTime.now());
@@ -91,6 +94,11 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 
 	@Override
 	public boolean submitRegistration(TimeRegistration newTimeRegistration) {
+		try {
+			ValidateTimeRegistration.validateData(newTimeRegistration);
+		} catch (IllegalTimeRegistrationException e) {
+			e.printStackTrace();
+		}
 		return timeRegistrationDB.updateTimeRegistration(newTimeRegistration);
 	}
 	

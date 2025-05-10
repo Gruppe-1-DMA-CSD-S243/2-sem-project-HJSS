@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import controller.IllegalTimeRegistrationException;
 import controller.TimeRegistrationController;
 import model.Employee;
 import model.Project;
@@ -411,16 +412,27 @@ public class TimeRegistrationView extends JFrame {
 	}
 	
 	private void clockOut() {
-		// FLYT CLOCKOUT LOGIK FRA GUI TIL VALIDATE KLASSE
-		if (timeRegistrationController.getCurrentTimeRegistration().getStartTime() != null && 
-			timeRegistrationController.getCurrentTimeRegistration().getEndTime() == null) {
+		// FLYT CLOCKOUT LOGIK FRA GUI TIL CONTROLLER KLASSE
+		lblClockOutError.setText("");
+		try {
 			timeRegistrationController.clockOut();
 			setEndTimeText(timeRegistrationController.getCurrentTimeRegistration().getEndTime());
-			lblClockOutError.setText("");
+		} catch (IllegalTimeRegistrationException e) {
+			lblClockOutError.setText(e.getMessage());
 		}
-		else {
-			lblClockOutError.setText("Du skal først stemple ind");
-		}
+		
+		
+//				lblClockOutError.setText("Du skal stemple ud først");
+//			} else if (timeRegistrationController.getCurrentTimeRegistration().getEndTime() != null) {
+//				lblClockOutError.setText("Du har allerede stemplet ud");
+//			} else {
+//				
+//				setEndTimeText(timeRegistrationController.getCurrentTimeRegistration().getEndTime());
+//				
+//			}
+			
+			
+			
 	}
 	
 	private void submitTimeRegistration() {
