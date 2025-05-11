@@ -94,6 +94,7 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 
 	@Override
 	public boolean submitRegistration(TimeRegistration newTimeRegistration) {
+		//ændre til throws og catch i gui med relevant besked ændring
 		try {
 			ValidateTimeRegistration.validateData(newTimeRegistration);
 		} catch (IllegalTimeRegistrationException e) {

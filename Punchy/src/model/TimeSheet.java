@@ -11,6 +11,10 @@ public class TimeSheet {
 	private String weekNumber;
 	private LocalDate startDateWeek;
 	private LocalDate endDateWeek;
+	// Business rule for minimum 11 timer mellem hver registrering FIND ANDET NAVN TIL VARIABLE???
+	private boolean isTimeBetweenRegistrations;
+	// Business rule for 7 dages periode <= 48 timer, find andet navn?
+	private boolean isSevenDayPeriod;
 	private boolean isSubmitted;
 	private boolean isApproved;
 	
@@ -44,6 +48,22 @@ public class TimeSheet {
 		this.isSubmitted = false;
 		this.isApproved = false;
 		this.employee = employee;
+	}
+	
+	public boolean isTimeBetweenRegistrations() {
+		return isTimeBetweenRegistrations;
+	}
+
+	public void setTimeBetweenRegistrations(boolean isTimeBetweenRegistrations) {
+		this.isTimeBetweenRegistrations = isTimeBetweenRegistrations;
+	}
+
+	public boolean isSevenDayPeriod() {
+		return isSevenDayPeriod;
+	}
+
+	public void setSevenDayPeriod(boolean isSevenDayPeriod) {
+		this.isSevenDayPeriod = isSevenDayPeriod;
 	}
 
 	public boolean isSubmitted() {

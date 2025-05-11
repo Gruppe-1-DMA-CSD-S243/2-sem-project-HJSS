@@ -69,7 +69,6 @@ public class TimeSheetDB implements TimeSheetDBIF {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 		if (currentTimeSheet == null) {
 			//TODO: TimeSheetNumber bliver valgt tilfældigt!!!
 			int randomNumber = (int)(Math.random() * 1001);
