@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.time.temporal.IsoFields;
 import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,9 +40,11 @@ public class TimeSheet {
 		this.timeSheetNumber = timeSheetNumber;
 		
 		Locale locale = new Locale("da", "DK");
-		int weekNumber = date.get(WeekFields.of(locale).weekBasedYear());
+//		int weekNumber = date.get(WeekFields.of(locale).weekBasedYear()); DENNE HENTER ÅR, IKKE UGETAL
+		int weekNumber = date.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
 		int year = date.getYear();
-		WeekFields weekFields = WeekFields.of(locale);
+//		WeekFields weekFields = WeekFields.of(locale); BRUGER ISO FOR BEDRE HÅNDTERING AF EUROPÆISKE LANDE
+		WeekFields weekFields = WeekFields.ISO;
 		
 		this.startDateWeek = LocalDate.ofYearDay(year, 1).with(weekFields.weekOfYear(), weekNumber).with(weekFields.dayOfWeek(), 1);
 		this.endDateWeek = LocalDate.ofYearDay(year, 1).with(weekFields.weekOfYear(), weekNumber).with(weekFields.dayOfWeek(), 7);

@@ -1,5 +1,6 @@
 package test;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.Clock;
@@ -16,7 +17,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import controller.IllegalTimeRegistrationException;
 import model.TimeRegistration;
+import utility.ValidateTimeRegistration;
 
 class TimeRegistrationTest {
 	static DateTimeFormatter formatter;
@@ -82,18 +85,15 @@ class TimeRegistrationTest {
 				(actualStart.isEqual(after) || actualStart.isBefore(after)));
 	}
 	
-	/*
-	 * TEST IS NOT COMPLETED, WAITING FOR VALIDATION CLASS TO IMPLEMENT BUSINESS RULES FOR TIMEREGISTRATION
-	 */
 	@Test
-	void shouldRejectStopTimeBeforeStartTime() {
+	void shouldRejectEndTimeBeforeStartTime() throws IllegalTimeRegistrationException{
 		// Arrange
-		
-		
+			timeRegistration.setEndTime(LocalDateTime.now());
+
 		// Act
-		
+			
 		// Assert
-		
+		assertThrows(IllegalTimeRegistrationException.class, () -> ValidateTimeRegistration.validateClockOut(timeRegistration));
 	}
 
 }
