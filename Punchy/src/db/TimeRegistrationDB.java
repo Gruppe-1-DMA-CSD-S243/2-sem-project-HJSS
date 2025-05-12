@@ -22,17 +22,19 @@ public class TimeRegistrationDB implements TimeRegistrationDBIF {
 			+ "(SELECT time_sheet_id FROM TimeSheet WHERE time_sheet_number = ?), "
 			+ "(SELECT project_id FROM Project WHERE project_number = ?), "
 			+ "(SELECT employee_id FROM Employee WHERE employee_number = ?));";
+	private PreparedStatement insertTimeRegistrationPS;
+	
 	private static final String FIND_ACTIVE_TIME_REGISTRATION_QUERY = "SELECT * FROM TimeRegistration JOIN Employee ON TimeRegistration.employee_id = Employee.employee_id "
 			+ "JOIN Project ON TimeRegistration.project_id = Project.project_id "
 			+ "WHERE employee_number = ? AND end_time IS null;";
+	private PreparedStatement findActiveTimeRegistrationPS;
+	
 	private static final String UPDATE_TIME_REGISTRATION_QUERY = "UPDATE TimeRegistration SET time_registration_date = ?,"
 			+ "start_time = ?, end_time = ?, hours = ?, registration_type = ?, description = ?, "
 			+ "time_sheet_id = (SELECT time_sheet_id FROM TimeSheet WHERE time_sheet_number = ?), "
 			+ "project_id = (SELECT project_id FROM Project WHERE project_number = ?),"
 			+ "employee_id = (SELECT employee_id FROM Employee WHERE employee_number = ?)"
 			+ " WHERE time_registration_number = ?;";
-	private PreparedStatement insertTimeRegistrationPS;
-	private PreparedStatement findActiveTimeRegistrationPS;
 	private PreparedStatement updateTimeRegistrationPS;
 	
 	private static final String FIND_TIME_REGISTRATIONS_BY_TIME_SHEET_NUMBER_QUERY = "SELECT * FROM TimeRegistration "
@@ -96,7 +98,7 @@ public class TimeRegistrationDB implements TimeRegistrationDBIF {
 			findActiveTimeRegistrationPS.setString(1, employee.getEmployeeNumber());
 			ResultSet resultSet = findActiveTimeRegistrationPS.executeQuery();
 			
-			currentTimeRegistration = buildObject(resultSet, false);
+			currentTimeRegistration = buildObject(resultSet, true);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -157,9 +159,9 @@ public class TimeRegistrationDB implements TimeRegistrationDBIF {
 		// TODO:
 		// Employee skal findes og bygges! Men hvordan?
 		
-		TimeSheetDBIF tsdb = new TimeSheetDB();
-		ProjectDBIF pdb = new ProjectDB();
-		EmployeeDBIF edb = new EmployeeDB();
+		TimeSheetDBIF timeSheetDB = new TimeSheetDB();
+		ProjectDBIF projectDB = new ProjectDB();
+		EmployeeDBIF employeeDB = new EmployeeDB();
 		
 		try {
 			if (resultSet.isBeforeFirst()) {
@@ -176,21 +178,13 @@ public class TimeRegistrationDB implements TimeRegistrationDBIF {
 			String registrationType = resultSet.getString("registration_type");
 			String description = resultSet.getString("description");
 			
-			Project project = null;
-			if (pdb.findProject(resultSet.getString("project_number"), resultSet.getString("employee_number")) != null) {
-				project = pdb.findProject(resultSet.getString("project_number"), resultSet.getString("employee_number"));
-			}
+			Project project = projectDB.findProject(resultSet.getString("project_number"), resultSet.getString("employee_number"));
 			
-			Employee employee = null;
-			if (edb.findEmployee(resultSet.getString("employee_number")) != null) {
-				employee = edb.findEmployee(resultSet.getString("employee_number"));
-			}
+			Employee employee = employeeDB.findEmployee(resultSet.getString("employee_number"));
 			
 			TimeSheet timeSheet = null;
 			if (fullAssociation) {
-				if (tsdb.findTimeSheetByEmployeeAndDate(employee, date, false) != null) {
-					timeSheet = tsdb.findTimeSheetByEmployeeAndDate(employee, date, false);
-				}
+				timeSheet = timeSheetDB.findTimeSheetByEmployeeAndDate(employee, date, false);
 			}
 			
 			currentTimeRegistration = new TimeRegistration(timeRegistrationNumber, date, startTime, endTime, 
