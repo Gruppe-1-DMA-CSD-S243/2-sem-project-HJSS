@@ -6,6 +6,7 @@ import javax.swing.UIManager;
 
 import com.formdev.flatlaf.FlatLightLaf;
 
+import controller.LoginController;
 import db.EmployeeDB;
 import db.EmployeeDBIF;
 import db.TimeSheetDB;
@@ -68,7 +69,12 @@ public class Main {
 		int week = Calendar.getInstance().get(Calendar.WEEK_OF_YEAR);
 		System.out.println("" + week);
 		
-		MainMenu menu = new MainMenu(edb.findEmployee("12345"));
+		LoginController.getInstance().setLoggedInEmployee(edb.findEmployee("12345"));
+		
+//		EndTimeRegistrationView end = new EndTimeRegistrationView();
+//		end.setVisible(true);
+		
+		MainMenu menu = new MainMenu();
 		menu.setVisible(true);
 		
 //		TimeRegistrationView frame = new TimeRegistrationView(edb.findEmployee("12345"));

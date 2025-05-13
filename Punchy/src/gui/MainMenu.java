@@ -15,6 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import controller.LoginController;
 import controller.TimeRegistrationController;
 import controller.TimeSheetController;
 import model.Employee;
@@ -30,7 +31,6 @@ import java.awt.event.ActionEvent;
 
 public class MainMenu extends JFrame {
 	
-	private Employee currentlySignedInEmployee;
 	private TimeSheetController timeSheetController;
 
 	private static final long serialVersionUID = 1L;
@@ -57,7 +57,7 @@ public class MainMenu extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainMenu frame = new MainMenu(null);
+					MainMenu frame = new MainMenu();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -69,13 +69,12 @@ public class MainMenu extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public MainMenu(Employee employee) {
-		currentlySignedInEmployee = employee;
+	public MainMenu() {
 		initGUI();
 		
 		timeSheetController = new TimeSheetController();
 		//TODO: Slet det her!
-		TimeSheet ts = timeSheetController.findTimeSheetByEmployeeAndDate(employee, LocalDate.now(), true);
+		TimeSheet ts = timeSheetController.findTimeSheetByEmployeeAndDate(LoginController.getInstance().getLoggedInEmployee(), LocalDate.now(), true);
 		displayTimeSheet(ts);
 	}
 	private void initGUI() {
@@ -206,7 +205,7 @@ public class MainMenu extends JFrame {
 	}
 	
 	private void launchTimeRegistrationView() {
-		TimeRegistrationView timeRegistrationView = new TimeRegistrationView(currentlySignedInEmployee);
+		TimeRegistrationView timeRegistrationView = new TimeRegistrationView();
 		timeRegistrationView.setBounds(getBounds());
 		timeRegistrationView.setVisible(true);
 	}

@@ -8,9 +8,11 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controller.IllegalTimeRegistrationException;
+import controller.LoginController;
 import controller.TimeRegistrationController;
 import model.Employee;
 import model.Project;
+import model.TimeRegistration;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -78,7 +80,7 @@ public class TimeRegistrationView extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					TimeRegistrationView frame = new TimeRegistrationView(null);
+					TimeRegistrationView frame = new TimeRegistrationView();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -90,7 +92,8 @@ public class TimeRegistrationView extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TimeRegistrationView(Employee employee) {
+	public TimeRegistrationView() {
+		Employee employee = LoginController.getInstance().getLoggedInEmployee();
 		txtDescription.setColumns(10);
 		txtEndTime.setEditable(false);
 		txtEndTime.setColumns(10);
@@ -103,14 +106,14 @@ public class TimeRegistrationView extends JFrame {
 		initGUI();
 		
 		timeRegistrationController = new TimeRegistrationController();
-		if (timeRegistrationController.getTimeRegistrationDB().findActiveTimeRegistration(employee) != null) {
-			timeRegistrationController.setCurrentTimeRegistration(timeRegistrationController.findActiveTimeRegistration(employee));
-			setAssignedProjectText(timeRegistrationController.getCurrentTimeRegistration().getProject());
+		
+		if (timeRegistrationController.findActiveTimeRegistration(employee) != null) {
+			endTimeRegistration();
 		}
 		else {
-			timeRegistrationController.makeNewTimeRegistration();
-			timeRegistrationController.assignEmployeeToTimeRegistration(employee);
+			makeNewTimeRegistration();
 		}
+		
 		displayProjects(timeRegistrationController.findProjectsByEmployee(employee));
 		setDateText(timeRegistrationController.getCurrentTimeRegistration().getDate());
 		setStartTimeText(timeRegistrationController.getCurrentTimeRegistration().getStartTime());
@@ -412,31 +415,18 @@ public class TimeRegistrationView extends JFrame {
 	}
 	
 	private void clockOut() {
-		// FLYT CLOCKOUT LOGIK FRA GUI TIL CONTROLLER KLASSE
 		lblClockOutError.setText("");
 		try {
 			timeRegistrationController.clockOut();
 			setEndTimeText(timeRegistrationController.getCurrentTimeRegistration().getEndTime());
 		} catch (IllegalTimeRegistrationException e) {
 			lblClockOutError.setText(e.getMessage());
-		}
-		
-		
-//				lblClockOutError.setText("Du skal stemple ud først");
-//			} else if (timeRegistrationController.getCurrentTimeRegistration().getEndTime() != null) {
-//				lblClockOutError.setText("Du har allerede stemplet ud");
-//			} else {
-//				
-//				setEndTimeText(timeRegistrationController.getCurrentTimeRegistration().getEndTime());
-//				
-//			}
-			
-			
-			
+		}		
 	}
 	
 	private void submitTimeRegistration() {
 		timeRegistrationController.submitRegistration(timeRegistrationController.getCurrentTimeRegistration());
+		hideFrame();
 	}
 	
 	private void cancelTimeRegistrationView() {
@@ -446,6 +436,29 @@ public class TimeRegistrationView extends JFrame {
 	private void hideFrame() {
 		this.setVisible(false);
 		this.dispose();
+	}
+	
+	private void makeNewTimeRegistration() {
+		btnClockOut.setVisible(false);
+		lblClockOutError.setVisible(false);
+		btnAddDescription.setVisible(false);
+		lblDescriptionError.setVisible(false);
+		
+		timeRegistrationController = new TimeRegistrationController();
+		timeRegistrationController.makeNewTimeRegistration();
+		Employee employee = LoginController.getInstance().getLoggedInEmployee();
+		timeRegistrationController.assignEmployeeToTimeRegistration(employee);
+	}
+	
+	private void endTimeRegistration() {
+		btnClockIn.setVisible(false);
+		lblClockInError.setVisible(false);
+		
+		timeRegistrationController = new TimeRegistrationController();
+		Employee employee = LoginController.getInstance().getLoggedInEmployee();
+		TimeRegistration timeRegistration = timeRegistrationController.findActiveTimeRegistration(employee);
+		timeRegistrationController.setCurrentTimeRegistration(timeRegistration);
+		setAssignedProjectText(timeRegistrationController.getCurrentTimeRegistration().getProject());
 	}
 
 }

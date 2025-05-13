@@ -81,8 +81,6 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 	@Override
 	public void clockOut() throws IllegalTimeRegistrationException{		
 		ValidateTimeRegistration.validateClockOut(currentTimeRegistration);
-		//Hvorfor sætter vi activeTimeRegistration her?
-		currentTimeRegistration = timeRegistrationDB.findActiveTimeRegistration(currentTimeRegistration.getEmployee());
 		
 		currentTimeRegistration.setEndTime(LocalDateTime.now());
 	}
