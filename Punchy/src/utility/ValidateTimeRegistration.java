@@ -104,10 +104,10 @@ public class ValidateTimeRegistration {
 	}
 	
 	public static boolean validateStartTimeBeforeEndTime(LocalDateTime startTime, LocalDateTime endTime) {
-		boolean startTimeIsBeforeEndTime = true;
+		boolean startTimeIsBeforeEndTime = false;
 		
 		if (startTime.isBefore(endTime)) {
-			startTimeIsBeforeEndTime = false;
+			startTimeIsBeforeEndTime = true;
 		}
 		
 		return startTimeIsBeforeEndTime;

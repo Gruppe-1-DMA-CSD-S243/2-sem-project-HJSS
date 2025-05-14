@@ -119,9 +119,6 @@ public class TimeSheetDB implements TimeSheetDBIF {
 	private TimeSheet buildObject(ResultSet resultSet, boolean fullAssociation) {
 		TimeSheet currentTimeSheet = null;
 		
-		// TODO:
-		// Employee skal findes og bygges! Men hvordan?
-		
 		EmployeeDBIF employeeDB = new EmployeeDB();
 		TimeRegistrationDBIF timeRegistrationDB = new TimeRegistrationDB();
 		
@@ -139,7 +136,10 @@ public class TimeSheetDB implements TimeSheetDBIF {
 					employee = employeeDB.findEmployee(resultSet.getString("employee_number"));
 				}
 				
-				List<TimeRegistration> timeRegistrations = timeRegistrationDB.findTimeRegistrationsByTimeSheetNumber(timeSheetNumber);
+				List<TimeRegistration> timeRegistrations = null;
+				if (fullAssociation) {
+					timeRegistrations = timeRegistrationDB.findTimeRegistrationsByTimeSheetNumber(timeSheetNumber);
+				}
 				
 				currentTimeSheet = new TimeSheet(timeSheetNumber, weekNumber, startDateWeek, 
 						endDateWeek, isSubmitted, isApproved, employee, timeRegistrations);

@@ -25,6 +25,7 @@ import java.util.List;
 
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingWorker;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
@@ -53,7 +54,7 @@ public class TimeRegistrationView extends JFrame {
 	private final JButton btnAddSelectedProject = new JButton("Tilføj projekt");
 	private final JButton btnSubmit = new JButton("Tilføj");
 	private final JButton btnCancel = new JButton("Annuller");
-	private final JLabel lblTitle = new JLabel("Ny tidsregistrering");
+	private final JLabel lblCurrentTime = new JLabel("");
 	private final JLabel lblProjectError = new JLabel("");
 	private final JPanel centerCenterPanel = new JPanel();
 	private final JLabel lblAssignedProject = new JLabel("Projekt");
@@ -72,6 +73,47 @@ public class TimeRegistrationView extends JFrame {
 	private final JLabel lblClockInError = new JLabel("");
 	private final JLabel lblClockOutError = new JLabel("");
 	private final JLabel lblDescriptionError = new JLabel("");
+	
+	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+	private SwingWorker<Boolean, LocalDateTime> clockWorker = new SwingWorker<>() {
+		
+		@Override
+		protected Boolean doInBackground() throws InterruptedException {
+			
+			while (true) {
+				publish(LocalDateTime.now());
+				Thread.sleep(200);
+			}
+			
+		}
+		
+		@Override
+		protected void process(List<LocalDateTime> chunks) {
+			lblCurrentTime.setText(formatter.format(chunks.getLast()).toString());
+		}
+	};
+	
+	private SwingWorker<Boolean, LocalDateTime> clockInWorker = new SwingWorker<>() {
+		
+		@Override
+		protected Boolean doInBackground() {
+			btnCancel.setEnabled(false);
+			//Try catch her: 
+			//Hvis clockIn succeds, return true
+			//Else, return false
+			//Print noget feedback i done()!
+			timeRegistrationController.clockIn();
+			return true;
+		}
+		
+		@Override
+		protected void done() {
+			setStartTimeText(timeRegistrationController.getCurrentTimeRegistration().getStartTime());
+			btnCancel.setText("Ok");
+			btnCancel.setEnabled(true);
+			//Feedback til user: "Tidsregistrering startet/oprettet"
+		}
+	};
 
 	/**
 	 * Launch the application.
@@ -107,6 +149,7 @@ public class TimeRegistrationView extends JFrame {
 		
 		timeRegistrationController = new TimeRegistrationController();
 		
+		//Dette if-statement er skyld i de fejl, der kommer frem i konsollen!
 		if (timeRegistrationController.findActiveTimeRegistration(employee) != null) {
 			endTimeRegistration();
 		}
@@ -114,9 +157,12 @@ public class TimeRegistrationView extends JFrame {
 			makeNewTimeRegistration();
 		}
 		
+		//makeNewTimeRegistration();
+		
 		displayProjects(timeRegistrationController.findProjectsByEmployee(employee));
 		setDateText(timeRegistrationController.getCurrentTimeRegistration().getDate());
 		setStartTimeText(timeRegistrationController.getCurrentTimeRegistration().getStartTime());
+		clockWorker.execute();
 	}
 	private void initGUI() {
 		setTitle("Ny tidsregistrering");
@@ -133,7 +179,7 @@ public class TimeRegistrationView extends JFrame {
 		
 		contentPanel.add(northPanel, BorderLayout.NORTH);
 		
-		northPanel.add(lblTitle);
+		northPanel.add(lblCurrentTime);
 		
 		contentPanel.add(centerPanel, BorderLayout.CENTER);
 		centerPanel.setLayout(new BorderLayout(0, 0));
@@ -404,14 +450,7 @@ public class TimeRegistrationView extends JFrame {
 	}
 	
 	private void clockIn() {
-		if (timeRegistrationController.getCurrentTimeRegistration().getStartTime() == null) {
-			timeRegistrationController.clockIn();
-			setStartTimeText(timeRegistrationController.getCurrentTimeRegistration().getStartTime());
-			lblClockInError.setText("");
-		}
-		else {
-			lblClockInError.setText("Du har allerede stemplet ind");
-		}
+		clockInWorker.execute();
 	}
 	
 	private void clockOut() {
@@ -443,6 +482,7 @@ public class TimeRegistrationView extends JFrame {
 		lblClockOutError.setVisible(false);
 		btnAddDescription.setVisible(false);
 		lblDescriptionError.setVisible(false);
+		btnSubmit.setVisible(false);
 		
 		timeRegistrationController = new TimeRegistrationController();
 		timeRegistrationController.makeNewTimeRegistration();
