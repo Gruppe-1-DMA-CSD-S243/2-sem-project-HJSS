@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.EventQueue;
 
+import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,6 +18,8 @@ import model.TimeRegistration;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
+import java.awt.Image;
+
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -29,12 +32,15 @@ import javax.swing.SwingWorker;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.awt.event.ActionEvent;
 import java.awt.FlowLayout;
 import javax.swing.DropMode;
+import javax.swing.ImageIcon;
+import javax.swing.SwingConstants;
 
 public class TimeRegistrationView extends JFrame {
 	
@@ -54,7 +60,7 @@ public class TimeRegistrationView extends JFrame {
 	private final JButton btnAddSelectedProject = new JButton("Tilføj projekt");
 	private final JButton btnSubmit = new JButton("Tilføj");
 	private final JButton btnCancel = new JButton("Annuller");
-	private final JLabel lblCurrentTime = new JLabel("");
+	private final JLabel lblCurrentTime = new JLabel("a");
 	private final JLabel lblProjectError = new JLabel("");
 	private final JPanel centerCenterPanel = new JPanel();
 	private final JLabel lblAssignedProject = new JLabel("Projekt");
@@ -73,6 +79,8 @@ public class TimeRegistrationView extends JFrame {
 	private final JLabel lblClockInError = new JLabel("");
 	private final JLabel lblClockOutError = new JLabel("");
 	private final JLabel lblDescriptionError = new JLabel("");
+	private final JLabel lblLogo = new JLabel("");
+	private final JLabel lblSpacer = new JLabel("");
 	
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 	private SwingWorker<Boolean, LocalDateTime> clockWorker = new SwingWorker<>() {
@@ -176,10 +184,28 @@ public class TimeRegistrationView extends JFrame {
 		
 		contentPane.add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(new BorderLayout(0, 0));
+		northPanel.setBorder(new EmptyBorder(0, 0, 5, 0));
 		
 		contentPanel.add(northPanel, BorderLayout.NORTH);
+		northPanel.setLayout(new BorderLayout(0, 0));
 		
+		try {
+			Image logo = ImageIO.read(getClass().getResourceAsStream("/Punchy (1).png"));
+			//Image resizedImage = logo.getScaledInstance(980 / 8, 287 / 8, Image.SCALE_SMOOTH);
+			ImageIcon resizedImageIcon = new ImageIcon(logo);
+			lblLogo.setHorizontalAlignment(SwingConstants.RIGHT);
+			lblLogo.setIcon(resizedImageIcon);
+			lblSpacer.setPreferredSize(new Dimension(980 / 8, 287 / 8));
+		} catch (IOException e) {
+			
+		}
+		lblCurrentTime.setHorizontalAlignment(SwingConstants.CENTER);
+
 		northPanel.add(lblCurrentTime);
+		
+		northPanel.add(lblLogo, BorderLayout.WEST);
+		
+		northPanel.add(lblSpacer, BorderLayout.EAST);
 		
 		contentPanel.add(centerPanel, BorderLayout.CENTER);
 		centerPanel.setLayout(new BorderLayout(0, 0));
@@ -465,10 +491,14 @@ public class TimeRegistrationView extends JFrame {
 	
 	private void submitTimeRegistration() {
 		timeRegistrationController.submitRegistration(timeRegistrationController.getCurrentTimeRegistration());
+		MainMenu mainMenu = new MainMenu();
+		mainMenu.setVisible(true);
 		hideFrame();
 	}
 	
 	private void cancelTimeRegistrationView() {
+		MainMenu mainMenu = new MainMenu();
+		mainMenu.setVisible(true);
 		hideFrame();
 	}
 

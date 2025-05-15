@@ -8,11 +8,14 @@ import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.time.LocalDate;
+import java.util.EventListener;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 
 import controller.LoginController;
@@ -23,10 +26,13 @@ import model.TimeRegistration;
 import model.TimeSheet;
 
 import javax.swing.JLabel;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
 
 public class MainMenu extends JFrame {
@@ -49,6 +55,17 @@ public class MainMenu extends JFrame {
 	private final JButton btnPlaceHolder2 = new JButton("Placeholder2");
 	private final JButton btnPlaceHolder3 = new JButton("Placeholder3");
 	private final JButton btnPlaceHolder4 = new JButton("Placeholder4");
+	
+	SwingWorker<Boolean, Integer> displayTimeSheetWorker = new SwingWorker<>() {
+
+		@Override
+		protected Boolean doInBackground() throws Exception {
+			TimeSheet ts = timeSheetController.findTimeSheetByEmployeeAndDate(LoginController.getInstance().getLoggedInEmployee(), LocalDate.now(), true);
+			displayTimeSheet(ts);
+			
+			return true;
+		}
+	};
 
 	/**
 	 * Launch the application.
@@ -73,9 +90,7 @@ public class MainMenu extends JFrame {
 		initGUI();
 		
 		timeSheetController = new TimeSheetController();
-		//TODO: Slet det her!
-		TimeSheet ts = timeSheetController.findTimeSheetByEmployeeAndDate(LoginController.getInstance().getLoggedInEmployee(), LocalDate.now(), true);
-		displayTimeSheet(ts);
+		displayTimeSheetWorker.execute();
 	}
 	private void initGUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -92,6 +107,16 @@ public class MainMenu extends JFrame {
 		
 		contentPane.add(northPanel, BorderLayout.NORTH);
 		
+		try {
+			Image logo = ImageIO.read(getClass().getResourceAsStream("/Punchy.png"));
+			Image resizedImage = logo.getScaledInstance(980 / 8, 287 / 8, Image.SCALE_SMOOTH);
+			ImageIcon resizedImageIcon = new ImageIcon(resizedImage);
+			lblTitle.setIcon(resizedImageIcon);
+			lblTitle.setText("");
+		} catch (IOException e) {
+			
+		}
+		
 		northPanel.add(lblTitle);
 		
 		contentPane.add(centerPanel, BorderLayout.CENTER);
@@ -102,30 +127,30 @@ public class MainMenu extends JFrame {
 		centerPanel.add(scrollPane, BorderLayout.CENTER);
 		tblTimeSheet.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
+				{"0:00", null, null, null, null, null, null, null},
+				{"1:00", null, null, null, null, null, null, null},
+				{"2:00", null, null, null, null, null, null, null},
+				{"3:00", null, null, null, null, null, null, null},
+				{"4:00", null, null, null, null, null, null, null},
+				{"5:00", null, null, null, null, null, null, null},
+				{"6:00", null, null, null, null, null, null, null},
+				{"7:00", null, null, null, null, null, null, null},
+				{"8:00", null, null, null, null, null, null, null},
+				{"9:00", null, null, null, null, null, null, null},
+				{"10:00", null, null, null, null, null, null, null},
+				{"11:00", null, null, null, null, null, null, null},
+				{"12:00", null, null, null, null, null, null, null},
+				{"13:00", null, null, null, null, null, null, null},
+				{"14:00", null, null, null, null, null, null, null},
+				{"15:00", null, null, null, null, null, null, null},
+				{"16:00", null, null, null, null, null, null, null},
+				{"17:00", null, null, null, null, null, null, null},
+				{"18:00", null, null, null, null, null, null, null},
+				{"19:00", null, null, null, null, null, null, null},
+				{"20:00", null, null, null, null, null, null, null},
+				{"21:00", null, null, null, null, null, null, null},
+				{"22:00", null, null, null, null, null, null, null},
+				{"23:00", null, null, null, null, null, null, null},
 			},
 			new String[] {
 				"", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag", "Søndag"
@@ -208,6 +233,12 @@ public class MainMenu extends JFrame {
 		TimeRegistrationView timeRegistrationView = new TimeRegistrationView();
 		timeRegistrationView.setBounds(getBounds());
 		timeRegistrationView.setVisible(true);
+		hideFrame();
+	}
+	
+	private void hideFrame() {
+		this.setVisible(false);
+		this.dispose();
 	}
 
 }

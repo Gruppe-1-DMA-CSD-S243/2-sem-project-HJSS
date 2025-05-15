@@ -132,7 +132,7 @@ public class TimeSheetDB implements TimeSheetDBIF {
 				boolean isApproved = resultSet.getBoolean("is_approved");
 				
 				Employee employee = null;
-				if (employeeDB.findEmployee(resultSet.getString("employee_number")) != null) {
+				if (fullAssociation) {
 					employee = employeeDB.findEmployee(resultSet.getString("employee_number"));
 				}
 				

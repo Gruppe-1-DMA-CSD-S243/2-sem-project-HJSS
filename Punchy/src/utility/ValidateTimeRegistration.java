@@ -74,7 +74,7 @@ public class ValidateTimeRegistration {
 		boolean startTimeIsValid = validateStartTime(startTime);
 		boolean endTimeIsValid = validateEndTime(endTime);
 		
-		if (startTimeIsValid && !endTimeIsValid) {
+		if (!startTimeIsValid && !endTimeIsValid) {
 			throw new IllegalTimeRegistrationException("Can't clock out before clocking in");
 		}
 		

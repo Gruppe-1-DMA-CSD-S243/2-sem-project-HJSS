@@ -38,7 +38,14 @@ public class TimeSheetTableCellRenderer implements TableCellRenderer {
 			Color color = null;
 			
 			if (result instanceof TimeRegistration) {
-				color = Color.green;
+				if (column % 2 == 0) {
+					color = Color.decode("#5789FF");
+				}
+				else {
+					color = Color.decode("#CD57FF");
+				}
+				//color = Color.decode("#7957ff");
+				
 			}
 			
 			c.setBackground(color);
