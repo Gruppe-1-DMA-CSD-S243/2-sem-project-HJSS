@@ -88,6 +88,7 @@ class TimeRegistrationTest {
 	@Test
 	void shouldRejectEndTimeBeforeStartTime() throws IllegalTimeRegistrationException{
 		// Arrange
+		System.out.println(timeRegistration.getStartTime());
 			timeRegistration.setEndTime(LocalDateTime.now());
 
 		// Act

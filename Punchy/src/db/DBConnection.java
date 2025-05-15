@@ -89,7 +89,7 @@ public class DBConnection {
        return (instance == null);
     }    
     //this method is used to get the instance of the connection
-    public static DBConnection getInstance()
+    public static synchronized DBConnection getInstance()
     {
         if (instance == null)
         {
