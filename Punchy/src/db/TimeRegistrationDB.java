@@ -156,9 +156,6 @@ public class TimeRegistrationDB implements TimeRegistrationDBIF {
 	private TimeRegistration buildObject(ResultSet resultSet, boolean fullAssociation) {
 		TimeRegistration currentTimeRegistration = null;
 		
-		// TODO:
-		// Employee skal findes og bygges! Men hvordan?
-		
 		TimeSheetDBIF timeSheetDB = new TimeSheetDB();
 		ProjectDBIF projectDB = new ProjectDB();
 		EmployeeDBIF employeeDB = new EmployeeDB();

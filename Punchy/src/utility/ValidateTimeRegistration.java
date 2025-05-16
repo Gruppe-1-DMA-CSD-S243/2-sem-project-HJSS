@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import controller.IllegalTimeRegistrationException;
+import db.TimeRegistrationDB;
 import model.Employee;
 import model.Project;
 import model.TimeRegistration;
@@ -68,17 +69,45 @@ public class ValidateTimeRegistration {
 		}
 	}
 	
+	public static void validateClockIn(TimeRegistration timeRegistration) throws IllegalTimeRegistrationException {
+		Employee employee = timeRegistration.getEmployee();
+		boolean noActiveTimeRegistration = validateNoActiveTimeRegistration(employee);
+		Project project = timeRegistration.getProject();
+		boolean projectIsValid = validateProject(project);
+		LocalDateTime startTime = timeRegistration.getStartTime();
+		boolean startTimeIsValid = validateStartTime(startTime);
+		TimeSheet timeSheet = timeRegistration.getTimeSheet();
+		boolean timeSheetIsValid = validateTimeSheet(timeSheet);
+		
+		if (!noActiveTimeRegistration) {
+			throw new IllegalTimeRegistrationException("You already have an active TimeRegistration");
+		}
+		
+		if (!projectIsValid) {
+			throw new IllegalTimeRegistrationException("You must assign a project to the registration before clocking in");
+		}
+		
+		if (!startTimeIsValid) {
+			throw new IllegalTimeRegistrationException("Invalid Start Time");
+		}
+		
+		if (!timeSheetIsValid) {
+			throw new IllegalTimeRegistrationException("Couldn't find a valid Time Sheet");
+		}
+		
+	}
+	
 	public static void validateClockOut(TimeRegistration timeRegistration) throws IllegalTimeRegistrationException{
 		LocalDateTime startTime = timeRegistration.getStartTime();
 		LocalDateTime endTime = timeRegistration.getEndTime();
 		boolean startTimeIsValid = validateStartTime(startTime);
 		boolean endTimeIsValid = validateEndTime(endTime);
 		
-		if (!startTimeIsValid && !endTimeIsValid) {
+		if (!startTimeIsValid && endTimeIsValid) {
 			throw new IllegalTimeRegistrationException("Can't clock out before clocking in");
 		}
 		
-		if (!startTimeIsValid && endTimeIsValid) {
+		if (startTimeIsValid && endTimeIsValid) {
 			throw new IllegalTimeRegistrationException("You have already clocked out");
 		}
 	}
@@ -185,5 +214,16 @@ public class ValidateTimeRegistration {
 		}
 		
 		return employeeIsValid;
+	}
+	
+	public static boolean validateNoActiveTimeRegistration(Employee employee) {
+		TimeRegistrationDB timeRegistrationDB = new TimeRegistrationDB();
+		boolean noActiveTimeRegistration = true;
+		
+		if (timeRegistrationDB.findActiveTimeRegistration(employee) != null) {
+			noActiveTimeRegistration = false;
+		}
+		
+		return noActiveTimeRegistration;
 	}
 }
