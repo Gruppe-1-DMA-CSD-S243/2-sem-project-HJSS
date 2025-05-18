@@ -112,6 +112,12 @@ public class ValidateTimeRegistration {
 		}
 	}
 	
+	public static void validateActiveTimeRegistration(TimeRegistration timeRegistration) throws IllegalTimeRegistrationException{
+		if (timeRegistration == null) {
+			throw new IllegalTimeRegistrationException("There is no active time registration");
+		}
+	}
+	
 	public static boolean validateTimeRegistrationNumber(String timeRegistrationNumber) {
 		boolean timeRegistrationNumberIsValid = true;
 		

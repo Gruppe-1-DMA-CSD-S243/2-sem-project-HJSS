@@ -21,5 +21,5 @@ public interface TimeRegistrationControllerIF {
 	
 	public List<Project> findProjectsByEmployee(Employee employee);
 	public TimeSheet findTimeSheetByEmployeeAndDate(Employee employee, LocalDate date);
-	public TimeRegistration findActiveTimeRegistration(Employee employee);
+	public TimeRegistration findActiveTimeRegistration(Employee employee) throws IllegalTimeRegistrationException;
 }

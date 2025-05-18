@@ -104,8 +104,10 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 	}
 	
 	@Override
-	public TimeRegistration findActiveTimeRegistration(Employee employee) {
-		return timeRegistrationDB.findActiveTimeRegistration(employee);
+	public TimeRegistration findActiveTimeRegistration(Employee employee) throws IllegalTimeRegistrationException{
+		TimeRegistration activeTimeRegistration = timeRegistrationDB.findActiveTimeRegistration(employee);
+		ValidateTimeRegistration.validateActiveTimeRegistration(activeTimeRegistration);
+		return activeTimeRegistration;
 	}
 
 	public TimeRegistration getCurrentTimeRegistration() {

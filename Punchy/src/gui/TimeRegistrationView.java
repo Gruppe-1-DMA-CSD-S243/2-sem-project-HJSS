@@ -175,13 +175,19 @@ public class TimeRegistrationView extends JFrame {
 		
 		timeRegistrationController = new TimeRegistrationController();
 		
-		//Dette if-statement er skyld i de fejl, der kommer frem i konsollen!
-		if (timeRegistrationController.findActiveTimeRegistration(employee) != null) {
+		try {
 			endTimeRegistration();
-		}
-		else {
+		} catch (IllegalTimeRegistrationException e) {
 			makeNewTimeRegistration();
 		}
+		
+		//Dette if-statement er skyld i de fejl, der kommer frem i konsollen!
+//		if (timeRegistrationController.findActiveTimeRegistration(employee) != null) {
+//			endTimeRegistration();
+//		}
+//		else {
+//			makeNewTimeRegistration();
+//		}
 		
 		//makeNewTimeRegistration();
 		
@@ -463,34 +469,29 @@ public class TimeRegistrationView extends JFrame {
 	}
 	
 	private void setAssignedProjectText(Project project) {
-		if (project != null) {
 			txtAssignedProject.setText(project.getProjectName());
 			btnAddSelectedProject.setText("Skift projekt");
-		}
 	}
 	
 	private void setDateText(LocalDate date) {
-		if (date != null) {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 			String formattedDate = date.format(formatter);
 			txtDate.setText(formattedDate);
-		}
+		
 	}
 	
 	private void setStartTimeText(LocalDateTime startTime) {
-		if (startTime != null) {
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-			String formattedStartTime = startTime.format(formatter);
-			txtStartTime.setText(formattedStartTime);
-		}
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+		String formattedStartTime = startTime.format(formatter);
+		txtStartTime.setText(formattedStartTime);
+		
 	}
 	
 	private void setEndTimeText(LocalDateTime endTime) {
-		if (endTime != null) {
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-			String formattedEndTime = endTime.format(formatter);
-			txtEndTime.setText(formattedEndTime);
-		}
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+		String formattedEndTime = endTime.format(formatter);
+		txtEndTime.setText(formattedEndTime);
+		
 	}
 	
 	private void clockIn() {
@@ -538,15 +539,17 @@ public class TimeRegistrationView extends JFrame {
 		timeRegistrationController.assignEmployeeToTimeRegistration(employee);
 	}
 	
-	private void endTimeRegistration() {
-		btnClockIn.setVisible(false);
-		lblClockInError.setVisible(false);
+	private void endTimeRegistration() throws IllegalTimeRegistrationException{
+		
 		
 		timeRegistrationController = new TimeRegistrationController();
 		Employee employee = LoginController.getInstance().getLoggedInEmployee();
 		TimeRegistration timeRegistration = timeRegistrationController.findActiveTimeRegistration(employee);
 		timeRegistrationController.setCurrentTimeRegistration(timeRegistration);
 		setAssignedProjectText(timeRegistrationController.getCurrentTimeRegistration().getProject());
+		
+		btnClockIn.setVisible(false);
+		lblClockInError.setVisible(false);
 	}
 
 }
