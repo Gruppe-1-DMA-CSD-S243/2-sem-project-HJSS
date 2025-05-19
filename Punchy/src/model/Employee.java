@@ -1,5 +1,15 @@
 package model;
 
+/**
+ * This class represents an employee in the system.
+ * 
+ * This class encapsulates all relevant information about an employee,<br>
+ * including contact details, job information, login credentials, and<br>
+ * administrative privileges.
+ * 
+ * @author Jonas Hovaldt
+ */
+
 public class Employee {
 	private String employeeNumber;
 	private String phoneNumber;
@@ -12,6 +22,22 @@ public class Employee {
 	private String userName;
 	private String password;
 	private boolean isAdministrator;
+	
+	/**
+	 * Constructs an object of Employee with the specified details.
+	 * 
+	 * @param employeeNumber
+	 * @param phoneNumber
+	 * @param firstName
+	 * @param lastName
+	 * @param address
+	 * @param zipCode
+	 * @param email
+	 * @param jobTitle
+	 * @param userName
+	 * @param password
+	 * @param isAdministrator
+	 */
 	
 	public Employee(String employeeNumber, String phoneNumber, String firstName, String lastName, String address, String zipCode,
 			String email, String jobTitle, String userName, String password, boolean isAdministrator) {

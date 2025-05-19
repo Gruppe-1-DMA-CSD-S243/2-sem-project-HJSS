@@ -11,7 +11,8 @@ import model.TimeRegistration;
 import model.TimeSheet;
 
 public class ValidateTimeRegistration {
-	
+		// Validates all fields of a TimeRegistration object.
+		// Throws IllegalTimeRegistrationException if a field is invalid.
 	public static void validateData(TimeRegistration timeRegistration) throws IllegalTimeRegistrationException {
 		String timeRegistrationNumber = timeRegistration.getTimeRegistrationNumber();
 		LocalDate date = timeRegistration.getDate();
@@ -23,6 +24,8 @@ public class ValidateTimeRegistration {
 		TimeSheet timeSheet = timeRegistration.getTimeSheet();
 		Project project = timeRegistration.getProject();
 		Employee employee = timeRegistration.getEmployee();
+		
+		// Validates  each field and throws an exception message if invalid
 		
 		if (!validateTimeRegistrationNumber(timeRegistrationNumber)) {
 			throw new IllegalTimeRegistrationException("Registration number missing");
@@ -69,6 +72,9 @@ public class ValidateTimeRegistration {
 		}
 	}
 	
+		// Validates conditions for clocking in.
+		// Ensures that no active time registration exists.
+		// Ensures that start time, and timesheet are present. 
 	public static void validateClockIn(TimeRegistration timeRegistration) throws IllegalTimeRegistrationException {
 		Employee employee = timeRegistration.getEmployee();
 		boolean noActiveTimeRegistration = validateNoActiveTimeRegistration(employee);
@@ -97,6 +103,10 @@ public class ValidateTimeRegistration {
 		
 	}
 	
+		// Validates conditions for clocking out.
+		// Ensures user has clocked in before clocking out.
+		// Ensures user hasn't already clocked out.
+	
 	public static void validateClockOut(TimeRegistration timeRegistration) throws IllegalTimeRegistrationException{
 		LocalDateTime startTime = timeRegistration.getStartTime();
 		LocalDateTime endTime = timeRegistration.getEndTime();
@@ -112,11 +122,7 @@ public class ValidateTimeRegistration {
 		}
 	}
 	
-	public static void validateActiveTimeRegistration(TimeRegistration timeRegistration) throws IllegalTimeRegistrationException{
-		if (timeRegistration == null) {
-			throw new IllegalTimeRegistrationException("There is no active time registration");
-		}
-	}
+	// Validates that the TimeRegistrationNumber is never empty or null. 
 	
 	public static boolean validateTimeRegistrationNumber(String timeRegistrationNumber) {
 		boolean timeRegistrationNumberIsValid = true;
@@ -128,6 +134,8 @@ public class ValidateTimeRegistration {
 		return timeRegistrationNumberIsValid;
 	}
 	
+	// Validates that the date is not null.
+	
 	public static boolean validateDate(LocalDate date) {
 		boolean dateIsValid = true;
 		
@@ -137,7 +145,7 @@ public class ValidateTimeRegistration {
 		
 		return dateIsValid;
 	}
-	
+	// Validates that the StartTime is prior to EndTime. 
 	public static boolean validateStartTimeBeforeEndTime(LocalDateTime startTime, LocalDateTime endTime) {
 		boolean startTimeIsBeforeEndTime = false;
 		
@@ -147,7 +155,7 @@ public class ValidateTimeRegistration {
 		
 		return startTimeIsBeforeEndTime;
 	}
-	
+	// Validates the startTime is not null. 
 	public static boolean validateStartTime(LocalDateTime startTime) {
 		boolean startTimeIsValid = true;
 		
@@ -157,7 +165,7 @@ public class ValidateTimeRegistration {
 		
 		return startTimeIsValid;
 	}
-	
+	// Validates that the endTime is not null.
 	public static boolean validateEndTime(LocalDateTime endTime) {
 		boolean endTimeIsValid = true;
 		
@@ -171,7 +179,7 @@ public class ValidateTimeRegistration {
 	public static boolean validateHours(double hours) {
 		return false;
 	}
-	
+	// Validates the registration type is not null. 
 	public static boolean validateRegistrationType(String registrationType) {
 		boolean registrationTypeIsValid = true;
 		
@@ -182,6 +190,8 @@ public class ValidateTimeRegistration {
 		return registrationTypeIsValid;
 	}
 	
+	
+	// Validates that the description is not null.
 	public static boolean validateDescription(String description) {
 		boolean descriptionIsValid = true;
 		
@@ -191,7 +201,7 @@ public class ValidateTimeRegistration {
 		
 		return descriptionIsValid;
 	}
-	
+	// Validates that the timeSheet is not null. 
 	public static boolean validateTimeSheet(TimeSheet timeSheet) {
 		boolean timeSheetIsValid = true;
 		
@@ -201,7 +211,7 @@ public class ValidateTimeRegistration {
 		
 		return timeSheetIsValid;
 	}
-	
+	// Validates that the project is not null. 
 	public static boolean validateProject(Project project) {
 		boolean projectIsValid = true;
 		
@@ -211,7 +221,7 @@ public class ValidateTimeRegistration {
 		
 		return projectIsValid;
 	}
-	
+	// Validates that the employee is not null. 
 	public static boolean validateEmployee(Employee employee) {
 		boolean employeeIsValid = true;
 		
@@ -221,7 +231,9 @@ public class ValidateTimeRegistration {
 		
 		return employeeIsValid;
 	}
-	
+		
+		// Ensures that the employee has no active timeRegistration. 
+		// Returns true if no active registration exists.
 	public static boolean validateNoActiveTimeRegistration(Employee employee) {
 		TimeRegistrationDB timeRegistrationDB = new TimeRegistrationDB();
 		boolean noActiveTimeRegistration = true;

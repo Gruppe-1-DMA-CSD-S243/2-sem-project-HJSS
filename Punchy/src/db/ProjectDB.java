@@ -10,9 +10,18 @@ import java.util.List;
 import model.Employee;
 import model.Project;
 
-public class ProjectDB implements ProjectDBIF {
+/** Purpose of this class is to handle all the database related operations <br>
+ * Setting up prepared statements <br>
+ * Find project by calling method buildObject <br>
+ * Find a list of projects by calling method buildObjects <br>
+ * Build object from data <br>
+ * Build a list of objects from data <br> 
+ * @author Henrik Holmberg Kringel
+ */
 
-	private static final String FIND_PROJECT_QUERY = "SELECT * FROM Project JOIN WorksOn ON Project.project_id = WorksOn.project_id "
+public class ProjectDB implements ProjectDBIF {
+	private static final String FIND_PROJECT_QUERY = "SELECT * FROM Project "
+			+ "JOIN WorksOn ON Project.project_id = WorksOn.project_id "
 			+ "JOIN Employee ON WorksOn.employee_id = Employee.employee_id "
 			+ "WHERE project_number = ? AND employee_number = ?;";
 	private PreparedStatement findProjectPS;
@@ -38,9 +47,19 @@ public class ProjectDB implements ProjectDBIF {
 		}
 	}
 	
+	
+	/**
+	 * Purpose of this method is to find the project which matches the two parameters. <br>
+	 * This is done by using the prepared statement, which joins Employee table and Project table by Works_on table and then retrieves <br>
+	 * the project where project_number and employee_number matches to parameter on the project. <br>
+	 * It uses the buildObject method.
+	 * @param projectNumber
+	 * @param employeeNumber
+	 * @return foundProject
+	 */
 	@Override
 	public Project findProject(String projectNumber, String employeeNumber) {
-		Project currentProject = null;
+		Project foundProject = null;
 		
 		try {
 			findProjectPS.setString(1, projectNumber);
@@ -48,13 +67,21 @@ public class ProjectDB implements ProjectDBIF {
 			
 			ResultSet resultSet = findProjectPS.executeQuery();
 			
-			currentProject = buildObject(resultSet);
+			foundProject = buildObject(resultSet);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return currentProject;
+		return foundProject;
 	}
 	
+	/**
+	 * Purpose of this method is to find a list of projects which matches the employee. <br>
+	 * This is done by using the prepared statement, which joins Employee table and Project table by Works_on table and then retrieves <br>
+	 * all projects where project_number and employee_number matches the to parameter on the projects. <br>
+	 * It uses the buildObjects method.
+	 * @param employee
+	 * @return foundProject
+	 */
 	@Override
 	public List<Project> findProjectsByEmployee(Employee employee) {
 		List<Project> foundProjects = new ArrayList<>();
@@ -71,6 +98,11 @@ public class ProjectDB implements ProjectDBIF {
 		return foundProjects;
 	}
 	
+	/**
+	 * Purpose of this method is to take a resulset from the database and build it into a Java object.
+	 * @param resultSet
+	 * @return currentProject
+	 */
 	private Project buildObject(ResultSet resultSet) {
 		Project currentProject = null;
 		try {
@@ -90,6 +122,11 @@ public class ProjectDB implements ProjectDBIF {
 		return currentProject;
 	}
 	
+	/**
+	 * Purpose of this method is to take a resulset from the database and build it into a list of Java objects.
+	 * @param resultSet
+	 * @return a list of projects
+	 */
 	private List<Project> buildObjects(ResultSet resultSet) {
 		List<Project> projects = new ArrayList<>();
 		try {
