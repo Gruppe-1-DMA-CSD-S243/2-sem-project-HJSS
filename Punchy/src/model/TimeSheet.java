@@ -7,6 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * This class represents a timesheet for an employee. <br>
+ * <br>
+ * A TimeSheet contains all the TimeRegistrations created by a specific employee during a given calendar week.
+ * 
+ * @author Sofus Tvorup Wennike
+ * 
+ */
 public class TimeSheet {
 	private String timeSheetNumber;
 	private String weekNumber;

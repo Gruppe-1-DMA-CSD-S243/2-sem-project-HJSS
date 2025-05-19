@@ -12,6 +12,16 @@ import model.TimeRegistration;
 import model.TimeSheet;
 import utility.ValidateTimeRegistration;
 
+
+/**
+ * Controller class responsible for handling use case logic
+ * 
+ * This class acts as a link between the GUI-layer and the model-layer. <br>
+ * The class contains methods for creating a new TimeRegistration assigning and Employee and Project as well as handling clockIn and clockOut. <br>
+ * 
+ * @author Sofus Tvorup Wennike
+ * 
+ */
 public class TimeRegistrationController implements TimeRegistrationControllerIF {
 	private TimeRegistration currentTimeRegistration;
 	

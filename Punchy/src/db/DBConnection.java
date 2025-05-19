@@ -125,8 +125,7 @@ public class DBConnection {
     			con.setAutoCommit(true);
     		}
     	} catch (SQLException e) {
-    		//TODO: Fix det her!
-    		System.out.println("Print DataAccessException");
+    		e.printStackTrace();
     	}
     }
     
@@ -140,8 +139,7 @@ public class DBConnection {
     			con.setAutoCommit(true);
     		}
     	} catch (SQLException e) {
-    		//TODO: Fix det her!
-    		System.out.println("Print DataAccessException");
+    		e.printStackTrace();
     	}
     }
 

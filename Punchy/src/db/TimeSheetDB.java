@@ -17,6 +17,11 @@ import model.Employee;
 import model.TimeRegistration;
 import model.TimeSheet;
 
+/**
+ * The TimeSheetDB class provides database access functionality for handling TimeSheet objects.
+ * 
+ * @author Sofus Tvorup Wennike
+ */
 public class TimeSheetDB implements TimeSheetDBIF {
 	private static final String FIND_TIME_SHEET_BY_EMPLOYEE_AND_DATE_QUERY = "SELECT * FROM TimeSheet"
 			+ " JOIN WeekStartDates ON TimeSheet.start_date_week = WeekStartDates.start_date_week "
@@ -116,6 +121,15 @@ public class TimeSheetDB implements TimeSheetDBIF {
 		return success;
 	}
 	
+	/**
+	 * Builds a TimeSheet object from the first row a given ResultSet.
+	 * 
+	 * @param resultSet the ResultSet containing the TimeSheet data from the database
+	 * @param fullAssociation true if all TimeRegistrations contained by the TimeSheet should be found and built and false only the TimeSheet and TimeRegistrations should be built
+	 * @return a TimeSheet object representing the first row of the ResultSet, or null if the ResultSet is empty
+	 * 
+	 * @author Sofus Tvorup Wennike
+	 */
 	private TimeSheet buildObject(ResultSet resultSet, boolean fullAssociation) {
 		TimeSheet currentTimeSheet = null;
 		

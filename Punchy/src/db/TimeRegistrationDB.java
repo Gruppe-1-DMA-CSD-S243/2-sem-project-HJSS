@@ -15,6 +15,11 @@ import model.Project;
 import model.TimeRegistration;
 import model.TimeSheet;
 
+/**
+ * The TimeRegistrationDB class provides database access functionality for handling TimeRegistration objects.
+ * 
+ * @author Sofus Tvorup Wennike
+ */
 public class TimeRegistrationDB implements TimeRegistrationDBIF {
 	private static final String INSERT_TIME_REGISTRATION_QUERY = "INSERT INTO TimeRegistration (time_registration_number, time_registration_date, "
 			+ "start_time, end_time, hours, registration_type, description, time_sheet_id, project_id, employee_id)"
@@ -153,6 +158,15 @@ public class TimeRegistrationDB implements TimeRegistrationDBIF {
 		return timeRegistrations;
 	}
 	
+	/**
+	 * Builds a TimeRegistration object from the current row of a given ResultSet
+	 * 
+	 * @param resultSet the ResultSet containing the TimeRegistration data from the database
+	 * @param fullAssociation true if the associated TimeSheet should be retrieved and built or false if only the TimeRegistration should be built
+	 * @return the TimeRegistration object representing the current row of the ResultSet, or null if the ResultSet is empty
+	 * 
+	 * @author Sofus Tvorup Wennike
+	 */
 	private TimeRegistration buildObject(ResultSet resultSet, boolean fullAssociation) {
 		TimeRegistration currentTimeRegistration = null;
 		
@@ -194,6 +208,15 @@ public class TimeRegistrationDB implements TimeRegistrationDBIF {
 		return currentTimeRegistration;
 	}
 	
+	/**
+	 * Builds a list of TimeRegistration objects from a given ResultSet.
+	 * 
+	 * @param resultSet the ResultSet containing TimeRegistraton records from the database
+	 * @param fullAssociation true if the associated TimeSheet should be retrieved and built or false if only the TimeRegistration should be built
+	 * @return a list of TimeRegistration objects created from the provided ResultSet
+	 * 
+	 * @author Sofus Tvorup Wennike
+	 */
 	private List<TimeRegistration> buildObjects(ResultSet resultSet, boolean fullAssociation) {
 		List<TimeRegistration> timeRegistrations = new ArrayList<>();
 		try {

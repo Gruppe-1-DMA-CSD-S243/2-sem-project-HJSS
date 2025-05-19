@@ -4,6 +4,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * This class represents a time registration in the system. <br>
+ * <br>
+ * A TimeRegistration contains information about the date its creation, start time, end time, total hours worked, 
+ * the type of registration, and a description. It is associated with a TimeSheet.
+ * 
+ * @author Sofus Tvorup Wennike
+ */
 public class TimeRegistration {
 	private String timeRegistrationNumber;
 	private LocalDate date;
@@ -12,8 +20,7 @@ public class TimeRegistration {
 	private double hours;
 	private String registrationType;
 	private String description;
-	
-	//TimeSheet variable skal fjernes, og skal kun gøre brug af timesheet der holder collection af registrations
+
 	private TimeSheet timeSheet;
 	private Project project;
 	private Employee employee;
@@ -40,13 +47,6 @@ public class TimeRegistration {
 		this.timeSheet = timeSheet;
 		this.project = project;
 		this.employee = employee;
-	}
-
-	//Temp constructor!!!
-	public TimeRegistration(LocalDate date, LocalDateTime startTime, LocalDateTime endTime) {
-		this.date = date;
-		this.startTime = startTime;
-		this.endTime = endTime;
 	}
 	
 	public TimeRegistration(String timeRegistrationNumber) {
