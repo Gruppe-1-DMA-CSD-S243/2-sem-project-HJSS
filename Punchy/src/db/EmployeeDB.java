@@ -8,16 +8,38 @@ import java.sql.Statement;
 
 import model.Employee;
 
+/**
+ * <p>
+ * The class EmployeeDB implements the EmployeeDBIF interface.
+ * </p>
+ * This class handles the database connectivity and queries
+ * that concerns the employee in the system.
+ * <p>
+ * A prepared statement is created for retrieving
+ * an employee based on their employee number.
+ * </p>
+ * @author Jonas Hovaldt
+ */
+
 public class EmployeeDB implements EmployeeDBIF {
+	/**
+	 * SQL query for finding an employee based on their employee number including their job title.
+	 */
 	private static final String FIND_EMPLOYEE_QUERY = "SELECT * FROM Employee "
 			+ "JOIN JobTitle ON Employee.job_title_id = JobTitle.job_title_id "
 			+ "WHERE employee_number = ?;";
 	private PreparedStatement findEmployeePS;
 	
+	/**
+	 * Constructs an EmployeeDB instance.
+	 */
 	public EmployeeDB() {
 		init();
 	}
 	
+	/**
+     * Initializes the database connection and prepares the SQL statements.
+     */
 	private void init() {
 		Connection con = DBConnection.getInstance().getDBcon();
 		try {
@@ -27,6 +49,14 @@ public class EmployeeDB implements EmployeeDBIF {
 		}
 	}
 
+	/**
+	 * Method for finding an employee by inserting their employee number.<br>
+	 * Uses the findEmployeePS prepared statement.<br>
+	 * Uses the buildObject method to convert the employee in the database<br>
+	 * to a Java object.
+	 * @param employeeNumber
+	 * @return Employee from the database.
+	 */
 	@Override
 	public Employee findEmployee(String employeeNumber) {
 		Employee currentEmployee = null;
@@ -42,6 +72,13 @@ public class EmployeeDB implements EmployeeDBIF {
 		return currentEmployee;
 	}
 	
+	/**
+	 * Initializes an instance of Employee.<br>
+	 * Uses the chosen ResultSet<br>
+	 * Converts the ResultSet to a Java object.
+	 * @param resultSet
+	 * @return Employee
+	 */
 	private Employee buildObject(ResultSet resultSet) {
 		Employee currentEmployee = null;
 		
