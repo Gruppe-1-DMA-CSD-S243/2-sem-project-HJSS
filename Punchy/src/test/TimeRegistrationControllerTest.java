@@ -62,7 +62,7 @@ class TimeRegistrationControllerTest {
 		double expectedHours; //Currently impossible to assert on
 		String expectedRegistrationType = "TidsRegistrering";
 		String expectedDescription = "Assert test";
-		String expectedTimeSheetNumber = "72";
+		String expectedTimeSheetNumber = "72"; //Currently impossible to test on because this value will change
 		String expectedProjectNumber = "5000";
 		String expectedEmployeeNumber = "12345";
 		
