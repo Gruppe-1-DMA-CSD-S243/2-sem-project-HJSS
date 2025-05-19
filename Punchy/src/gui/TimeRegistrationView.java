@@ -195,6 +195,7 @@ public class TimeRegistrationView extends JFrame {
 		setDateText(timeRegistrationController.getCurrentTimeRegistration().getDate());
 		setStartTimeText(timeRegistrationController.getCurrentTimeRegistration().getStartTime());
 		clockWorker.execute();
+		
 	}
 	private void initGUI() {
 		setTitle("Ny tidsregistrering");
@@ -469,28 +470,38 @@ public class TimeRegistrationView extends JFrame {
 	}
 	
 	private void setAssignedProjectText(Project project) {
-			txtAssignedProject.setText(project.getProjectName());
-			btnAddSelectedProject.setText("Skift projekt");
+
+				txtAssignedProject.setText(project.getProjectName());
+				btnAddSelectedProject.setText("Skift projekt");
+
+			
 	}
 	
 	private void setDateText(LocalDate date) {
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-			String formattedDate = date.format(formatter);
-			txtDate.setText(formattedDate);
-		
+			
+
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+				String formattedDate = date.format(formatter);
+				txtDate.setText(formattedDate);
+
 	}
 	
 	private void setStartTimeText(LocalDateTime startTime) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-		String formattedStartTime = startTime.format(formatter);
-		txtStartTime.setText(formattedStartTime);
 		
+		if (startTime != null) {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+			String formattedStartTime = startTime.format(formatter);
+			txtStartTime.setText(formattedStartTime);
+		}
 	}
 	
 	private void setEndTimeText(LocalDateTime endTime) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-		String formattedEndTime = endTime.format(formatter);
-		txtEndTime.setText(formattedEndTime);
+
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+			String formattedEndTime = endTime.format(formatter);
+			txtEndTime.setText(formattedEndTime);
+
+		
 		
 	}
 	

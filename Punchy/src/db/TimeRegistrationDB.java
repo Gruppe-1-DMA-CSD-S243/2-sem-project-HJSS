@@ -187,7 +187,8 @@ public class TimeRegistrationDB implements TimeRegistrationDBIF {
 			currentTimeRegistration = new TimeRegistration(timeRegistrationNumber, date, startTime, endTime, 
 					hours, registrationType, description, timeSheet, project, employee);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("There is no active timeregistration");
+			
 		}
 		
 		return currentTimeRegistration;
