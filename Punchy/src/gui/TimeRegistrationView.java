@@ -14,6 +14,7 @@ import controller.TimeRegistrationController;
 import model.Employee;
 import model.Project;
 import model.TimeRegistration;
+import utility.ValidateTimeRegistration;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -25,6 +26,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
@@ -110,14 +112,30 @@ public class TimeRegistrationView extends JFrame {
 			//Hvis clockIn succeds, return true
 			//Else, return false
 			//Print noget feedback i done()!
-			timeRegistrationController.clockIn();
-			return true;
+			try {
+				timeRegistrationController.clockIn();
+				return true;
+			} catch (IllegalTimeRegistrationException e) {
+				txtStartTime.setText(e.getMessage());
+				return false;
+			}
 		}
 		
 		@Override
 		protected void done() {
-			setStartTimeText(timeRegistrationController.getCurrentTimeRegistration().getStartTime());
-			btnCancel.setText("Ok");
+			boolean success = false;
+			try {
+				success = get();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			}
+			
+			if (success) {
+				setStartTimeText(timeRegistrationController.getCurrentTimeRegistration().getStartTime());
+				btnCancel.setText("Ok");
+			}
 			btnCancel.setEnabled(true);
 			//Feedback til user: "Tidsregistrering startet/oprettet"
 		}

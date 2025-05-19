@@ -64,18 +64,15 @@ public class TimeRegistrationController implements TimeRegistrationControllerIF 
 	}
 
 	@Override
-	public void clockIn() {
-		if (timeRegistrationDB.findActiveTimeRegistration(currentTimeRegistration.getEmployee()) == null) {
-			currentTimeRegistration.setStartTime(LocalDateTime.now());
-			
-			TimeSheet foundTimeSheet = timeSheetController.findTimeSheetByEmployeeAndDate(currentTimeRegistration.getEmployee(), currentTimeRegistration.getDate(), false);
-			currentTimeRegistration.setTimeSheet(foundTimeSheet);
-			
-			timeRegistrationDB.insertTimeRegistration(currentTimeRegistration);
-		}
-		else {
-			System.out.println("A TimeRegistration is already active for this employee!");
-		}
+	public void clockIn() throws IllegalTimeRegistrationException {
+		currentTimeRegistration.setStartTime(LocalDateTime.now());
+		
+		TimeSheet foundTimeSheet = timeSheetController.findTimeSheetByEmployeeAndDate(currentTimeRegistration.getEmployee(), currentTimeRegistration.getDate(), false);
+		currentTimeRegistration.setTimeSheet(foundTimeSheet);
+		
+		ValidateTimeRegistration.validateClockIn(currentTimeRegistration);
+		
+		timeRegistrationDB.insertTimeRegistration(currentTimeRegistration);
 	}
 
 	@Override
