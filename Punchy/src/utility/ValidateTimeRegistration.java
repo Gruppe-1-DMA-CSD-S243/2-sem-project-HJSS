@@ -72,6 +72,12 @@ public class ValidateTimeRegistration {
 		}
 	}
 	
+	public static void validateActiveTimeRegistration(TimeRegistration timeRegistration) throws IllegalTimeRegistrationException{
+		if (timeRegistration == null) {
+			throw new IllegalTimeRegistrationException("There is no active time registration");
+		}
+	}
+	
 		// Validates conditions for clocking in.
 		// Ensures that no active time registration exists.
 		// Ensures that start time, and timesheet are present. 
