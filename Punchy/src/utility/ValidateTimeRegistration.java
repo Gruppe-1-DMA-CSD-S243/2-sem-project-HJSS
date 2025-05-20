@@ -42,8 +42,6 @@ public class ValidateTimeRegistration {
 		Project project = timeRegistration.getProject();
 		Employee employee = timeRegistration.getEmployee();
 		
-
-		
 		if (!validateTimeRegistrationNumber(timeRegistrationNumber)) {
 			throw new IllegalTimeRegistrationException("Registration number missing");
 		}
@@ -63,10 +61,6 @@ public class ValidateTimeRegistration {
 		if (!validateStartTimeBeforeEndTime(startTime, endTime)) {
 			throw new IllegalTimeRegistrationException("Start time: " + startTime + " is after end time: " + endTime);
 		}
-		
-//		if (!validateHours(hours)) {
-//			throw new IllegalTimeRegistrationException("Invalid hours: " + hours);
-//		}
 		
 		if (!validateRegistrationType(registrationType)) {
 			throw new IllegalTimeRegistrationException("Registration missing");
