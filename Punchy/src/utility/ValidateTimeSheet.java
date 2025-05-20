@@ -20,7 +20,7 @@ import model.TimeSheet;
  *
  * <p>This class is not intended to be instantiated.</p>
  * 
- * @author Sebastian N. Nielsen
+ * @author Sebastian Nørlund Nielsen
  */
 public class ValidateTimeSheet {
 	

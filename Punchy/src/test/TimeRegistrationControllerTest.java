@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import controller.IllegalTimeRegistrationException;
+import controller.LoginController;
 import controller.TimeRegistrationController;
 import controller.TimeSheetController;
 import db.TimeRegistrationDB;
@@ -26,12 +28,14 @@ class TimeRegistrationControllerTest {
 	static TimeRegistrationController timeRegistrationController;
 	static TimeRegistrationDBIF timeRegistrationDB;
 	static TimeSheetController timeSheetController;
+	static LoginController loginController;
 	
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
 		timeRegistrationController = new TimeRegistrationController();
 		timeRegistrationDB = new TimeRegistrationDB();
 		timeSheetController = new TimeSheetController();
+		loginController = LoginController.getInstance();
 	}
 
 	@AfterAll
@@ -107,6 +111,28 @@ class TimeRegistrationControllerTest {
 		        () -> assertEquals(expectedEmployeeNumber, actualEmployeeNumber),
 		        () -> assertDoesNotThrow(() -> ValidateTimeRegistration.validateData(timeRegistrationController.getCurrentTimeRegistration()))
 		        );
+	}
+	
+	@Test
+	void shouldClockInNewTimeRegistration() {
+		
+		// Arrange
+		
+		// Act
+		timeRegistrationController.makeNewTimeRegistration();
+		Employee loggedInEmployee = loginController.getLoggedInEmployee();
+		timeRegistrationController.assignEmployeeToTimeRegistration(loggedInEmployee);
+		List<Project> projects = timeRegistrationController.findProjectsByEmployee(loggedInEmployee);
+		
+		// Assert
+		
+		
+		timeRegistrationController.makeNewTimeRegistration();
+	}
+	
+	@Test
+	void shouldClockOutActiveTimeRegistration() {
+		
 	}
 
 }
