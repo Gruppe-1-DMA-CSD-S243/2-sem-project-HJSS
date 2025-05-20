@@ -128,7 +128,6 @@ public class TimeSheetDB implements TimeSheetDBIF {
 	 * @param fullAssociation true if all TimeRegistrations contained by the TimeSheet should be found and built and false only the TimeSheet and TimeRegistrations should be built
 	 * @return a TimeSheet object representing the first row of the ResultSet, or null if the ResultSet is empty
 	 * 
-	 * @author Sofus Tvorup Wennike
 	 */
 	private TimeSheet buildObject(ResultSet resultSet, boolean fullAssociation) {
 		TimeSheet currentTimeSheet = null;

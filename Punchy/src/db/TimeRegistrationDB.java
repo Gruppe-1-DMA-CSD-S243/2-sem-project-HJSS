@@ -165,7 +165,7 @@ public class TimeRegistrationDB implements TimeRegistrationDBIF {
 	 * @param fullAssociation true if the associated TimeSheet should be retrieved and built or false if only the TimeRegistration should be built
 	 * @return the TimeRegistration object representing the current row of the ResultSet, or null if the ResultSet is empty
 	 * 
-	 * @author Sofus Tvorup Wennike
+	 * 
 	 */
 	private TimeRegistration buildObject(ResultSet resultSet, boolean fullAssociation) {
 		TimeRegistration currentTimeRegistration = null;
@@ -215,7 +215,7 @@ public class TimeRegistrationDB implements TimeRegistrationDBIF {
 	 * @param fullAssociation true if the associated TimeSheet should be retrieved and built or false if only the TimeRegistration should be built
 	 * @return a list of TimeRegistration objects created from the provided ResultSet
 	 * 
-	 * @author Sofus Tvorup Wennike
+	 * 
 	 */
 	private List<TimeRegistration> buildObjects(ResultSet resultSet, boolean fullAssociation) {
 		List<TimeRegistration> timeRegistrations = new ArrayList<>();

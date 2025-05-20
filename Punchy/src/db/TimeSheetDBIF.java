@@ -20,7 +20,7 @@ public interface TimeSheetDBIF {
 	 * @param fullAssociation true if all TimeRegistrations contained by the TimeSheet should be found and built and false only the TimeSheet and TimeRegistrations should be built
 	 * @return the TimeSheet for the provided employee that covers the provided date
 	 * 
-	 * @author Sofus Tvorup Wennike
+	 * 
 	 */
 	public TimeSheet findTimeSheetByEmployeeAndDate(Employee employee, LocalDate date, boolean fullAssociation);
 	
@@ -30,7 +30,6 @@ public interface TimeSheetDBIF {
 	 * @param timeSheet the TimeSheet to be inserted into the database.
 	 * @return true if the TimeSheet was inserted or false if an error occurred
 	 * 
-	 * @author Sofus Tvorup Wennike
 	 */
 	public boolean insertTimeSheet(TimeSheet timeSheet);
 }

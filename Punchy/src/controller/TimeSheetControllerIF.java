@@ -21,7 +21,6 @@ public interface TimeSheetControllerIF {
 	 * @param fullAssociation true if all TimeRegistrations contained by the TimeSheet should be found and built and false only the TimeSheet and no TimeRegistrations should be built.
 	 * @return The TimeSheet for the employee that includes the provided date, or null if none exists
 	 * 
-	 * @author Sofus Tvorup Wennike
 	 */
 	public TimeSheet findTimeSheetByEmployeeAndDate(Employee employee, LocalDate date, boolean fullAssociation);
 }

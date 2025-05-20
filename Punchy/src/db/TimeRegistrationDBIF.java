@@ -18,7 +18,7 @@ public interface TimeRegistrationDBIF {
 	 * @param timeRegistration the TimeRegistration to be inserted into the database
 	 * @return true if the TimeRegistration was inserted or false if an error occurred
 	 * 
-	 * @author Sofus Tvorup Wennike
+	 * 
 	 */
 	public boolean insertTimeRegistration(TimeRegistration timeRegistration);
 	
@@ -28,7 +28,7 @@ public interface TimeRegistrationDBIF {
 	 * @param employee the employee whose active TimeRegistration is to be found
 	 * @return the active TimeRegistration for the provided Employee, or null of none exists
 	 * 
-	 * @author Sofus Tvorup Wennike
+	 * 
 	 */
 	public TimeRegistration findActiveTimeRegistration(Employee employee);
 	
@@ -38,7 +38,7 @@ public interface TimeRegistrationDBIF {
 	 * @param newTimeRegistration the TimeRegistration object containing the updated values
 	 * @return true if the update was successful or false if an error occurred
 	 * 
-	 * @author Sofus Tvorup Wennike
+	 * 
 	 */
 	public boolean updateTimeRegistration(TimeRegistration newTimeRegistration);
 	
@@ -48,7 +48,6 @@ public interface TimeRegistrationDBIF {
 	 * @param timeSheetNumber the timesheet number of the TimeSheet whose TimeRegistrations are to be found
 	 * @return a list of all the TimeRegistrations contained by the TimeSheet with the provided timesheet number
 	 * 
-	 * @author Sofus Tvorup Wennike
 	 */
 	public List<TimeRegistration> findTimeRegistrationsByTimeSheetNumber(String timeSheetNumber);
 }

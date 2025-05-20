@@ -20,7 +20,6 @@ public interface TimeRegistrationControllerIF {
 	 * 
 	 * @return the TimeRegistration that was created
 	 * 
-	 * @author Sofus Tvorup Wennike
 	 */
 	public TimeRegistration makeNewTimeRegistration();
 	
@@ -31,7 +30,6 @@ public interface TimeRegistrationControllerIF {
 	 * @param employeeNumber the employee number of the employee to find
 	 * @return the Employee matching provided employee number, or null if none exists
 	 * 
-	 * @author Sofus Tvorup Wennike
 	 */
 	public Employee findEmployee(String employeeNumber);
 	
@@ -40,7 +38,6 @@ public interface TimeRegistrationControllerIF {
 	 * 
 	 * @param employee the employee to add to the currently held TimeRegistration
 	 * 
-	 * @author Sofus Tvorup Wennike
 	 */
 	public void assignEmployeeToTimeRegistration(Employee employee);
 	
@@ -52,7 +49,6 @@ public interface TimeRegistrationControllerIF {
 	 * @param employeeNumber the employee number of the employee currently signed in
 	 * @return The project matching the provided project number, or null if none exists
 	 * 
-	 * @author Sofus Tvorup Wennike
 	 */
 	public Project findProject(String projectNumber, String employeeNumber);
 	
@@ -61,7 +57,6 @@ public interface TimeRegistrationControllerIF {
 	 * 
 	 * @param foundProject the project to add to the currently held TimeRegistration.
 	 * 
-	 * @author Sofus Tvorup Wennike
 	 */
 	public void assignProjectToTimeRegistration(Project foundProject);
 	
@@ -72,7 +67,6 @@ public interface TimeRegistrationControllerIF {
 	 * 
 	 * @throws IllegalTimeRegistrationException
 	 * 
-	 * @author Sofus Tvorup Wennike
 	 */
 	public void clockIn() throws IllegalTimeRegistrationException;
 	
@@ -81,8 +75,7 @@ public interface TimeRegistrationControllerIF {
 	 * to set the end time to the current time.
 	 * 
 	 * @throws IllegalTimeRegistrationException
-	 * 
-	 * @author Sofus Tvorup Wennike
+	 *
 	 */
 	public void clockOut() throws IllegalTimeRegistrationException;
 	
@@ -90,8 +83,7 @@ public interface TimeRegistrationControllerIF {
 	 * Calls setDescription on the currently held TimeRegistration.
 	 * 
 	 * @param description the description to add to the TimeRegistration
-	 * 
-	 * @author Sofus Tvorup Wennike
+	 *
 	 */
 	public void setDescription(String description);
 	
@@ -101,7 +93,6 @@ public interface TimeRegistrationControllerIF {
 	 * @param newTimeRegistration the TimeRegistration to update and save in the database
 	 * @return true if newTimeRegistration was updated and saved or false if the update wasn't possible
 	 * 
-	 * @author Sofus Tvorup Wennike
 	 */
 	public boolean submitRegistration(TimeRegistration newTimeRegistration);
 	
@@ -111,8 +102,7 @@ public interface TimeRegistrationControllerIF {
 	 * 
 	 * @param employee the employee whose assigned projects are to be found
 	 * @return a list of all the Projects the provided employee is assigned to.
-	 * 
-	 * @author Sofus Tvorup Wennike
+	 *
 	 */
 	public List<Project> findProjectsByEmployee(Employee employee);
 	
@@ -124,7 +114,6 @@ public interface TimeRegistrationControllerIF {
 	 * @param date the date contained within the TimeSheet week
 	 * @return the TimeSheet for the employee that includes the provided date
 	 * 
-	 * @author Sofus Tvorup Wennike
 	 */
 	public TimeSheet findTimeSheetByEmployeeAndDate(Employee employee, LocalDate date);
 	
@@ -135,7 +124,7 @@ public interface TimeRegistrationControllerIF {
 	 * @return the active TimeRegistration for the provided employee, or null if none exists
 	 * @throws IllegalTimeRegistrationException
 	 * 
-	 * @author Sofus Tvorup Wennike
+	 * 
 	 */
 	public TimeRegistration findActiveTimeRegistration(Employee employee) throws IllegalTimeRegistrationException;
 }
