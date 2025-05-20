@@ -11,7 +11,7 @@ import model.TimeSheet;
 /**
  * Interface providing methods necessary TimeRegistrationController
  * 
- * @author Sofus Tvorup Wennike
+ * @author Sofus Tvorup Wennike, Sebastian Nørlund Nielsen
  */
 public interface TimeRegistrationControllerIF {
 	

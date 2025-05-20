@@ -3,16 +3,14 @@ package model;
 import java.time.LocalDate;
 import java.time.temporal.IsoFields;
 import java.time.temporal.WeekFields;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * This class represents a timesheet for an employee. <br>
  * <br>
  * A TimeSheet contains all the TimeRegistrations created by a specific employee during a given calendar week.
  * 
- * @author Sofus Tvorup Wennike
+ * @author Sofus Tvorup Wennike, Sebastian Nørlund Nielsen
  * 
  */
 public class TimeSheet {
@@ -20,9 +18,7 @@ public class TimeSheet {
 	private String weekNumber;
 	private LocalDate startDateWeek;
 	private LocalDate endDateWeek;
-	// Business rule for minimum 11 timer mellem hver registrering FIND ANDET NAVN TIL VARIABLE???
 	private boolean isTimeBetweenRegistrations;
-	// Business rule for 7 dages periode <= 48 timer, find andet navn?
 	private boolean isSevenDayPeriod;
 	private boolean isSubmitted;
 	private boolean isApproved;
@@ -47,11 +43,8 @@ public class TimeSheet {
 	public TimeSheet(String timeSheetNumber, Employee employee, LocalDate date) {
 		this.timeSheetNumber = timeSheetNumber;
 		
-		Locale locale = new Locale("da", "DK");
-//		int weekNumber = date.get(WeekFields.of(locale).weekBasedYear()); DENNE HENTER ÅR, IKKE UGETAL
 		int weekNumber = date.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
 		int year = date.getYear();
-//		WeekFields weekFields = WeekFields.of(locale); BRUGER ISO FOR BEDRE HÅNDTERING AF EUROPÆISKE LANDE
 		WeekFields weekFields = WeekFields.ISO;
 		
 		this.startDateWeek = LocalDate.ofYearDay(year, 1).with(weekFields.weekOfYear(), weekNumber).with(weekFields.dayOfWeek(), 1);

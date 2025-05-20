@@ -11,8 +11,6 @@ import com.formdev.flatlaf.FlatLightLaf;
 import controller.LoginController;
 import db.EmployeeDB;
 import db.EmployeeDBIF;
-import db.TimeSheetDB;
-import db.TimeSheetDBIF;
 import gui.MainMenu;
 
 public class Main {
@@ -68,15 +66,7 @@ public class Main {
 		
 		
 		EmployeeDBIF edb = new EmployeeDB();
-		TimeSheetDBIF tsdb = new TimeSheetDB();
-//		
-//		Employee employee = edb.findEmployee("12345");
-//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//		LocalDate date = LocalDate.parse("2024-05-06", formatter);
-//		
-//		TimeSheet ts = tsdb.findTimeSheetByEmployeeAndDate(employee, date);
-//		
-//		System.out.println(ts.toString());
+		
 		
 		//TimeSheet ts = tsdb.findTimeSheetByEmployeeAndDate(edb.findEmployee("12345"), );
 		

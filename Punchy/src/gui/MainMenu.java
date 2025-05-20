@@ -11,18 +11,13 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.time.LocalDate;
-import java.util.EventListener;
-
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 
 import controller.LoginController;
-import controller.TimeRegistrationController;
 import controller.TimeSheetController;
-import model.Employee;
-import model.TimeRegistration;
 import model.TimeSheet;
 
 import javax.swing.JLabel;

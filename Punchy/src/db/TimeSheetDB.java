@@ -6,10 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.temporal.ChronoField;
 import java.time.temporal.WeekFields;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -62,7 +59,7 @@ public class TimeSheetDB implements TimeSheetDBIF {
 		try {
 			findTimeSheetByEmployeeAndDatePS.setString(1, employee.getEmployeeNumber());
 			//Set weekNumber
-			Locale locale = new Locale("da", "DK");
+			Locale locale = Locale.of("da", "DK");
 			int weekNumber = date.get(WeekFields.of(locale).weekOfYear());
 			findTimeSheetByEmployeeAndDatePS.setInt(2, weekNumber);
 			//Set year
@@ -92,7 +89,7 @@ public class TimeSheetDB implements TimeSheetDBIF {
 		try {
 			DBConnection.getInstance().startTransaction();
 			insertWeekStartDatesPS.setDate(1, Date.valueOf(timeSheet.getStartDateWeek()));
-			Locale locale = new Locale("da", "DK");
+			Locale locale = Locale.of("da", "DK");
 			int weekNumber = timeSheet.getStartDateWeek().get(WeekFields.of(locale).weekOfYear());
 			insertWeekStartDatesPS.setInt(2, weekNumber);
 			int monthNumber = timeSheet.getStartDateWeek().getMonthValue();

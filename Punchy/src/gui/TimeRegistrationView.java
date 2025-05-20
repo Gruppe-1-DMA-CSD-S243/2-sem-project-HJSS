@@ -14,8 +14,6 @@ import controller.TimeRegistrationController;
 import model.Employee;
 import model.Project;
 import model.TimeRegistration;
-import utility.ValidateTimeRegistration;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
@@ -24,7 +22,6 @@ import java.awt.Image;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.awt.Toolkit;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -40,7 +37,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.awt.event.ActionEvent;
 import java.awt.FlowLayout;
-import javax.swing.DropMode;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
@@ -58,7 +54,7 @@ public class TimeRegistrationView extends JFrame {
 	private final JPanel centerEastPanel = new JPanel();
 	private final JPanel buttonPanel = new JPanel();
 	private final JLabel lblProjects = new JLabel("Projekter");
-	private final JList<Project> listProjects = new JList();
+	private final JList<Project> listProjects = new JList<>();
 	private final JButton btnAddSelectedProject = new JButton("Tilføj projekt");
 	private final JButton btnSubmit = new JButton("Tilføj");
 	private final JButton btnCancel = new JButton("Annuller");

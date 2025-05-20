@@ -3,11 +3,7 @@ package test;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.time.Clock;
-import java.time.DateTimeException;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
@@ -21,6 +17,11 @@ import controller.IllegalTimeRegistrationException;
 import model.TimeRegistration;
 import utility.ValidateTimeRegistration;
 
+/**
+ * Unit tests for TimeRegistration date parsing and time validation.
+ * 
+ * @author Sebastian Nørlund Nielsen
+ */
 class TimeRegistrationTest {
 	static DateTimeFormatter formatter;
 	static TimeRegistration timeRegistration;
@@ -45,17 +46,13 @@ class TimeRegistrationTest {
 	void tearDown() throws Exception {
 	}
 
-	/*
-	 * I vores testcase havde vi tiltænkt de forskellige typer af malformeret data skulle testes på.
-	 * Fordi LocalDateTime allerede har logik der forhindrer ugyldig data af alle former, så giver det ikke mening at teste mere end en gang.
-	 * Her resulterer det i en DateTimeParseException idet malformeret data ikke kan parses.
-	 * Der kan ikke kaldes en metode i act, fordi koden ville fejle før der kan assertes.
-	 */
+	/**
+     * Malformed date string should throw DateTimeParseException.
+     */
 	@Test
 	void shouldRejectParsingMalformedDate() throws DateTimeParseException{
 		// Arrange
 		String negativeDate = "2025-05--06 13:20:10";
-		System.out.println();
 		
 		// Act
 		
@@ -63,11 +60,9 @@ class TimeRegistrationTest {
 		assertThrows(DateTimeParseException.class, () -> timeRegistration.setStartTime(LocalDateTime.parse(negativeDate, formatter)));
 	}
 	
-	/*
-	 * Fordi tid er dynamisk kan vi ikke genskabe expected værdier.
-	 * Derfor vælger vi at teste på en range af værdier, "before" og "after".
-	 * Hvis "actualStart" ikke er null, og er indenfor den range, så asserter testen true.
-	 */
+	/**
+     * Start time should be set and fall within expected time range.
+     */
 	@Test
 	void shouldDisplayExpectedStartTime() {
 		// Arrange
@@ -85,11 +80,13 @@ class TimeRegistrationTest {
 				(actualStart.isEqual(after) || actualStart.isBefore(after)));
 	}
 	
+	/**
+     * End time before start time should throw IllegalTimeRegistrationException.
+     */
 	@Test
 	void shouldRejectEndTimeBeforeStartTime() throws IllegalTimeRegistrationException{
 		// Arrange
-		System.out.println(timeRegistration.getStartTime());
-			timeRegistration.setEndTime(LocalDateTime.now());
+		timeRegistration.setEndTime(LocalDateTime.now());
 
 		// Act
 			

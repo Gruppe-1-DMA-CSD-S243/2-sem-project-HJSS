@@ -7,6 +7,7 @@ import javax.swing.table.AbstractTableModel;
 import model.TimeRegistration;
 import model.TimeSheet;
 
+@SuppressWarnings("serial")
 public class TimeSheetTableModel extends AbstractTableModel {
 	
 	private Object[][] data;

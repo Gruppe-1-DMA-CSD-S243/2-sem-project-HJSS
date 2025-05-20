@@ -10,32 +10,44 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.MethodOrderer;
 
+import controller.EmployeeController;
 import controller.IllegalTimeRegistrationException;
 import controller.LoginController;
 import controller.TimeRegistrationController;
 import controller.TimeSheetController;
-import db.TimeRegistrationDB;
-import db.TimeRegistrationDBIF;
 import model.Employee;
 import model.Project;
+import model.TimeRegistration;
 import model.TimeSheet;
-import utility.ValidateTimeRegistration;
 
+
+/**
+ * Integration tests for TimeRegistrationController covering clock-in and clock-out workflows.
+ * Requires a logged-in employee ("12345") and access to a database. 
+ * Tests run in order due to dependencies.
+ * 
+ * @author Sebastian Nørlund Nielsen
+ */
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class TimeRegistrationControllerTest {
 	
 	static TimeRegistrationController timeRegistrationController;
-	static TimeRegistrationDBIF timeRegistrationDB;
 	static TimeSheetController timeSheetController;
+	static EmployeeController employeeController;
 	static LoginController loginController;
 	
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
 		timeRegistrationController = new TimeRegistrationController();
-		timeRegistrationDB = new TimeRegistrationDB();
 		timeSheetController = new TimeSheetController();
+		employeeController = new EmployeeController();
 		loginController = LoginController.getInstance();
+		loginController.setLoggedInEmployee(employeeController.findEmployee("12345"));
 	}
 
 	@AfterAll
@@ -49,90 +61,79 @@ class TimeRegistrationControllerTest {
 	@AfterEach
 	void tearDown() throws Exception {
 	}
-
-	/*
-	 * Tester nuværende uden insertion fordi vi ikke har nogen måde at rydde op i database der ikke er tedious
-	 * Kan refaktoreres når CRUD er implementeret, eller hvis ny opsætning af JDBC connection vil gøres
-	 * Hele den her test er lort og når flere usecases er implementeret kan denne være meget bedre
-	 */
-	@Test
-	void shouldMakeNewTimeRegistrationAndPersistWithValidFields() throws IllegalTimeRegistrationException{
-		
-		// Arrange
-		String expectedTimeRegistrationNumber; //Currently impossible to assert on since it is hardcoded and random
-		LocalDate expectedDate; //Currently impossible to assert on
-		LocalDateTime expectedStartTime; //Currently impossible to assert on
-		LocalDateTime expectedEndTime; //Currently impossible to assert on
-		double expectedHours; //Currently impossible to assert on
-		String expectedRegistrationType = "TidsRegistrering";
-		String expectedDescription = "Assert test";
-		String expectedTimeSheetNumber = "72"; //Currently impossible to test on because this value will change
-		String expectedProjectNumber = "5000";
-		String expectedEmployeeNumber = "12345";
-		
-		// Act
-		timeRegistrationController.setCurrentTimeRegistration(timeRegistrationController.makeNewTimeRegistration());
-		// Kan ikke nuværende bruge clockIn() fordi logik der tjekker for activeTimeSheet ligger der
-		// Skal kunne teste et happy days scenarie hvor der er ingen active time sheet
-		timeRegistrationController.getCurrentTimeRegistration().setStartTime(LocalDateTime.now());
-		// Kan hellere ikke bruge clockOut() af samme årsag som clockIn()
-		timeRegistrationController.getCurrentTimeRegistration().setEndTime(LocalDateTime.now());
-		timeRegistrationController.setDescription("Assert test");
-		Employee foundEmployee = timeRegistrationController.findEmployee("12345");
-		timeRegistrationController.assignEmployeeToTimeRegistration(foundEmployee);
-		TimeSheet foundTimeSheet = timeSheetController.findTimeSheetByEmployeeAndDate(
-				timeRegistrationController.getCurrentTimeRegistration().getEmployee(), 
-				timeRegistrationController.getCurrentTimeRegistration().getDate(), false);
-		timeRegistrationController.getCurrentTimeRegistration().setTimeSheet(foundTimeSheet);
-		Project foundProject = timeRegistrationController.findProject("5000", "12345");
-		timeRegistrationController.assignProjectToTimeRegistration(foundProject);
-		
-		String actualTimeRegistrationNumber = timeRegistrationController.getCurrentTimeRegistration().getTimeRegistrationNumber(); 
-		LocalDate actualDate = timeRegistrationController.getCurrentTimeRegistration().getDate(); 
-		LocalDateTime actualStartTime = timeRegistrationController.getCurrentTimeRegistration().getStartTime(); 
-		LocalDateTime actualEndTime = timeRegistrationController.getCurrentTimeRegistration().getEndTime(); 
-		double actualHours; 
-		String actualRegistrationType = timeRegistrationController.getCurrentTimeRegistration().getRegistrationType();
-		String actualDescription = timeRegistrationController.getCurrentTimeRegistration().getDescription();
-		String actualTimeSheetNumber = timeRegistrationController.getCurrentTimeRegistration().getTimeSheet().getTimeSheetNumber();
-		String actualProjectNumber = timeRegistrationController.getCurrentTimeRegistration().getProject().getProjectNumber();
-		String actualEmployeeNumber = timeRegistrationController.getCurrentTimeRegistration().getEmployee().getEmployeeNumber();
-		
-		// Assert
-		assertAll("TimeRegistration comparison",
-//		        () -> assertEquals(expectedTimeRegistrationNumber, actualTimeRegistrationNumber),
-//		        () -> assertEquals(expectedDate, actualDate),
-//		        () -> assertEquals(expectedStartTime, actualStartTime),
-//		        () -> assertEquals(expectedEndTime, actualEndTime),
-		        () -> assertEquals(expectedRegistrationType, actualRegistrationType),
-		        () -> assertEquals(expectedDescription, actualDescription),
-		        () -> assertEquals(expectedTimeSheetNumber, actualTimeSheetNumber),
-		        () -> assertEquals(expectedProjectNumber, actualProjectNumber),
-		        () -> assertEquals(expectedEmployeeNumber, actualEmployeeNumber),
-		        () -> assertDoesNotThrow(() -> ValidateTimeRegistration.validateData(timeRegistrationController.getCurrentTimeRegistration()))
-		        );
-	}
 	
+	/**
+     * Tests creating and clocking in a new time registration.
+     * Verifies correct data and that start time and timesheet are set.
+     */
 	@Test
-	void shouldClockInNewTimeRegistration() {
+	@Order(1)
+	void shouldClockInNewTimeRegistration() throws IllegalTimeRegistrationException {
 		
 		// Arrange
+		LocalDate expectedDate = LocalDate.now();
+		String expectedRegistrationType = "TidsRegistrering";
+		String expectedProjectName = "Website Revamp";
+		String expectedEmployeeNumber = "12345";
 		
 		// Act
 		timeRegistrationController.makeNewTimeRegistration();
 		Employee loggedInEmployee = loginController.getLoggedInEmployee();
 		timeRegistrationController.assignEmployeeToTimeRegistration(loggedInEmployee);
 		List<Project> projects = timeRegistrationController.findProjectsByEmployee(loggedInEmployee);
+		// Uses lambda to simulate behaviour from GUI.
+		// ParallelStream is used to process with multiple threads.
+		Project selectedProject = projects.parallelStream().filter(project -> project.getProjectName().equals("Website Revamp")).findFirst().orElse(null);
+		timeRegistrationController.assignProjectToTimeRegistration(selectedProject);
+		timeRegistrationController.clockIn();
+		
+		TimeRegistration timeRegistration = timeRegistrationController.getCurrentTimeRegistration();
+		LocalDate actualDate = timeRegistration.getDate();
+		String actualRegistrationType = timeRegistration.getRegistrationType();
+		String actualProjectName = timeRegistration.getProject().getProjectName();
+		String actualEmployeeNumber = timeRegistration.getEmployee().getEmployeeNumber();
+		TimeSheet isTimeSheetNull = timeRegistrationController.getCurrentTimeRegistration().getTimeSheet();
+		LocalDateTime isStartTimeNull = timeRegistrationController.getCurrentTimeRegistration().getStartTime();
 		
 		// Assert
-		
-		
-		timeRegistrationController.makeNewTimeRegistration();
+		assertAll("TimeRegistration assertions after Start Time usecase",
+				() -> assertEquals(expectedDate, actualDate),
+				() -> assertEquals(expectedRegistrationType, actualRegistrationType),
+				() -> assertEquals(expectedProjectName, actualProjectName),
+				() -> assertEquals(expectedEmployeeNumber, actualEmployeeNumber),
+					  // AssertNotNull is used because there is no way of comparing an expected value to them, as they are either random or dynamically set
+				() -> assertNotNull(isTimeSheetNull),
+				() -> assertNotNull(isStartTimeNull)
+				);
 	}
 	
+	/**
+     * Tests clocking out an active registration, setting description, and submitting.
+     * Verifies end time is set and description is saved.
+     */
 	@Test
-	void shouldClockOutActiveTimeRegistration() {
+	@Order(2)
+	void shouldClockOutActiveTimeRegistration() throws IllegalTimeRegistrationException {
 		
+		// Arrange
+		String expectedDescription = "Description for integrationtest on end time";
+		
+		// Act
+		Employee employee = loginController.getLoggedInEmployee();
+		TimeRegistration timeRegistration = timeRegistrationController.findActiveTimeRegistration(employee);
+		timeRegistrationController.setCurrentTimeRegistration(timeRegistration);
+		timeRegistrationController.clockOut();
+		timeRegistrationController.setDescription("Description for integrationtest on end time");
+		timeRegistrationController.submitRegistration(timeRegistrationController.getCurrentTimeRegistration());
+		
+		String actualDescription = timeRegistrationController.getCurrentTimeRegistration().getDescription();
+		LocalDateTime isEndTimeNull = timeRegistrationController.getCurrentTimeRegistration().getEndTime();
+		
+		// Assert
+		assertAll("TimeRegistration assertions after End Time usecase",
+				() -> assertEquals(expectedDescription, actualDescription),
+				() -> assertNotNull(isEndTimeNull)
+				);
 	}
 
 }

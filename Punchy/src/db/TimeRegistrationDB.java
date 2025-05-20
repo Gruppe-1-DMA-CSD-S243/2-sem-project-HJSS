@@ -18,7 +18,7 @@ import model.TimeSheet;
 /**
  * The TimeRegistrationDB class provides database access functionality for handling TimeRegistration objects.
  * 
- * @author Sofus Tvorup Wennike
+ * @author Sofus Tvorup Wennike, Sebastian Nørlund Nielsen
  */
 public class TimeRegistrationDB implements TimeRegistrationDBIF {
 	private static final String INSERT_TIME_REGISTRATION_QUERY = "INSERT INTO TimeRegistration (time_registration_number, time_registration_date, "

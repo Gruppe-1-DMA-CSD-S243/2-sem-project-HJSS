@@ -35,7 +35,6 @@ public class ValidateTimeRegistration {
 		LocalDate date = timeRegistration.getDate();
 		LocalDateTime startTime = timeRegistration.getStartTime();
 		LocalDateTime endTime = timeRegistration.getEndTime();
-		double hours = timeRegistration.getHours();
 		String registrationType = timeRegistration.getRegistrationType();
 		String description = timeRegistration.getDescription();
 		TimeSheet timeSheet = timeRegistration.getTimeSheet();
