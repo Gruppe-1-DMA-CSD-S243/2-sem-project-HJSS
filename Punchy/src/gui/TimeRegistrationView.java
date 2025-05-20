@@ -108,10 +108,7 @@ public class TimeRegistrationView extends JFrame {
 		@Override
 		protected Boolean doInBackground() {
 			btnCancel.setEnabled(false);
-			//Try catch her: 
-			//Hvis clockIn succeds, return true
-			//Else, return false
-			//Print noget feedback i done()!
+			
 			try {
 				timeRegistrationController.clockIn();
 				return true;
@@ -137,7 +134,6 @@ public class TimeRegistrationView extends JFrame {
 				btnCancel.setText("Ok");
 			}
 			btnCancel.setEnabled(true);
-			//Feedback til user: "Tidsregistrering startet/oprettet"
 		}
 	};
 
@@ -180,16 +176,6 @@ public class TimeRegistrationView extends JFrame {
 		} catch (IllegalTimeRegistrationException e) {
 			makeNewTimeRegistration();
 		}
-		
-		//Dette if-statement er skyld i de fejl, der kommer frem i konsollen!
-//		if (timeRegistrationController.findActiveTimeRegistration(employee) != null) {
-//			endTimeRegistration();
-//		}
-//		else {
-//			makeNewTimeRegistration();
-//		}
-		
-		//makeNewTimeRegistration();
 		
 		displayProjects(timeRegistrationController.findProjectsByEmployee(employee));
 		setDateText(timeRegistrationController.getCurrentTimeRegistration().getDate());
@@ -520,10 +506,14 @@ public class TimeRegistrationView extends JFrame {
 	}
 	
 	private void submitTimeRegistration() {
-		timeRegistrationController.submitRegistration(timeRegistrationController.getCurrentTimeRegistration());
-		MainMenu mainMenu = new MainMenu();
-		mainMenu.setVisible(true);
-		hideFrame();
+		try {
+			timeRegistrationController.submitRegistration(timeRegistrationController.getCurrentTimeRegistration());
+			MainMenu mainMenu = new MainMenu();
+			mainMenu.setVisible(true);
+			hideFrame();
+		} catch (IllegalTimeRegistrationException e) {
+			txtEndTime.setText(e.getMessage());
+		}
 	}
 	
 	private void cancelTimeRegistrationView() {

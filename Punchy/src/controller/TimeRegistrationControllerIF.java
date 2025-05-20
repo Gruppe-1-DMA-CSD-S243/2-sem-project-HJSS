@@ -94,7 +94,7 @@ public interface TimeRegistrationControllerIF {
 	 * @return true if newTimeRegistration was updated and saved or false if the update wasn't possible
 	 * 
 	 */
-	public boolean submitRegistration(TimeRegistration newTimeRegistration);
+	public boolean submitRegistration(TimeRegistration newTimeRegistration) throws IllegalTimeRegistrationException;
 	
 	/**
 	 * Finds all the projects a given employee is assigned to by calling
