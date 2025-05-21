@@ -30,6 +30,7 @@ import model.TimeSheet;
  * Integration tests for TimeRegistrationController covering clock-in and clock-out workflows.
  * Requires a logged-in employee ("12345") and access to a database. 
  * Tests run in order due to dependencies.
+ * The first method will fail if there is an active timeregistration from use of the GUI.
  * 
  * @author Sebastian Nørlund Nielsen
  */
