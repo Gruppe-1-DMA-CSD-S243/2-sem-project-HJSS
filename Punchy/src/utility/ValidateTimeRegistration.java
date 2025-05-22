@@ -11,21 +11,23 @@ import model.TimeRegistration;
 import model.TimeSheet;
 
 /**
- * The {@code ValidateTimeRegistration} class provides static validation methods for 
- * ensuring the correctness and consistency of {@link TimeRegistration} objects.
+ * The class provides static validation methods for 
+ * ensuring the correctness and consistency of objects.
  * It includes checks for all required fields and supports validation for specific operations 
  * such as clock-in and clock-out actions.
  *
- * <p>This class throws {@link IllegalTimeRegistrationException} when validation fails 
- * to ensure robust error handling and informative messaging.
+ * This class throws IllegalTimeRegistrationException when validation fails 
+ * to ensure proper error handling and informative messaging.
  * 
- * @author Sebastian N. Nielsen
+ * This class is not intended to be instantiated.
+ * 
+ * @author Sebastian Nørlund Nielsen
  */
 
 public class ValidateTimeRegistration {
 	
 	 /**
-     * Validates all fields in the given {@link TimeRegistration} object.
+     * Validates all fields in the given TimeRegistration object.
      * 
      * @param timeRegistration the TimeRegistration object to validate
      * @throws IllegalTimeRegistrationException if any required field is invalid or missing
@@ -83,7 +85,7 @@ public class ValidateTimeRegistration {
 	}
 	
 	/**
-     * Validates that a {@link TimeRegistration} object is not null.
+     * Validates that a TimeRegistration object is not null.
      * 
      * @param timeRegistration the TimeRegistration to check
      * @throws IllegalTimeRegistrationException if the time registration is null
@@ -96,12 +98,11 @@ public class ValidateTimeRegistration {
 	
 	/**
      * Validates the conditions necessary to clock in:
-     * <ul>
-     *   <li>No other active time registration exists for the employee.</li>
-     *   <li>A valid project is assigned.</li>
-     *   <li>A start time is set.</li>
-     *   <li>A time sheet is linked.</li>
-     * </ul>
+     * 
+     * No other active time registration exists for the employee.
+     * A valid project is assigned.
+     * A start time is set.
+     * A time sheet is linked.
      * 
      * @param timeRegistration the time registration object containing clock-in data
      * @throws IllegalTimeRegistrationException if any clock-in condition is not met
@@ -136,10 +137,9 @@ public class ValidateTimeRegistration {
 	
 	/**
      * Validates the conditions necessary to clock out:
-     * <ul>
-     *   <li>Start time must be present (indicating the user has clocked in).</li>
-     *   <li>End time must not already be set (ensures clock-out hasn’t already occurred).</li>
-     * </ul>
+     * 
+     * Start time must be present (indicating the user has clocked in).
+     * End time must not already be set (ensures clock-out hasn’t already occurred).
      * 
      * @param timeRegistration the time registration object containing clock-out data
      * @throws IllegalTimeRegistrationException if clock-out conditions are not satisfied
@@ -242,7 +242,7 @@ public class ValidateTimeRegistration {
 	
 	/**
      * Placeholder method for validating hours worked.
-     * <p><b>Note:</b> Currently not implemented.</p>
+     * Currently not implemented.
      * 
      * @param hours the number of hours to validate
      * @return false always
