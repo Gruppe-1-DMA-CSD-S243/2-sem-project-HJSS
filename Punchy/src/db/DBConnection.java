@@ -7,15 +7,6 @@ import java.sql.SQLException;
 
 
 public class DBConnection {   
-	//Constants used to get access to the database
-	
-	//private static final String  driver = "jdbc:sqlserver://localhost:1433";
-//	private static final String serverAddress = "jdbc:sqlserver:hildur.ucn.dk";
-//	private static final String databaseName = ";databaseName=DMA-CSD-S243_10647447";
-//	private static String userName = ";user=sa";
-//	private static String password = ";password=Password1!";
-//	private static String encryption = ";encrypt=false";
-	
 //	private static final String driverClass = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 	private static final String dbName = "Placeholder Not Real Database Name";
 	//private static final String serverAddress = "localhost";
