@@ -1,4 +1,5 @@
 # Second Semester Project for the applied Computer Science degree at UCN. 
+This project is a timeregistration system called Punchy. The system will create new timeregistrations and persist them in the database in case of errors causing crashes, so the start time isn't lost, or can be picked up if forgotten.
 
 ## Focus areas
 - Database Design & Implementation
