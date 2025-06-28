@@ -17,12 +17,12 @@ public class DBConnection {
 //	private static String encryption = ";encrypt=false";
 	
 //	private static final String driverClass = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-	private static final String dbName = "DMA-CSD-S243_10647447";
+	private static final String dbName = "Placeholder Not Real Database Name";
 	//private static final String serverAddress = "localhost";
-	private static final String serverAddress = "hildur.ucn.dk";
+	private static final String serverAddress = "Placeholder Not Real Address";
 	private static final int serverPort = 1433;
-	private static final String userName = "DMA-CSD-S243_10647447";
-	private static final String password = "Password1!";
+	private static final String userName = "Placeholder Not Real Username";
+	private static final String password = "Placeholder Not Real Password";
 
    
     private DatabaseMetaData dma;
